@@ -1,0 +1,7 @@
+# Card 2479 car host capability check
+device=Android SDK built for x86_64
+sdk=24
+abi=x86_64
+features containing car/templates/projection:
+packages containing car/projection/auto:
+package:com.android.carrierconfig

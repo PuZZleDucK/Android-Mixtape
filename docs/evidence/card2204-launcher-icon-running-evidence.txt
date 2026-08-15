@@ -1,0 +1,103 @@
+# Card 2204 launcher icon Running evidence
+
+2026-06-30T23:11:32+10:00
+
+## Source and generated resources
+ic_launcher_cassette_1024.png 1024x1024 srgb  3.0
+ic_launcher_foreground.png 108x108 srgba 4.0
+ic_launcher_foreground.png 162x162 srgba 4.0
+ic_launcher_foreground.png 216x216 srgba 4.0
+ic_launcher_foreground.png 324x324 srgba 4.0
+ic_launcher_foreground.png 432x432 srgba 4.0
+ic_launcher.png 144x144 srgb  3.0
+ic_launcher.png 192x192 srgb  3.0
+ic_launcher.png 48x48 srgb  3.0
+ic_launcher.png 72x72 srgb  3.0
+ic_launcher.png 96x96 srgb  3.0
+
+## APK badging/resources
+### dist/android-mixtape-v0.1.0-modern-debug.apk
+package: name='com.example.androidmixtape' versionCode='1' versionName='0.1.0' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+sdkVersion:'24'
+targetSdkVersion:'35'
+application-icon-120:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-160:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-240:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-320:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-480:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-640:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-65534:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application: label='Mixtape' icon='res/mipmap-anydpi-v26/ic_launcher.xml'
+    10217  1981-01-01 01:01   res/mipmap-hdpi-v4/ic_launcher.png
+    11849  1981-01-01 01:01   res/mipmap-mdpi-v4/ic_launcher_foreground.png
+   129730  1981-01-01 01:01   res/mipmap-xxxhdpi-v4/ic_launcher_foreground.png
+    16644  1981-01-01 01:01   res/mipmap-xhdpi-v4/ic_launcher.png
+    23706  1981-01-01 01:01   res/mipmap-hdpi-v4/ic_launcher_foreground.png
+    33328  1981-01-01 01:01   res/mipmap-xxhdpi-v4/ic_launcher.png
+    38974  1981-01-01 01:01   res/mipmap-xhdpi-v4/ic_launcher_foreground.png
+      448  1981-01-01 01:01   res/mipmap-anydpi-v26/ic_launcher.xml
+     5218  1981-01-01 01:01   res/mipmap-mdpi-v4/ic_launcher.png
+    54603  1981-01-01 01:01   res/mipmap-xxxhdpi-v4/ic_launcher.png
+    77502  1981-01-01 01:01   res/mipmap-xxhdpi-v4/ic_launcher_foreground.png
+
+### dist/android-mixtape-v0.1.0-legacy-debug.apk
+package: name='com.example.androidmixtape.legacy' versionCode='1' versionName='0.1.0-legacy' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+sdkVersion:'19'
+targetSdkVersion:'35'
+application-icon-160:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-240:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-320:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-480:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-640:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-65534:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application: label='Mixtape' icon='res/mipmap-anydpi-v26/ic_launcher.xml'
+    10217  1981-01-01 01:01   res/mipmap-hdpi-v4/ic_launcher.png
+    11849  1981-01-01 01:01   res/mipmap-mdpi-v4/ic_launcher_foreground.png
+   129730  1981-01-01 01:01   res/mipmap-xxxhdpi-v4/ic_launcher_foreground.png
+    16644  1981-01-01 01:01   res/mipmap-xhdpi-v4/ic_launcher.png
+    23706  1981-01-01 01:01   res/mipmap-hdpi-v4/ic_launcher_foreground.png
+    33328  1981-01-01 01:01   res/mipmap-xxhdpi-v4/ic_launcher.png
+    38974  1981-01-01 01:01   res/mipmap-xhdpi-v4/ic_launcher_foreground.png
+      448  1981-01-01 01:01   res/mipmap-anydpi-v26/ic_launcher.xml
+     5218  1981-01-01 01:01   res/mipmap-mdpi-v4/ic_launcher.png
+    54603  1981-01-01 01:01   res/mipmap-xxxhdpi-v4/ic_launcher.png
+    77502  1981-01-01 01:01   res/mipmap-xxhdpi-v4/ic_launcher_foreground.png
+
+## SHA-256
+a16ddba751a2878ac0998734f974868e990f78cc43d7a318ad9fc43ac41cc12f  dist/android-mixtape-v0.1.0-legacy-debug.apk
+ac7062517fdfb54178586a8e94303f1c7f55853d067fa28faf63dc77c23d5174  dist/android-mixtape-v0.1.0-modern-debug.apk
+
+## F3115 install evidence
+=== adb devices ===
+List of devices attached
+RQ3002PT6X             device usb:2-3 product:F3115 model:F3115 device:F3115 transport_id:1
+
+=== device ===
+sdk=24
+
+model=F3115
+
+=== install modern ===
+Performing Streamed Install
+Success
+=== install legacy ===
+Performing Streamed Install
+Success
+=== launcher resolves ===
+priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+com.example.androidmixtape/.MainActivity
+priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+com.example.androidmixtape.legacy/com.example.androidmixtape.MainActivity
+=== package paths ===
+package:/data/app/com.example.androidmixtape-2/base.apk
+package:/data/app/com.example.androidmixtape.legacy-2/base.apk
+
+## F3115 launcher visual evidence
+After reinstall, ADW Launcher initially needed a refresh; ran `adb shell am force-stop org.adw.launcher`, reopened the app drawer, and captured docs/evidence/card2204-f3115-adw-drawer.png showing both modern and legacy Mixtape entries using the retro cassette logo.
+
+## Automated checks run
+- `./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.icons.LauncherIconResourceContractTest --rerun-tasks` passed.
+- `./gradlew testLegacyDebugUnitTest --tests com.example.androidmixtape.icons.LauncherIconResourceContractTest --rerun-tasks` passed.
+- `./gradlew assembleModernDebug assembleLegacyDebug` passed.
+app/build/test-results/testModernDebugUnitTest/TEST-com.example.androidmixtape.icons.LauncherIconResourceContractTest.xml:<testsuite name="com.example.androidmixtape.icons.LauncherIconResourceContractTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-06-30T13:06:53" hostname="artigas" time="0.119">
+app/build/test-results/testLegacyDebugUnitTest/TEST-com.example.androidmixtape.icons.LauncherIconResourceContractTest.xml:<testsuite name="com.example.androidmixtape.icons.LauncherIconResourceContractTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-06-30T13:07:03" hostname="artigas" time="0.135">

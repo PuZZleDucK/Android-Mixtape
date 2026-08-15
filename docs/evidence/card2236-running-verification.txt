@@ -1,0 +1,269 @@
+Card 2236 running verification - 2026-07-01T23:15:47+10:00
+
+COMMAND: PATH="/home/puzzleduck/.asdf/bin:/home/puzzleduck/.asdf/shims:/usr/local/bin:/usr/bin:/bin:/home/puzzleduck/.local/bin:/home/puzzleduck/x/kanban/vendor/bundle/ruby/3.3.0/bin:/home/puzzleduck/pi/bin:/usr/local/bin:/usr/bin:/bin:/home/puzzleduck/.local/bin" ANDROID_HOME="/home/puzzleduck/Android/Sdk" ./gradlew testModernDebugUnitTest --tests 'com.example.androidmixtape.ui.CassetteReelGraphicsContractTest'
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleModernDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleModernDebugClassesToCompileJar UP-TO-DATE
+> Task :app:compileModernDebugUnitTestKotlin UP-TO-DATE
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest UP-TO-DATE
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:packageModernDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateModernDebugUnitTestConfig UP-TO-DATE
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:processModernDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:testModernDebugUnitTest
+
+BUILD SUCCESSFUL in 10s
+26 actionable tasks: 1 executed, 25 up-to-date
+EXIT: 0
+
+COMMAND: PATH="/home/puzzleduck/.asdf/bin:/home/puzzleduck/.asdf/shims:/usr/local/bin:/usr/bin:/bin:/home/puzzleduck/.local/bin:/home/puzzleduck/x/kanban/vendor/bundle/ruby/3.3.0/bin:/home/puzzleduck/pi/bin:/usr/local/bin:/usr/bin:/bin:/home/puzzleduck/.local/bin" ANDROID_HOME="/home/puzzleduck/Android/Sdk" ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleModernDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleModernDebugClassesToCompileJar UP-TO-DATE
+> Task :app:compileModernDebugUnitTestKotlin UP-TO-DATE
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest UP-TO-DATE
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:packageModernDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateModernDebugUnitTestConfig UP-TO-DATE
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:processModernDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testModernDebugUnitTest
+
+MixtapeTitleDeterminismContractTest > titleRuntimeCallSitesUseGreedyDeterministicTemperature FAILED
+    java.lang.AssertionError at MixtapeTitleDeterminismContractTest.kt:23
+
+MixtapeTitlePromptBuilderTest > promptIncludesAllTrackTitlesArtistsAndStrictQuotedTitleInstruction FAILED
+    java.lang.AssertionError at MixtapeTitleGenerationContractTest.kt:22
+
+108 tests completed, 2 failed
+
+> Task :app:testModernDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testModernDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/puzzleduck/x/android-mixtape/app/build/reports/tests/testModernDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 14s
+26 actionable tasks: 1 executed, 25 up-to-date
+EXIT: 1
+
+COMMAND: PATH="/home/puzzleduck/.asdf/bin:/home/puzzleduck/.asdf/shims:/usr/local/bin:/usr/bin:/bin:/home/puzzleduck/.local/bin:/home/puzzleduck/x/kanban/vendor/bundle/ruby/3.3.0/bin:/home/puzzleduck/pi/bin:/usr/local/bin:/usr/bin:/bin:/home/puzzleduck/.local/bin" ANDROID_HOME="/home/puzzleduck/Android/Sdk" ./gradlew testLegacyDebugUnitTest
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preLegacyDebugBuild UP-TO-DATE
+> Task :app:checkLegacyDebugAarMetadata UP-TO-DATE
+> Task :app:generateLegacyDebugResValues UP-TO-DATE
+> Task :app:mapLegacyDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateLegacyDebugResources UP-TO-DATE
+> Task :app:mergeLegacyDebugResources UP-TO-DATE
+> Task :app:packageLegacyDebugResources UP-TO-DATE
+> Task :app:parseLegacyDebugLocalResources UP-TO-DATE
+> Task :app:createLegacyDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksLegacyDebug UP-TO-DATE
+> Task :app:processLegacyDebugMainManifest UP-TO-DATE
+> Task :app:processLegacyDebugManifest UP-TO-DATE
+> Task :app:processLegacyDebugManifestForPackage UP-TO-DATE
+> Task :app:processLegacyDebugResources UP-TO-DATE
+> Task :app:compileLegacyDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileLegacyDebug UP-TO-DATE
+> Task :app:compileLegacyDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleLegacyDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleLegacyDebugClassesToCompileJar UP-TO-DATE
+> Task :app:compileLegacyDebugUnitTestKotlin UP-TO-DATE
+> Task :app:preLegacyDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileLegacyDebugUnitTest UP-TO-DATE
+> Task :app:compileLegacyDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:mergeLegacyDebugShaders UP-TO-DATE
+> Task :app:compileLegacyDebugShaders NO-SOURCE
+> Task :app:generateLegacyDebugAssets UP-TO-DATE
+> Task :app:mergeLegacyDebugAssets UP-TO-DATE
+> Task :app:packageLegacyDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateLegacyDebugUnitTestConfig UP-TO-DATE
+> Task :app:processLegacyDebugJavaRes UP-TO-DATE
+> Task :app:processLegacyDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testLegacyDebugUnitTest
+
+MixtapeTitleDeterminismContractTest > titleRuntimeCallSitesUseGreedyDeterministicTemperature FAILED
+    java.lang.AssertionError at MixtapeTitleDeterminismContractTest.kt:23
+
+MixtapeTitlePromptBuilderTest > promptIncludesAllTrackTitlesArtistsAndStrictQuotedTitleInstruction FAILED
+    java.lang.AssertionError at MixtapeTitleGenerationContractTest.kt:22
+
+108 tests completed, 2 failed
+
+> Task :app:testLegacyDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testLegacyDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/puzzleduck/x/android-mixtape/app/build/reports/tests/testLegacyDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 8s
+26 actionable tasks: 1 executed, 25 up-to-date
+EXIT: 1
+
+COMMAND: PATH="/home/puzzleduck/.asdf/bin:/home/puzzleduck/.asdf/shims:/usr/local/bin:/usr/bin:/bin:/home/puzzleduck/.local/bin:/home/puzzleduck/x/kanban/vendor/bundle/ruby/3.3.0/bin:/home/puzzleduck/pi/bin:/usr/local/bin:/usr/bin:/bin:/home/puzzleduck/.local/bin" ANDROID_HOME="/home/puzzleduck/Android/Sdk" ./gradlew assembleModernDebug assembleLegacyDebug
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:mergeModernDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:compressModernDebugAssets UP-TO-DATE
+> Task :app:checkModernDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarModernDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexModernDebug UP-TO-DATE
+> Task :app:mergeLibDexModernDebug UP-TO-DATE
+> Task :app:dexBuilderModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugGlobalSynthetics UP-TO-DATE
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:mergeModernDebugJavaResource UP-TO-DATE
+> Task :app:mergeProjectDexModernDebug UP-TO-DATE
+> Task :app:configureCMakeDebug[arm64-v8a]
+> Task :app:buildCMakeDebug[arm64-v8a]
+> Task :app:mergeModernDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeModernDebugNativeLibs UP-TO-DATE
+> Task :app:stripModernDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningModernDebug UP-TO-DATE
+> Task :app:writeModernDebugAppMetadata UP-TO-DATE
+> Task :app:writeModernDebugSigningConfigVersions UP-TO-DATE
+> Task :app:packageModernDebug UP-TO-DATE
+> Task :app:createModernDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleModernDebug UP-TO-DATE
+> Task :app:preLegacyDebugBuild UP-TO-DATE
+> Task :app:mergeLegacyDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkLegacyDebugAarMetadata UP-TO-DATE
+> Task :app:generateLegacyDebugResValues UP-TO-DATE
+> Task :app:mapLegacyDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateLegacyDebugResources UP-TO-DATE
+> Task :app:mergeLegacyDebugResources UP-TO-DATE
+> Task :app:packageLegacyDebugResources UP-TO-DATE
+> Task :app:parseLegacyDebugLocalResources UP-TO-DATE
+> Task :app:createLegacyDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksLegacyDebug UP-TO-DATE
+> Task :app:processLegacyDebugMainManifest UP-TO-DATE
+> Task :app:processLegacyDebugManifest UP-TO-DATE
+> Task :app:processLegacyDebugManifestForPackage UP-TO-DATE
+> Task :app:processLegacyDebugResources UP-TO-DATE
+> Task :app:compileLegacyDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileLegacyDebug UP-TO-DATE
+> Task :app:compileLegacyDebugJavaWithJavac NO-SOURCE
+> Task :app:mergeLegacyDebugShaders UP-TO-DATE
+> Task :app:compileLegacyDebugShaders NO-SOURCE
+> Task :app:generateLegacyDebugAssets UP-TO-DATE
+> Task :app:mergeLegacyDebugAssets UP-TO-DATE
+> Task :app:compressLegacyDebugAssets UP-TO-DATE
+> Task :app:checkLegacyDebugDuplicateClasses UP-TO-DATE
+> Task :app:dexBuilderLegacyDebug UP-TO-DATE
+> Task :app:desugarLegacyDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexLegacyDebug UP-TO-DATE
+> Task :app:mergeDexLegacyDebug UP-TO-DATE
+> Task :app:processLegacyDebugJavaRes UP-TO-DATE
+> Task :app:mergeLegacyDebugJavaResource UP-TO-DATE
+> Task :app:configureCMakeDebug[arm64-v8a]-2
+> Task :app:buildCMakeDebug[arm64-v8a]-2
+> Task :app:mergeLegacyDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeLegacyDebugNativeLibs UP-TO-DATE
+> Task :app:stripLegacyDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningLegacyDebug UP-TO-DATE
+> Task :app:writeLegacyDebugAppMetadata UP-TO-DATE
+> Task :app:writeLegacyDebugSigningConfigVersions UP-TO-DATE
+> Task :app:packageLegacyDebug UP-TO-DATE
+> Task :app:createLegacyDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleLegacyDebug UP-TO-DATE
+
+BUILD SUCCESSFUL in 3s
+72 actionable tasks: 4 executed, 68 up-to-date
+EXIT: 0

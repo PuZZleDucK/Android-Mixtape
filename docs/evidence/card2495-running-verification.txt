@@ -1,0 +1,23 @@
+# Card 2495 Running verification
+
+Implemented the Now Playing opposite-preview slot in `app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt`.
+
+## Checks
+
+- PASS: `./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.ui.NowPlayingMixTapeToggleContractTest`
+  - Log: `docs/evidence/card2495-running-targeted-contract.log`
+- PASS: `./gradlew :app:assembleModernDebug`
+- PASS: temporary emulator-compatible modern debug build with x86/x86_64 ABI override for Kunlun emulator install.
+  - Log: `docs/evidence/card2495-running-assemble-modern-emulator-compatible.log`
+- PASS: installed and launched updated APK on Kunlun `emulator-5554` (API 24, x86_64).
+  - Log: `docs/evidence/card2495-running-kunlun-install-launch.log`
+
+## Emulator screenshots
+
+- `docs/evidence/card2495-running-now-playing-tracks.png`: Tracks main view keeps current-mixtape spine in the preview slot.
+- `docs/evidence/card2495-running-now-playing-mixtapes.png`: Mix tapes main view switches that preview slot to the compact current-track paper preview.
+
+## Notes
+
+- The x86/x86_64 ABI change was only a temporary local build override for emulator deployment; `app/build.gradle.kts` was restored before commit.
+- Generated APK/dist artifacts are intentionally not committed.

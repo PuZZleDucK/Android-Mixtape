@@ -1,0 +1,43 @@
+# Card 2497 Running legacy unit gate final
+2026-07-09T13:32:50+10:00
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preLegacyDebugBuild UP-TO-DATE
+> Task :app:checkLegacyDebugAarMetadata UP-TO-DATE
+> Task :app:generateLegacyDebugResValues UP-TO-DATE
+> Task :app:mapLegacyDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateLegacyDebugResources UP-TO-DATE
+> Task :app:mergeLegacyDebugResources UP-TO-DATE
+> Task :app:packageLegacyDebugResources UP-TO-DATE
+> Task :app:parseLegacyDebugLocalResources UP-TO-DATE
+> Task :app:createLegacyDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksLegacyDebug UP-TO-DATE
+> Task :app:processLegacyDebugMainManifest UP-TO-DATE
+> Task :app:processLegacyDebugManifest UP-TO-DATE
+> Task :app:processLegacyDebugManifestForPackage UP-TO-DATE
+> Task :app:processLegacyDebugResources UP-TO-DATE
+> Task :app:compileLegacyDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileLegacyDebug UP-TO-DATE
+> Task :app:compileLegacyDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleLegacyDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleLegacyDebugClassesToCompileJar UP-TO-DATE
+> Task :app:compileLegacyDebugUnitTestKotlin UP-TO-DATE
+> Task :app:preLegacyDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileLegacyDebugUnitTest UP-TO-DATE
+> Task :app:compileLegacyDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:mergeLegacyDebugShaders UP-TO-DATE
+> Task :app:compileLegacyDebugShaders NO-SOURCE
+> Task :app:generateLegacyDebugAssets UP-TO-DATE
+> Task :app:mergeLegacyDebugAssets UP-TO-DATE
+> Task :app:packageLegacyDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateLegacyDebugUnitTestConfig UP-TO-DATE
+> Task :app:processLegacyDebugJavaRes UP-TO-DATE
+> Task :app:processLegacyDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:testLegacyDebugUnitTest UP-TO-DATE
+
+BUILD SUCCESSFUL in 9s
+26 actionable tasks: 26 up-to-date

@@ -1,0 +1,79 @@
+# Card 2233 Review verification
+
+Date: 2026-07-02
+Card: landscape layout
+Project: android-mixtape
+
+## Scope reviewed
+
+- Re-read the card details, movement history, Testing notes, and Running completion note.
+- Confirmed Running commit `c464899` keeps the product layout contract: in `app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt`, `NowPlaying` uses `BoxWithConstraints`, derives `isLandscape = maxWidth > maxHeight`, renders a full-size `Row`, bounds the left pane with `leftPaneWidth = (maxWidth * 0.44f).coerceAtMost(420.dp)` / `widthIn(max = 420.dp)`, groups `CassetteTape` and `WalkmanTransportControls` inside that left `Column`, and gives `CassetteCoverTrackList` the remaining right pane with `Modifier.weight(1f).fillMaxHeight()`.
+- Confirmed connected-test isolation was not weakened: `app/build.gradle.kts` declares `testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"`, `testInstrumentationRunnerArguments["clearPackageData"] = "true"`, `testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"`, and `add("androidTestUtil", "androidx.test:orchestrator:1.5.1")`.
+- Confirmed the default connected suite still includes both `LlamaRuntimeSmokeTest.packagedSmolLm2GeneratesNonEmptyOfflineResponse` and the Compose UI regression `MixtapeAppTest.mixTapesScreenRendersCassetteSpineRowsWithCompactReadableLabels`.
+
+## Verification commands run
+
+Environment used for Gradle gates:
+
+```sh
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+```
+
+Device observed:
+
+```text
+RQ3002PT6X device usb:2-3 product:F3115 model:F3115 device:F3115
+```
+
+Targeted unit contract gate:
+
+```sh
+./gradlew --no-daemon --max-workers=1 --console=plain \
+  -Dkotlin.compiler.execution.strategy=in-process \
+  -Dkotlin.incremental=false \
+  testModernDebugUnitTest \
+  --tests '*ConnectedComposeIsolationContractTest*' \
+  --tests '*NowPlayingLandscapeLayoutContractTest*' \
+  --tests '*MixtapeTitle*' \
+  --tests '*LlamaRuntime*'
+```
+
+Result: `BUILD SUCCESSFUL`; `TARGETED_EXIT:0`.
+
+Full unit gate:
+
+```sh
+./gradlew --no-daemon --max-workers=1 --console=plain \
+  -Dkotlin.compiler.execution.strategy=in-process \
+  -Dkotlin.incremental=false test
+```
+
+Result: `BUILD SUCCESSFUL`; `UNIT_EXIT:0`.
+
+Full connected modern gate after F3115 hygiene:
+
+```sh
+adb shell am force-stop com.dev47apps.droidcam || true
+adb shell am force-stop com.example.androidmixtape || true
+adb shell am force-stop com.example.androidmixtape.test || true
+./gradlew --no-daemon --max-workers=1 --console=plain \
+  -Dkotlin.compiler.execution.strategy=in-process \
+  -Dkotlin.incremental=false :app:connectedModernDebugAndroidTest
+```
+
+Result: `BUILD SUCCESSFUL`; `CONNECTED_EXIT:0`; `Finished 12 tests on F3115 - 7.0`.
+
+A second automatic/background review verification run also completed successfully after this evidence commit was created, including the same full connected gate: `BUILD SUCCESSFUL`, `CONNECTED_EXIT:0`, `Finished 12 tests on F3115 - 7.0`.
+
+## Screenshot evidence
+
+Screenshot captured and attached to the Kanban card:
+
+- `docs/evidence/card2233-review-evidence.png`
+
+The screenshot shows the passing review gates and the relevant landscape/orchestrator source contracts.
+
+## Conclusion
+
+Review passed. The implementation satisfies the landscape requirement and the connected F3115 regression gate is green. Repository changes created during Review were committed before moving the card to Done.

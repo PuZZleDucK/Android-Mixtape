@@ -1,0 +1,20 @@
+Card 2375 Android Auto running verification
+
+Implementation commit: Add Android Auto media library support (repository HEAD after this evidence file is committed)
+
+Verified on 2026-07-04 with:
+
+JAVA_HOME=$(asdf where java) ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest --tests 'com.example.androidmixtape.auto.*' --tests '*PlaybackContinuity*' --tests '*Api19VariantContractTest'
+Result: BUILD SUCCESSFUL
+
+JAVA_HOME=$(asdf where java) ANDROID_HOME=$HOME/Android/Sdk ./gradlew lintModernDebug lintLegacyDebug
+Result: BUILD SUCCESSFUL
+
+JAVA_HOME=$(asdf where java) ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest assembleModernDebug assembleLegacyDebug
+Result: BUILD SUCCESSFUL
+
+Notes:
+- Modern flavor declares Media3 session dependency, Android Auto metadata, automotive_app_desc, foreground media playback MediaLibraryService, MediaBrowserService and MEDIA_PLAY_FROM_SEARCH intent actions.
+- MixtapeMediaLibraryService serves a root -> All tracks browse tree from MediaStoreAudioRepository, resolves playable content:// track MediaItems, provides search, and safely returns empty results for permission/provider errors.
+- Modern MainActivity now uses MediaControllerPlayerEngine connected to the same MediaLibraryService session, avoiding a separate unsynchronized phone-only ExoPlayer.
+- Legacy unit tests and legacy debug assembly passed; Media3 session remains modernImplementation-only.

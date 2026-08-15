@@ -1,0 +1,21 @@
+Card 2337 Running lint rework verification — 2026-07-03
+
+Changes made:
+- AudioRepository now catches SecurityException first and only treats it as RecoverableSecurityException after Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q, keeping API-29 userAction/actionIntent access SDK-guarded for lint.
+- MixtapeTitleRuntime now uses context.noBackupFilesDir only on API 21+ and falls back to context.filesDir on API 19/20, resolving the legacy lint NewApi gate.
+- Pre-existing uncommitted dist APK/sha256 modifications were intentionally reverted because they were unrelated to this lint/source rework and were not produced by the required unit/lint gates.
+
+Targeted regression checks:
+
+1) JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.data.DeleteFromDeviceScopedStorageContractTest --rerun-tasks
+Result: BUILD SUCCESSFUL in 36s; DeleteFromDeviceScopedStorageContractTest passed.
+
+2) JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testLegacyDebugUnitTest --tests com.example.androidmixtape.data.DeleteFromDeviceScopedStorageContractTest --rerun-tasks
+Result: BUILD SUCCESSFUL in 20s; DeleteFromDeviceScopedStorageContractTest passed.
+
+Required Running gates:
+
+JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest lintModernDebug lintLegacyDebug
+Result: BUILD SUCCESSFUL in 1m 51s.
+
+Final git status before commit contained only intended source/evidence changes.

@@ -1,0 +1,12 @@
+Prompt:
+transparent background PNG app icon logo, single retro audio cassette tape, front-facing and centered, warm cream plastic shell with orange and red label accents, dark tape reels, crisp vector-like edges, subtle vintage texture, no square background, no drop shadow, no readable text, object fills about 85 percent of the image width with transparent padding
+
+Reference images:
+- /home/puzzleduck/x/android-mixtape/app/icon-source/archive/ic_launcher_cassette_1024_card2212_original.png
+
+Generated PNG:
+/home/puzzleduck/x/android-mixtape/app/icon-source/android_mixtape_logo_transparent_1024.png
+Generated at:
+2026-07-01T14:02:38+10:00
+Generator:
+/home/puzzleduck/pi/skills/image-generation/scripts/image-generation

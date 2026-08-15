@@ -1,0 +1,122 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Card 2233 Review Evidence</title>
+<style>
+body{font-family:Inter,Arial,sans-serif;margin:32px;background:#f7f1df;color:#1b1b1b} h1{margin:0 0 8px} .pass{display:inline-block;background:#167a3a;color:white;padding:8px 14px;border-radius:8px;font-weight:700} .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.panel{background:white;border:2px solid #46372c;border-radius:12px;padding:16px;box-shadow:0 2px 0 #46372c} pre{white-space:pre-wrap;font-size:12px;line-height:1.35;max-height:460px;overflow:hidden;background:#241d1a;color:#f4ead0;padding:12px;border-radius:8px}.big{font-size:18px}.mono{font-family:ui-monospace,Menlo,monospace}</style>
+</head><body>
+<h1>Card 2233 Review Evidence — landscape layout</h1>
+<div class="pass">PASS: review gates green and layout/orchestrator contracts present</div>
+<p class="big">Verified commit <span class="mono">c464899</span>: landscape Now Playing uses a bounded left pane for cassette + Walkman controls and a weighted right CassetteCoverTrackList. Connected suite passed on F3115 (12/12) with Android Test Orchestrator + clearPackageData.</p>
+<div class="grid">
+<section class="panel"><h2>Verification output</h2><pre>c464899 Stabilize card 2233 connected compose gate
+## Device
+RQ3002PT6X             device usb:2-3 product:F3115 model:F3115 device:F3115 transport_id:10
+## Targeted unit contracts
+BUILD SUCCESSFUL in 1m 40s
+TARGETED_EXIT:0
+## Full unit gate
+BUILD SUCCESSFUL in 1m 50s
+UNIT_EXIT:0
+## Device hygiene before connected gate
+## Full connected modern gate
+Starting 12 tests on F3115 - 7.0
+F3115 - 7.0 Tests 0/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 2/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 4/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 6/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 8/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 10/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 12/12 completed. (0 skipped) (0 failed)
+Finished 12 tests on F3115 - 7.0
+BUILD SUCCESSFUL in 9m 8s
+CONNECTED_EXIT:0
+</pre></section>
+<section class="panel"><h2>Landscape source contract</h2><pre>private fun NowPlaying(
+    state: MixtapeUiState,
+    onTogglePlayPause: () -&gt; Unit,
+    onPrevious: () -&gt; Unit,
+    onNext: () -&gt; Unit,
+    onStop: () -&gt; Unit,
+    onEject: () -&gt; Unit,
+    modifier: Modifier = Modifier,
+) {
+    BoxWithConstraints(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        val isLandscape = maxWidth &gt; maxHeight
+        val nowPlayingJitterKey = nowPlayingJitterKey(state)
+
+        if (isLandscape) {
+            val leftPaneWidth = (maxWidth * 0.44f).coerceAtMost(420.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .width(leftPaneWidth)
+                        .widthIn(max = 420.dp)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    CassetteTape(
+                        tapeName = tapeNameFor(state),
+                        currentTrack = state.currentTrack,
+                        isPlaying = state.isPlaying,
+                        handwritingFont = state.currentMixtapeHandwritingFont,
+                        mixtapeJitterKey = nowPlayingJitterKey,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    WalkmanTransportControls(
+                        isPlaying = state.isPlaying,
+                        hasTrack = state.currentTrack != null,
+                        canGoPrevious = state.canGoPrevious,
+                        canGoNext = state.canGoNext,
+                        onRewind = onPrevious,
+                        onPlayPause = onTogglePlayPause,
+                        onFastForward = onNext,
+                        onStop = onStop,
+                        onEject = onEject,
+                    )
+                }
+                CassetteCoverTrackList(
+                    tracks = state.queueTracks,
+                    currentIndex = state.currentIndex,
+                    handwritingFont = state.currentMixtapeHandwritingFont,
+                    mixtapeJitterKey = nowPlayingJitterKey,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    scrollContent = true,
+                )
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                CassetteTape(
+                    tapeName = tapeNameFor(state),
+                    currentTrack = state.currentTrack,
+                    isPlaying = state.isPlaying,
+                    handwritingFont = state.currentMixtapeHandwritingFont,
+                    mixtapeJitterKey = nowPlayingJitterKey,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                WalkmanTransportControls(
+                    isPlaying = state.isPlaying,
+                    hasTrack = state.currentTrack != null,
+                    canGoPrevious = state.canGoPrevious,
+                    canGoNext = state.canGoNext,
+</pre></section>
+<section class="panel"><h2>Orchestrator config</h2><pre>        testInstrumentationRunner = &quot;androidx.test.runner.AndroidJUnitRunner&quot;
+        testInstrumentationRunnerArguments[&quot;clearPackageData&quot;] = &quot;true&quot;
+    testOptions {
+        execution = &quot;ANDROIDX_TEST_ORCHESTRATOR&quot;
+    add(&quot;androidTestUtil&quot;, &quot;androidx.test:orchestrator:1.5.1&quot;)
+</pre></section>
+<section class="panel"><h2>Review conclusion</h2><p>No uncommitted implementation changes were found before review evidence. The final gates reran successfully: targeted card contracts, full unit test suite, and full connected modern Android test suite on F3115.</p></section>
+</div>
+</body></html>

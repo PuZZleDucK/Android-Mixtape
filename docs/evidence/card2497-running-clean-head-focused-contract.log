@@ -1,0 +1,46 @@
+# Card 2497 clean committed focused contract
+2026-07-09T14:59:29+10:00
+HEAD=39d0491
+Command: ./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.ui.CassetteFastForwardTrackListScrollContractTest
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:generateModernDebugResValues
+> Task :app:checkModernDebugAarMetadata
+> Task :app:mapModernDebugSourceSetPaths
+> Task :app:generateModernDebugResources
+> Task :app:packageModernDebugResources
+> Task :app:createModernDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksModernDebug
+> Task :app:parseModernDebugLocalResources
+> Task :app:processModernDebugMainManifest
+> Task :app:mergeModernDebugResources
+> Task :app:processModernDebugManifest
+> Task :app:javaPreCompileModernDebug
+> Task :app:processModernDebugManifestForPackage
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest
+> Task :app:mergeModernDebugShaders
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:processModernDebugResources
+> Task :app:mergeModernDebugAssets
+> Task :app:packageModernDebugUnitTestForUnitTest
+> Task :app:generateModernDebugUnitTestConfig
+> Task :app:compileModernDebugKotlin
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:processModernDebugJavaRes
+> Task :app:bundleModernDebugClassesToRuntimeJar
+> Task :app:bundleModernDebugClassesToCompileJar
+> Task :app:compileModernDebugUnitTestKotlin
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processModernDebugUnitTestJavaRes
+> Task :app:testModernDebugUnitTest
+
+BUILD SUCCESSFUL in 1m 47s
+26 actionable tasks: 26 executed
+exit_code=0

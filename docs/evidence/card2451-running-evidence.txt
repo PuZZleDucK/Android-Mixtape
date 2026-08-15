@@ -1,0 +1,12 @@
+Card 2451 running evidence
+
+Implemented 10 new MixtapeSpineSkin set-B entries and palette-driven spine renderer.
+
+Verification:
+- PASS (main working tree): JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew :app:testModernDebugUnitTest --tests 'com.example.androidmixtape.viewmodel.MixtapeSpineSkinSetBContractTest' --tests 'com.example.androidmixtape.ui.MixtapeSpineSkinSetBUiContractTest'
+- PASS (isolated HEAD + card2451 staged content worktree): JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest
+- PASS (main working tree): JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew assembleModernDebug assembleLegacyDebug
+
+Notes:
+- Running broad unit tests in the pre-existing dirty main worktree failed in HandwritingJitterRendererSourceContractTest because that dirty tree is missing the cassette-current-track surface and has only one CassetteTape JitteredHandwritingText call. The isolated card2451 staged-content worktree from HEAD passes both modern and legacy unit tests.
+- Isolated worktree assemble was attempted but native CMake packaging exceeded the command timeout; main working tree assemble completed successfully.

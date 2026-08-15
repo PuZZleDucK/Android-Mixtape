@@ -1,0 +1,29 @@
+Card 2197 Running evidence — 2026-06-30T18:28:12+10:00
+
+Repository: /home/puzzleduck/x/android-mixtape
+Starting commit: f03e973 Document card 2197 device gate blocker
+Working tree before evidence refresh: clean
+
+Local gate rerun command:
+PATH=\"/home/puzzleduck/.asdf/shims:/home/puzzleduck/.asdf/bin:$PATH\" ANDROID_HOME=\"/home/puzzleduck/Android/Sdk\" ANDROID_SDK_ROOT=\"/home/puzzleduck/Android/Sdk\" ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest assembleModernDebug assembleLegacyDebug lintModernDebug lintLegacyDebug
+Result: BUILD SUCCESSFUL (101 actionable tasks: 2 executed, 99 up-to-date)
+
+Dist APK verification:
+sha256sum -c dist/android-mixtape-v0.1.0-legacy-debug.apk.sha256 dist/android-mixtape-v0.1.0-modern-debug.apk.sha256
+- dist/android-mixtape-v0.1.0-legacy-debug.apk: OK
+- dist/android-mixtape-v0.1.0-modern-debug.apk: OK
+
+APK badging via /home/puzzleduck/Android/Sdk/build-tools/35.0.0/aapt:
+- legacy debug: package com.example.androidmixtape.legacy, sdkVersion 19, targetSdkVersion 35
+- modern debug: package com.example.androidmixtape, sdkVersion 24, targetSdkVersion 35
+
+Device gate status:
+adb devices -l output:
+List of devices attached
+
+
+Samsung SM-G360G / Android 4.4.4 / API 19 legacy install+library+playback smoke: BLOCKED — no attached/authorized physical device.
+Nokia G60 / Android 14 modern install+library+playback smoke: BLOCKED — no attached/authorized physical device.
+
+Conclusion:
+Implementation artifacts still pass local build/lint/unit/APK metadata checks, but Running cannot satisfy the card acceptance criteria until the two required phones are physically attached and authorized over adb. Do not move to Review on this evidence alone.

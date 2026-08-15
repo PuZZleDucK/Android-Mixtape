@@ -1,0 +1,69 @@
+# Card 2479 Running rework emulator-compatible modern debug APK build
+Note: temporary local build.gradle.kts ABI override adds x86/x86_64 for Kunlun emulator install; committed source is restored afterward.
+Command: GRADLE_OPTS=-Djava.io.tmpdir=$PWD/build/gradle-tmp PATH="$HOME/.asdf/shims:$PATH" ANDROID_HOME=/home/puzzleduck/Android/Sdk ./gradlew --no-daemon assembleModernDebug
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:mergeModernDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:compressModernDebugAssets UP-TO-DATE
+> Task :app:checkModernDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarModernDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexModernDebug UP-TO-DATE
+> Task :app:mergeLibDexModernDebug UP-TO-DATE
+> Task :app:dexBuilderModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugGlobalSynthetics UP-TO-DATE
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:mergeModernDebugJavaResource UP-TO-DATE
+> Task :app:mergeProjectDexModernDebug UP-TO-DATE
+> Task :app:configureCMakeDebug[arm64-v8a]
+> Task :app:buildCMakeDebug[arm64-v8a]
+> Task :app:configureCMakeDebug[x86]
+> Task :app:buildCMakeDebug[x86]
+> Task :app:configureCMakeDebug[x86_64]
+> Task :app:buildCMakeDebug[x86_64]
+> Task :app:mergeModernDebugJniLibFolders UP-TO-DATE
+> Task :app:validateSigningModernDebug UP-TO-DATE
+> Task :app:writeModernDebugAppMetadata UP-TO-DATE
+> Task :app:writeModernDebugSigningConfigVersions UP-TO-DATE
+> Task :app:mergeModernDebugNativeLibs
+> Task :app:stripModernDebugDebugSymbols
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleModernDebug
+
+BUILD SUCCESSFUL in 1m 55s
+41 actionable tasks: 9 executed, 32 up-to-date
+-rw-rw-r-- 1 puzzleduck puzzleduck 801M Jul  9 22:14 app/build/outputs/apk/modern/debug/app-modern-debug.apk
+    10096  1981-01-01 01:01   lib/arm64-v8a/libandroidx.graphics.path.so
+ 10879024  1981-01-01 01:01   lib/arm64-v8a/libmixtape_title_llama.so
+     9284  1981-01-01 01:01   lib/x86/libandroidx.graphics.path.so
+ 11706276  1981-01-01 01:01   lib/x86/libmixtape_title_llama.so
+    10760  1981-01-01 01:01   lib/x86_64/libandroidx.graphics.path.so
+ 10976800  1981-01-01 01:01   lib/x86_64/libmixtape_title_llama.so
+APK installed from this build output after copying to kunlun.local:/tmp/card2479-rework-app-modern-debug.apk.

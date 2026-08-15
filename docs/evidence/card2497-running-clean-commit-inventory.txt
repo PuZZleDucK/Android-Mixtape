@@ -1,0 +1,96 @@
+# Card 2497 Running clean-commit inventory
+2026-07-09T14:51:19+10:00
+
+## HEAD
+ec25c63
+
+## Tracked diff name-status before commit
+M	AGENTS.md
+M	app/src/androidTest/java/com/example/androidmixtape/title/LlamaRuntimeSmokeTest.kt
+D	app/src/main/assets/models/smollm2-135m-instruct-iq3_xs.gguf
+D	app/src/main/assets/models/smollm2-135m-instruct-q2_k.gguf
+D	app/src/main/assets/models/smollm2-360m-instruct.gguf
+M	app/src/main/cpp/llama_runtime_jni.cpp
+M	app/src/main/java/com/example/androidmixtape/playback/MixtapeController.kt
+M	app/src/main/java/com/example/androidmixtape/title/LlmModelCatalog.kt
+M	app/src/main/java/com/example/androidmixtape/title/MixtapeTitleGenerator.kt
+M	app/src/main/java/com/example/androidmixtape/title/MixtapeTitlePromptBuilder.kt
+M	app/src/main/java/com/example/androidmixtape/title/MixtapeTitleRuntime.kt
+M	app/src/main/java/com/example/androidmixtape/title/MixtapeTitleStore.kt
+M	app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeVisualProperties.kt
+M	app/src/modern/java/com/example/androidmixtape/MainActivity.kt
+M	app/src/test/java/com/example/androidmixtape/title/LlamaRuntimeIntegrationContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/title/LlmModelCatalogContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/title/LlmProgressLoggingContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/title/MixtapeTitleDeterminismContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/title/MixtapeTitleGenerationContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/title/SmolLm2PackagingContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/ui/ConnectedComposeIsolationContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/ui/HandwritingJitterRendererSourceContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/viewmodel/MixTapeGroupingTest.kt
+M	app/src/test/java/com/example/androidmixtape/viewmodel/MixTapeQueueViewModelTest.kt
+M	app/src/test/java/com/example/androidmixtape/viewmodel/MixtapeEmbellishmentContractTest.kt
+M	app/src/test/java/com/example/androidmixtape/viewmodel/MixtapeHandwritingFontViewModelTest.kt
+M	app/src/test/java/com/example/androidmixtape/viewmodel/MixtapeViewModelTest.kt
+M	dist/android-mixtape-v0.1.0-modern-debug.apk
+M	dist/android-mixtape-v0.1.0-modern-debug.apk.sha256
+M	docs/CARD_2497_FAST_FORWARD_TRACKLIST_SCROLL_PLAN.md
+
+## Source/test/doc diff stat excluding generated dist APKs
+ AGENTS.md                                          |   1 +
+ .../androidmixtape/title/LlamaRuntimeSmokeTest.kt  |  22 ++++--
+ .../models/smollm2-135m-instruct-iq3_xs.gguf       | Bin 88202080 -> 0 bytes
+ .../assets/models/smollm2-135m-instruct-q2_k.gguf  | Bin 88202080 -> 0 bytes
+ .../main/assets/models/smollm2-360m-instruct.gguf  | Bin 270590880 -> 0 bytes
+ app/src/main/cpp/llama_runtime_jni.cpp             |  41 +++++++++---
+ .../androidmixtape/playback/MixtapeController.kt   |  20 ++++++
+ .../androidmixtape/title/LlmModelCatalog.kt        |  67 +++++++++++++------
+ .../androidmixtape/title/MixtapeTitleGenerator.kt  |  17 ++++-
+ .../title/MixtapeTitlePromptBuilder.kt             |  24 ++-----
+ .../androidmixtape/title/MixtapeTitleRuntime.kt    |  17 ++++-
+ .../androidmixtape/title/MixtapeTitleStore.kt      |  52 +++++++++++++++
+ .../viewmodel/MixtapeVisualProperties.kt           |   7 ++
+ .../com/example/androidmixtape/MainActivity.kt     |   5 ++
+ .../title/LlamaRuntimeIntegrationContractTest.kt   |   2 +-
+ .../title/LlmModelCatalogContractTest.kt           |  32 ++++-----
+ .../title/LlmProgressLoggingContractTest.kt        |  14 ++--
+ .../title/MixtapeTitleDeterminismContractTest.kt   |  54 +++++++--------
+ .../title/MixtapeTitleGenerationContractTest.kt    |  32 ++++-----
+ .../title/SmolLm2PackagingContractTest.kt          |   8 +--
+ .../ui/ConnectedComposeIsolationContractTest.kt    |   4 +-
+ .../HandwritingJitterRendererSourceContractTest.kt |   4 +-
+ .../viewmodel/MixTapeGroupingTest.kt               |  35 +++++-----
+ .../viewmodel/MixTapeQueueViewModelTest.kt         |  47 ++++++-------
+ .../viewmodel/MixtapeEmbellishmentContractTest.kt  |   4 +-
+ .../MixtapeHandwritingFontViewModelTest.kt         |   4 +-
+ .../viewmodel/MixtapeViewModelTest.kt              |  19 +++++-
+ ...CARD_2497_FAST_FORWARD_TRACKLIST_SCROLL_PLAN.md |  74 +++++++++++++++++++++
+ 28 files changed, 434 insertions(+), 172 deletions(-)
+
+## Untracked relevant files
+app/src/main/assets/models/ERNIE-4.5-0.3B-PT-Q4_K_M.gguf
+app/src/main/assets/models/LFM2.5-230M-Q4_K_M.gguf
+app/src/main/assets/models/mlabonne_Qwen3-0.6B-abliterated-Q4_K_M.gguf
+dist/android-mixtape-finalists-modern-debug.apk
+dist/android-mixtape-finalists-modern-debug.apk.sha256
+docs/evidence/card2497-nowplaying-start.png
+docs/evidence/card2497-planning-clean-commit-rework-plan.txt
+docs/evidence/card2497-planning-rework-failure-inventory.txt
+docs/evidence/card2497-review-clean-head-compile-failure.html
+docs/evidence/card2497-review-clean-head-compile-failure.png
+docs/evidence/card2497-review-clean-head-focused-contract.log
+docs/evidence/card2497-running-clean-commit-inventory.txt
+docs/evidence/card2497-running-rework-assemble-modern.log
+docs/evidence/card2497-running-rework-assemble-modern-x86_64.log
+docs/evidence/card2497-running-rework-emulator-launch.png
+docs/evidence/card2497-running-rework-kunlun-install-no-streaming.log
+docs/evidence/card2497-running-rework-kunlun-launch.log
+docs/evidence/card2497-testing-clean-commit-rework-checklist.txt
+docs/evidence/card2497-testing-diff-check-source-only.log
+docs/evidence/card2497-testing-focused-contract.log
+docs/evidence/card2497-testing-focused-contract-rerun.log
+docs/evidence/card2497-testing-full-modern.log
+docs/evidence/card2497-testing-full-modern-rerun.log
+docs/evidence/card2497-testing-legacy-rerun.log
+docs/evidence/card2497-testing-rework-verification.txt
+docs/evidence/card2497-testing-tracked-changes.txt

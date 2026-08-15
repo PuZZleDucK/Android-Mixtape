@@ -1,0 +1,23 @@
+# Card 2496 Running verification
+
+Implemented track-list double-click cue playback and target jump.
+
+## Unit gates
+
+- PASS: `JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest --tests 'com.example.androidmixtape.ui.TracklistDoubleClickUiContractTest' --tests 'com.example.androidmixtape.playback.TrackJumpCueSourceContractTest'`
+- PASS: `JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest`
+
+## Build/deploy
+
+- PASS: built an emulator-compatible modern debug APK with a temporary local ABI override (`arm64-v8a`, `x86`, `x86_64`). The override was reverted before commit.
+  - Log: `docs/evidence/card2496-running-assemble-modern-emulator-compatible.log`
+- PASS: installed `/tmp/card2496-app-modern-debug.apk` on Kunlun `emulator-5554` (API 24, x86_64), granted audio permission, launched `com.example.androidmixtape/.MainActivity`, and checked for no fatal AndroidRuntime errors in the recent logcat window.
+  - Log: `docs/evidence/card2496-running-kunlun-install-launch.log`
+
+## Emulator evidence
+
+- `docs/evidence/card2496-running-installed-ui.png`: updated APK launched on Kunlun emulator.
+- `docs/evidence/card2496-running-now-playing-before-doubleclick.png`: Now Playing track list before double-click smoke.
+- `docs/evidence/card2496-running-doubleclick-cue-in-progress.png`: double-click jump in progress after tapping a later row.
+- `docs/evidence/card2496-running-doubleclick-target-playing.png`: later target row highlighted/playing after the 5 second cue.
+- `docs/evidence/card2496-running-doubleclick-rewind-target-playing.png` and `docs/evidence/card2496-running-doubleclick-rewind-earlier-target-playing.png`: additional double-click attempts captured on the scrolled track list; source/unit coverage verifies rewind direction selection.

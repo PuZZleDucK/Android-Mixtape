@@ -1,0 +1,149 @@
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:generateModernDebugResValues
+> Task :app:checkModernDebugAarMetadata
+> Task :app:mapModernDebugSourceSetPaths
+> Task :app:generateModernDebugResources
+> Task :app:packageModernDebugResources
+> Task :app:createModernDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksModernDebug
+> Task :app:parseModernDebugLocalResources
+> Task :app:processModernDebugMainManifest
+> Task :app:processModernDebugManifest
+> Task :app:processModernDebugManifestForPackage
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebug
+> Task :app:javaPreCompileModernDebugUnitTest
+> Task :app:mergeModernDebugResources
+> Task :app:mergeModernDebugShaders
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:processModernDebugResources
+> Task :app:mergeModernDebugAssets
+> Task :app:packageModernDebugUnitTestForUnitTest
+> Task :app:generateModernDebugUnitTestConfig
+> Task :app:compileModernDebugKotlin
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:29:120 Unresolved reference 'title'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:31:152 Unresolved reference 'title'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:33:5 'generateTitleResult' overrides nothing.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:33:102 Unresolved reference 'MixtapeTitleGenerationResult'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:33:133 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:33:133 Not enough information to infer type argument for 'T'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:33:162 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:34:9 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:34:9 Not enough information to infer type argument for 'R'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:34:9 Not enough information to infer type argument for 'K'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:34:21 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:46:21 No parameter with name 'topP' found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:46:45 Unresolved reference 'topP'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:47:21 No parameter with name 'topK' found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:47:45 Unresolved reference 'topK'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:48:21 No parameter with name 'minP' found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:48:45 Unresolved reference 'minP'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:49:21 No parameter with name 'presencePenalty' found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:49:56 Unresolved reference 'presencePenalty'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:50:21 No parameter with name 'repeatPenalty' found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:50:54 Unresolved reference 'repeatPenalty'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:57:13 Not enough information to infer type argument for 'K'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:60:21 Unresolved reference 'MixtapeTitleGenerationResult'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:64:21 Unresolved reference 'MixtapeTitleGenerationResult'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:67:11 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:67:11 Not enough information to infer type argument for 'T'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:71:26 Unresolved reference 'MixtapeTitleGenerationResult'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:20:41 Unresolved reference 'MixtapeTitleGenerationResult'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:22:41 Unresolved reference 'MixtapeTitleMetadata'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:634:13 No parameter with name 'nameColor' found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:634:56 Unresolved reference 'nameColor'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:940:24 Unresolved reference 'replaceQueueAfterCurrentRemoval'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1143:24 Unresolved reference 'replaceQueueAfterCurrentRemoval'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1145:24 Unresolved reference 'replaceQueueAfterCurrentRemoval'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1209:35 Unresolved reference 'metadataFor'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1209:84 Unresolved reference 'metadataFor'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1213:42 Unresolved reference 'modelDisplayName'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1214:46 Unresolved reference 'generationDurationMs'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1215:46 Unresolved reference 'totalOutputWordCount'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1216:44 Unresolved reference 'trackNameWordCount'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1217:43 Unresolved reference 'thinkingWordCount'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1229:24 Unresolved reference 'MixtapeTitleMetadata'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1238:20 Unresolved reference 'saveMetadata'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1239:20 Unresolved reference 'saveMetadata'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1299:60 Unresolved reference 'randomlySelectsConcreteModel'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1300:29 Unresolved reference 'concreteOptions'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1300:83 Unresolved reference 'concreteOptions'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1304:34 Unresolved reference 'randomlySelectsConcreteModel'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1307:65 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1307:101 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1324:225 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1324:261 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1324:299 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1333:53 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1333:59 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1334:36 Unresolved reference 'generateTitleResult'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1336:17 Argument type mismatch: actual type is 'K', but 'K' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1337:21 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1337:21 Argument type mismatch: actual type is 'T', but 'K' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1337:62 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1338:48 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1338:48 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T> T.also(block: (T) -> Unit): T
+    [R|Contract description]
+     <
+        CallsInPlace(block, EXACTLY_ONCE)
+    >
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1338:53 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1349:21 Unresolved reference 'MixtapeTitleGenerationResult'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1353:21 Argument type mismatch: actual type is 'kotlin.Nothing', but 'K' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1356:21 Unresolved reference 'MixtapeTitleGenerationResult'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1363:17 Argument type mismatch: actual type is 'kotlin.Nothing', but 'K' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1372:17 Argument type mismatch: actual type is 'kotlin.String', but 'kotlin.String' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1373:17 Argument type mismatch: actual type is 'kotlin.String', but 'kotlin.String' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1373:85 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1373:109 Unresolved reference 'rawResponse'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1373:156 Unresolved reference 'rawResponse'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1374:17 Argument type mismatch: actual type is 'C', but 'kotlin.String?' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1374:24 Unresolved reference 'rawResponse'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1374:36 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1378:28 Unresolved reference 'title'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1379:89 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1381:86 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1381:112 Unresolved reference 'title'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1385:41 Unresolved reference 'title'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1388:32 Unresolved reference 'MixtapeTitleMetadata'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1390:50 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1391:59 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1393:62 Unresolved reference 'rawResponse'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1395:66 Unresolved reference 'rawResponse'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1397:65 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1398:53 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1399:61 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1400:49 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1401:28 Unresolved reference 'saveMetadata'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1402:28 Unresolved reference 'saveMetadata'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1405:163 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1408:46 Unresolved reference 'rawResponse'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1411:103 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'com.example.androidmixtape.title.LlmModelOption?'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:2058:74 Unresolved reference 'nameColor'.
+e: file:///tmp/android-mixtape-card2497-review/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:2128:70 Unresolved reference 'nameColor'.
+
+> Task :app:compileModernDebugKotlin FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileModernDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 33s
+20 actionable tasks: 20 executed

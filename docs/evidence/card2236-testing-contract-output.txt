@@ -1,0 +1,17 @@
+Card 2236 Testing evidence — cassette reel graphics TDD contract
+
+Command:
+cd /home/puzzleduck/x/android-mixtape
+source "$HOME/.asdf/asdf.sh"
+ANDROID_HOME="$HOME/Android/Sdk" ./gradlew testModernDebugUnitTest --tests 'com.example.androidmixtape.ui.CassetteReelGraphicsContractTest'
+
+Result: expected TDD failure before implementation.
+
+Summary:
+- 3 tests completed, 2 failed.
+- Passing: cassetteTapePreservesOppositeAnimatedReelDirectionsAndSemantics.
+- Failing: drawReelUsesChunkyNearBlackEmbossedSpokes at CassetteReelGraphicsContractTest.kt:42 because current drawReel still uses thin 5f brown spokes instead of thicker black/embossed spokes.
+- Failing: drawReelDrawsRetroBeigeSpindleAboveSpokesWithRotatingAsymmetricDetail at CassetteReelGraphicsContractTest.kt:67 because current drawReel has no named retro beige spindle/hub and no rotating asymmetric spindle detail.
+
+Gradle report path from run:
+file:///home/puzzleduck/x/android-mixtape/app/build/reports/tests/testModernDebugUnitTest/index.html

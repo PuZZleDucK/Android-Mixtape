@@ -1,0 +1,17 @@
+Card 2298 Running verification
+
+Implemented automatic player transition propagation and rework UI observation:
+- PlayerEngine exposes setOnCurrentIndexChanged callback registration.
+- MixtapeController updates currentIndex/currentTrack/isPlaying/position/duration for valid player-reported index changes, ignores out-of-range callbacks, and now exposes setOnPlaybackStateChanged for asynchronous controller state refreshes.
+- MixtapeViewModel registers for controller playback state changes and refreshes uiState through controller.toUiState, preserving current screen/message so Now Playing title and cassette current-track highlight update after natural completion.
+- Legacy MainActivity registers for controller playback changes and calls runOnUiThread { updatePlaybackStatus() } so MediaPlayer automatic completion refreshes status text/buttons.
+- ExoPlayerEngine reports automatic MEDIA_ITEM_TRANSITION_REASON_AUTO transitions through the callback.
+- PlatformMediaPlayerEngine advances to currentIndex + 1 on MediaPlayer completion and reports the new index.
+
+Verification commands:
+
+JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS" ANDROID_HOME="$HOME/Android/Sdk" ./gradlew :app:testModernDebugUnitTest --tests com.example.androidmixtape.playback.MixtapeControllerTest --tests com.example.androidmixtape.playback.PlaybackContinuityContractTest --tests com.example.androidmixtape.viewmodel.MixtapeViewModelTest --tests com.example.androidmixtape.ui.CassetteCurrentTrackColorContractTest
+Result: BUILD SUCCESSFUL in 17s
+
+JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS" ANDROID_HOME="$HOME/Android/Sdk" ./gradlew test
+Result: BUILD SUCCESSFUL in 53s

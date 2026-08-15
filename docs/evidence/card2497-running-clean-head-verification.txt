@@ -1,0 +1,26 @@
+Card 2497 Running clean-commit verification
+Date: 2026-07-09
+
+Committed source under test:
+- 39d0491 Fix card 2497 fast-forward tracklist verification
+
+Clean worktree verification:
+- PASS: focused fast-forward contract from clean committed worktree.
+  Log: docs/evidence/card2497-running-clean-head-focused-contract.log
+- PASS: full modern unit gate from clean committed worktree.
+  Log: docs/evidence/card2497-running-clean-head-full-modern.log
+- PASS: legacy unit gate from clean committed worktree.
+  Log: docs/evidence/card2497-running-clean-head-legacy.log
+- PASS: built modern debug APK from clean committed source with a temporary local x86/x86_64 ABI override for Kunlun emulator compatibility.
+  Log: docs/evidence/card2497-running-clean-head-assemble-modern-emulator-compatible.log
+- PASS: installed and launched the emulator-compatible APK on Kunlun emulator-5554.
+  Log: docs/evidence/card2497-running-clean-head-kunlun-install-launch.log
+
+Emulator evidence:
+- Before rapid Next: docs/evidence/card2497-running-clean-head-nowplaying-start.png
+- After 6 rapid Fast-forward taps: docs/evidence/card2497-running-clean-head-after-rapid-next.png
+  Result: highlighted current row 32 is visible in the cassette cover track list after the rapid jump.
+
+Notes:
+- The x86/x86_64 ABI change was only a local build override for emulator deployment; it is not part of the product commit.
+- The generated APK/dist artifacts are intentionally not committed.

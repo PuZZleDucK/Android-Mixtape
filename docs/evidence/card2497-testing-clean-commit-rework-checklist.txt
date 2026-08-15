@@ -1,0 +1,35 @@
+Card 2497 Testing rework checklist — 2026-07-09
+
+Context inspected from injected Kanban card payload:
+- Current stage: Testing.
+- Latest Planning note says Review failed because committed ec25c63 was incomplete/unbuildable from a clean worktree.
+- Running must commit the coherent source/test set, then verify from a clean committed worktree and recapture Kunlun emulator rapid-Next evidence.
+
+Testing performed in the current dirty worktree:
+1. Focused fast-forward track-list contract:
+   JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.ui.CassetteFastForwardTrackListScrollContractTest
+   Result: PASS. Log: docs/evidence/card2497-testing-focused-contract-rerun.log
+
+2. Full modern unit gate:
+   JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest
+   Result: PASS. Log: docs/evidence/card2497-testing-full-modern-rerun.log
+
+3. Legacy unit gate:
+   JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testLegacyDebugUnitTest
+   Result: PASS. Log: docs/evidence/card2497-testing-legacy-rerun.log
+
+4. Source-only whitespace check excluding large model/dist artifacts:
+   git diff --check -- . ':!build' ':!.gradle' ':!app/build' ':!app/src/main/assets/models/*.gguf' ':!dist/*'
+   Result: PASS. Log: docs/evidence/card2497-testing-diff-check-source-only.log
+
+5. Tracked changed files inventory:
+   git diff --name-only HEAD -- . ':!build' ':!.gradle' ':!app/build'
+   Result saved to docs/evidence/card2497-testing-tracked-changes.txt
+   Note: the inventory includes modified GGUF model assets and dist APK artifacts; Running should decide whether these are intentionally tracked/required or should be left out of the card commit per the Planning checklist.
+
+Important caveat for Running:
+- These passes were in the current working tree, not proof that committed HEAD is self-contained.
+- Running should commit the coherent source/test set, then create/use a clean checkout or worktree at the new commit and rerun:
+  1. ./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.ui.CassetteFastForwardTrackListScrollContractTest
+  2. ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest
+  3. emulator-compatible APK install/smoke on Kunlun emulator-5554 with rapid Next screenshot.

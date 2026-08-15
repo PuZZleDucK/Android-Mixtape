@@ -1,0 +1,103 @@
+# Card 2498 running verification evidence
+
+Timestamp: 2026-07-08T13:15:47+10:00
+
+## Emulator target
+
+Kunlun Android SDK target was verified with explicit `adb -s emulator-5554` commands.
+
+```text
+List of devices attached
+21e098e8               device usb:5-2 product:rossaltedv model:SM_G360G device:rossaltexsa transport_id:2
+emulator-5554          device product:sdk_google_phone_x86_64 model:Android_SDK_built_for_x86_64 device:generic_x86_64 transport_id:1
+
+boot_completed=1
+sdk=24
+release=7.0
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/block/dm-0 5.8G  215M  5.5G   4% /data
+```
+
+## APK installed
+
+Installed APK copied to Kunlun as `/tmp/android-mixtape-modern-debug.apk` from:
+
+```text
+/home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk 816802772 bytes 2026-07-08 08:40:18.947885104 +1000
+d2e5bac0bb3d8393f5d78ec618125e856a5ed931b0ee5155bb055e14662329cc  /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk
+```
+
+Install/package evidence on `emulator-5554`:
+
+```text
+package:/data/app/com.example.androidmixtape-1/base.apk
+    versionCode=1 minSdk=24 targetSdk=35
+    versionName=0.1.0
+```
+
+Note: the initial `adb install -r /tmp/android-mixtape-modern-debug.apk` exceeded the local command watchdog after the package had already appeared via `pm path`; the stale remote adb install process was killed and verification continued from the installed package state.
+
+## Chatterbox sample tracks generated
+
+Generated on Artigas using Chatterbox at `http://kunlun.local:8000`:
+
+```text
+/tmp/android-mixtape-chatterbox/mixtape-sample-01.wav 270798 bytes duration_seconds=5.640000
+/tmp/android-mixtape-chatterbox/mixtape-sample-02.wav 228558 bytes duration_seconds=4.760000
+```
+
+The skill helper defaulted to port 8004, which was closed, so generation was run with `CHATTERBOX_BASE_URL=http://kunlun.local:8000`.
+
+## Emulator media seeding and MediaStore
+
+Samples were rsynced to Kunlun, pushed to `/sdcard/Music/AndroidMixtapeSmoke/`, and scanned with `MEDIA_SCANNER_SCAN_FILE`.
+
+```text
+/tmp/android-mixtape-chatterbox/mixtape-sample-01.wav: 1 file pushed, 0 skipped. (270798 bytes)
+/tmp/android-mixtape-chatterbox/mixtape-sample-02.wav: 1 file pushed, 0 skipped. (228558 bytes)
+Broadcast completed: result=0
+Broadcast completed: result=0
+total 984
+-rw-rw---- 1 root sdcard_rw 270798 2026-07-08 13:14 mixtape-sample-01.wav
+-rw-rw---- 1 root sdcard_rw 228558 2026-07-08 13:14 mixtape-sample-02.wav
+```
+
+MediaStore query found both pushed tracks:
+
+```text
+_data=/storage/emulated/0/Music/AndroidMixtapeSmoke/mixtape-sample-01.wav, _display_name=mixtape-sample-01.wav, duration=5640, album=AndroidMixtapeSmoke
+_data=/storage/emulated/0/Music/AndroidMixtapeSmoke/mixtape-sample-02.wav, _display_name=mixtape-sample-02.wav, duration=4760, album=AndroidMixtapeSmoke
+```
+
+## Launch and app visibility smoke
+
+Permission was granted with `adb -s emulator-5554 shell pm grant com.example.androidmixtape android.permission.READ_EXTERNAL_STORAGE`, then the app was launched with monkey.
+
+```text
+Events injected: 1
+pid=21201
+focused_activity:
+    mResumedActivity: ActivityRecord{39c51d4 u0 com.example.androidmixtape/.MainActivity t40}
+  mFocusedActivity: ActivityRecord{39c51d4 u0 com.example.androidmixtape/.MainActivity t40}
+fatal_scan:
+No app FATAL EXCEPTION / AndroidRuntime crash markers in recent logcat
+```
+
+UIAutomator text confirmed the app can see the sample tracks:
+
+```text
+text="3 mix tapes ready"
+text="Library"
+text="3 mix tapes filed in clear cassette cases"
+text="Mix Tape 1"
+text="12 tracks • Side A • clear case"
+text="01. mixtape-sample-01"
+text="02. mixtape-sample-02"
+text="03. Review Track 01"
+```
+
+Screenshot evidence was captured from the emulator and copied to:
+
+```text
+docs/evidence/card2498-running-emulator.png: PNG image data, 1080 x 1920, 8-bit/color RGBA, non-interlaced
+```

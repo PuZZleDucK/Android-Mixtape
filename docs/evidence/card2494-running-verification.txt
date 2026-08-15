@@ -1,0 +1,14 @@
+# Card 2494 Running verification
+
+- PASS: `JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest --tests MixtapeSymbolInteractionUiContractTest --tests CassetteSpineReadabilityContractTest --tests MixtapeSymbolInteractionViewModelContractTest`
+- PASS: `JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest`
+- PASS: built emulator-compatible modern debug APK with temporary local x86/x86_64 ABI override for Kunlun emulator; committed source restored to arm64-v8a-only default. See `docs/evidence/card2494-running-assemble-modern-emulator-compatible.log`.
+- PASS: installed and launched updated APK on Kunlun `emulator-5554` (x86_64). See `docs/evidence/card2494-running-kunlun-install-launch.log`.
+- Evidence screenshots:
+  - `docs/evidence/card2494-running-emulator-landscape-spine.png`
+  - `docs/evidence/card2494-running-emulator-landscape-nowplaying-spine.png`
+  - `docs/evidence/card2494-running-emulator-after-name-color-cycle.png`
+
+Implementation notes:
+- `CassetteSpineRow` now derives title ink from `group.visualProperties.nameColor.toComposeColor()`.
+- Spine overlay content is centered over the painted label band and the spine-row title size is reduced to avoid clipping in constrained landscape panes.

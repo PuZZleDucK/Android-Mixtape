@@ -1,0 +1,17 @@
+# Card 2479 installed manifest/service smoke
+      androidx.car.app.CarAppService:
+        2c5c999 com.example.androidmixtape/.car.MixtapeCarAppService filter 487f17
+          Action: "androidx.car.app.CarAppService"
+          Category: "androidx.car.app.category.MEDIA"
+      androidx.media3.session.MediaLibraryService:
+        6f9a45e com.example.androidmixtape/.playback.MixtapeMediaLibraryService filter 8614f04
+          Action: "androidx.media3.session.MediaLibraryService"
+          Action: "android.media.browse.MediaBrowserService"
+        6f9a45e com.example.androidmixtape/.playback.MixtapeMediaLibraryService filter 8614f04
+          Action: "androidx.media3.session.MediaLibraryService"
+          Action: "android.media.browse.MediaBrowserService"
+      android.media.browse.MediaBrowserService:
+        6f9a45e com.example.androidmixtape/.playback.MixtapeMediaLibraryService filter 8614f04
+          Action: "androidx.media3.session.MediaLibraryService"
+          Action: "android.media.browse.MediaBrowserService"
+      androidx.car.app.MEDIA_TEMPLATES

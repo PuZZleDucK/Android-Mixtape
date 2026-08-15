@@ -1,0 +1,93 @@
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleModernDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleModernDebugClassesToCompileJar UP-TO-DATE
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest UP-TO-DATE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:packageModernDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateModernDebugUnitTestConfig UP-TO-DATE
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:compileModernDebugUnitTestKotlin
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processModernDebugUnitTestJavaRes
+
+> Task :app:testModernDebugUnitTest
+
+MixtapeExclusionSettingsScreenContractTest > mainActivityWiresPersistentStoreAndCallbacks FAILED
+    java.lang.AssertionError at MixtapeExclusionSettingsScreenContractTest.kt:65
+
+MixtapeExclusionSettingsScreenContractTest > settingsScreenLinksToDedicatedExclusionSettingsPage FAILED
+    java.lang.AssertionError at MixtapeExclusionSettingsScreenContractTest.kt:17
+
+MixtapeExclusionSettingsScreenContractTest > dedicatedPageProvidesAddRemovePatternControlsAndExamples FAILED
+    java.lang.AssertionError at MixtapeExclusionSettingsScreenContractTest.kt:38
+
+FilenameExclusionMatcherTest > regexMetacharactersAreTreatedAsLiteralFilenameText FAILED
+    java.lang.ClassNotFoundException at FilenameExclusionMatcherTest.kt:74
+
+FilenameExclusionMatcherTest > globPatternMatchesDisplayNameCaseInsensitively FAILED
+    java.lang.ClassNotFoundException at FilenameExclusionMatcherTest.kt:74
+
+FilenameExclusionMatcherTest > titleIsOnlyFallbackWhenDisplayNameIsMissing FAILED
+    java.lang.ClassNotFoundException at FilenameExclusionMatcherTest.kt:74
+
+FilenameExclusionMatcherTest > patternWithoutWildcardBehavesLikeContainsMatch FAILED
+    java.lang.ClassNotFoundException at FilenameExclusionMatcherTest.kt:74
+
+FilenameExclusionMatcherTest > questionMarkWildcardMatchesOneFilenameCharacter FAILED
+    java.lang.ClassNotFoundException at FilenameExclusionMatcherTest.kt:74
+
+MixtapeExclusionSettingsContractTest > viewModelExposesExclusionSettingsStateNavigationAndMutations FAILED
+    java.lang.AssertionError at MixtapeExclusionSettingsContractTest.kt:41
+
+MixtapeExclusionSettingsContractTest > exclusionSettingsModelMatcherAndStoresAreDefined FAILED
+    java.lang.AssertionError at MixtapeExclusionSettingsContractTest.kt:17
+
+MixtapeExclusionSettingsContractTest > viewModelKeepsRawLibraryAndBuildsMixtapesFromFilteredTracks FAILED
+    java.lang.AssertionError at MixtapeExclusionSettingsContractTest.kt:65
+
+MixtapeViewModelTest > addingFilenameExclusionPatternFiltersLibraryGroupsAndOpenQueue FAILED
+    java.lang.AssertionError at MixtapeViewModelTest.kt:249
+
+MixtapeViewModelTest > blankAndDuplicateFilenameExclusionPatternsAreIgnored FAILED
+    java.lang.AssertionError at MixtapeViewModelTest.kt:249
+
+MixtapeViewModelTest > removingFilenameExclusionPatternMakesRawLibraryTracksEligibleAgain FAILED
+    java.lang.AssertionError at MixtapeViewModelTest.kt:249
+
+14 tests completed, 14 failed
+
+> Task :app:testModernDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testModernDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/puzzleduck/x/android-mixtape/app/build/reports/tests/testModernDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 18s
+26 actionable tasks: 3 executed, 23 up-to-date

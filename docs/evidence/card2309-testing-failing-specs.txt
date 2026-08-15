@@ -1,0 +1,49 @@
+Card 2309 Testing evidence
+
+Compile command:
+  ./gradlew :app:compileModernDebugAndroidTestKotlin
+Result: BUILD SUCCESSFUL
+
+Connected failing-spec command:
+  ./gradlew :app:connectedModernDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.androidmixtape.ui.MixtapeAppTest#nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay
+
+Relevant connected test result:
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.MixtapeAppTest:
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+Error in nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay(com.example.androidmixtape.ui.MixtapeAppTest):
+java.lang.AssertionError: Assert failed: The component is not displayed!
+at androidx.compose.ui.test.AssertionsKt.assertIsDisplayed(Assertions.kt:34)
+at com.example.androidmixtape.ui.MixtapeAppTest.nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay(MixtapeAppTest.kt:491)
+
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Assert failed: The component is not displayed!
+at androidx.compose.ui.test.AssertionsKt.assertIsDisplayed(Assertions.kt:34)
+at com.example.androidmixtape.ui.MixtapeAppTest.nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay(MixtapeAppTest.kt:491)
+
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 5.036
+There was 1 failure:
+1) nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay(com.example.androidmixtape.ui.MixtapeAppTest)
+java.lang.AssertionError: Assert failed: The component is not displayed!
+at androidx.compose.ui.test.AssertionsKt.assertIsDisplayed(Assertions.kt:34)
+at com.example.androidmixtape.ui.MixtapeAppTest.nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay(MixtapeAppTest.kt:491)
+
+FAILURES!!!
+Tests found: 1, Tests run: 1,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1
+

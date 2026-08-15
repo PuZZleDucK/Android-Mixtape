@@ -1,0 +1,57 @@
+# Card 2497 Running x86_64 modern debug APK build
+2026-07-09T13:04:55+10:00
+Command: JAVA_HOME=... ANDROID_HOME=... ./gradlew assembleModernDebug -Pandroid.injected.build.abi=x86_64
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+WARNING: Cannot build selected target ABI: x86_64, supported ABIs are: arm64-v8a
+WARNING: Cannot build selected target ABI: x86_64, supported ABIs are: arm64-v8a
+WARNING: Cannot build selected target ABI: x86_64, supported ABIs are: arm64-v8a
+WARNING: Cannot build selected target ABI: x86_64, supported ABIs are: arm64-v8a
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:mergeModernDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest
+> Task :app:processModernDebugManifest
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:compressModernDebugAssets UP-TO-DATE
+> Task :app:checkModernDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarModernDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexModernDebug UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage
+> Task :app:mergeLibDexModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugJniLibFolders UP-TO-DATE
+> Task :app:validateSigningModernDebug UP-TO-DATE
+> Task :app:writeModernDebugAppMetadata UP-TO-DATE
+> Task :app:writeModernDebugSigningConfigVersions UP-TO-DATE
+> Task :app:mergeModernDebugNativeLibs
+> Task :app:stripModernDebugDebugSymbols
+> Task :app:processModernDebugResources
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:dexBuilderModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugGlobalSynthetics UP-TO-DATE
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:mergeModernDebugJavaResource UP-TO-DATE
+> Task :app:mergeProjectDexModernDebug UP-TO-DATE
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect
+> Task :app:assembleModernDebug
+
+BUILD SUCCESSFUL in 31s
+35 actionable tasks: 8 executed, 27 up-to-date

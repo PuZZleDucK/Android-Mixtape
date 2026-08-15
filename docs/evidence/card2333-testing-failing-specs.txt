@@ -1,0 +1,20 @@
+Card 2333 Testing evidence: control button layout
+
+Changed tests only:
+- app/src/test/java/com/example/androidmixtape/ui/NowPlayingTransportControlLayoutContractTest.kt
+  - New JVM contract test asserts WalkmanTransportControls source order:
+    Eject < TransportControlDivider < Rewind < Stop < Play < Pause < Fast-forward.
+- app/src/androidTestModern/java/com/example/androidmixtape/ui/MixtapeAppTest.kt
+  - Updated compact 320dp Compose UI bounds assertions so Rewind must sit after the Eject divider and before Stop, while Stop remains before Play and Eject divider spacing is preserved.
+
+Verification:
+1. JAVA_HOME="$(asdf where java)" ANDROID_HOME="$HOME/Android/Sdk" ./gradlew :app:testModernDebugUnitTest --tests com.example.androidmixtape.ui.NowPlayingTransportControlLayoutContractTest
+   Result: FAILED as expected for TDD red phase.
+   Failure: NowPlayingTransportControlLayoutContractTest > walkmanTransportControlsPlaceRewindBetweenEjectDividerAndStop FAILED at line 24.
+   Reason: current WalkmanTransportControls order is still Eject, divider, Stop, Play, Pause, Rewind, Fast-forward.
+
+2. JAVA_HOME="$(asdf where java)" ANDROID_HOME="$HOME/Android/Sdk" ./gradlew :app:compileModernDebugAndroidTestKotlin
+   Result: BUILD SUCCESSFUL.
+
+3. JAVA_HOME="$(asdf where java)" ANDROID_HOME="$HOME/Android/Sdk" ./gradlew :app:connectedModernDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.androidmixtape.ui.MixtapeAppTest#nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay
+   Result: blocked before running tests on attached F3115 by INSTALL_FAILED_INSUFFICIENT_STORAGE while installing app-modern-debug.apk.

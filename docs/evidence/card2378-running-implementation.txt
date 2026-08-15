@@ -1,0 +1,18 @@
+Card 2378 Running implementation evidence
+
+Implemented filename exclusion settings:
+- Shared MixtapeExclusionSettings model/store, FilenameExclusionMatcher, in-memory store, SharedPreferences store.
+- MixtapeViewModel keeps rawLibraryTracks, filters UI tracks/mixtape groups/open queues, exposes settings state and add/remove/navigation actions.
+- Modern Settings includes Exclusion settings route/page with add/remove controls and examples.
+- Modern MainActivity wires persistent exclusion settings store and callbacks.
+
+Verification commands run from /home/puzzleduck/x/android-mixtape with JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS and ANDROID_HOME=$HOME/Android/Sdk:
+
+1. ./gradlew testModernDebugUnitTest --tests '*Exclusion*' --tests '*MixtapeViewModelTest.addingFilenameExclusionPatternFiltersLibraryGroupsAndOpenQueue' --tests '*MixtapeViewModelTest.removingFilenameExclusionPatternMakesRawLibraryTracksEligibleAgain' --tests '*MixtapeViewModelTest.blankAndDuplicateFilenameExclusionPatternsAreIgnored'
+   Result: BUILD SUCCESSFUL in 54s
+
+2. ./gradlew testModernDebugUnitTest --tests '*Exclusion*' --tests '*MixtapeViewModelTest'
+   Result: BUILD SUCCESSFUL in 14s
+
+3. ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest
+   Result: BUILD SUCCESSFUL in 39s

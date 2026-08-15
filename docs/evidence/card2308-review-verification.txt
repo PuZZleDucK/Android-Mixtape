@@ -1,0 +1,46 @@
+Card 2308 review verification
+
+Review decision: pass.
+
+Scope reviewed:
+- Card request: left cassette tape reel should spin anticlockwise instead of back-to-front.
+- Planning notes: fix is limited to the signed rotation argument in CassetteTape; do not alter reel artwork, semantics, layout, timing, controls, or legacy UI.
+- Testing notes: TDD contract updated to require left rotation = -reelRotation and right rotation = reelRotation.
+- Running commit reviewed: ba604d2 Fix cassette left reel direction.
+
+Implementation inspection:
+- app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt now calls drawReel for the left reel at shell.width * 0.31f with rotation = -reelRotation.
+- The right reel at shell.width * 0.69f now uses rotation = reelRotation, preserving opposite reel directions.
+- The 16-second LinearEasing loop and "Cassette reels spinning" / "Cassette reels stopped" semantics are unchanged.
+- No drawReel artwork, transport controls, playback state, or legacy UI code was changed for this bug.
+
+Verification run during review:
+
+Command:
+cd /home/puzzleduck/x/android-mixtape
+export PATH="$HOME/.asdf/shims:$PATH"
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+./gradlew testModernDebugUnitTest --tests 'com.example.androidmixtape.ui.CassetteReelGraphicsContractTest' testModernDebugUnitTest testLegacyDebugUnitTest assembleModernDebug assembleLegacyDebug
+
+Result:
+BUILD SUCCESSFUL in 18s
+88 actionable tasks: 5 executed, 83 up-to-date
+
+Command:
+cd /home/puzzleduck/x/android-mixtape
+export PATH="$HOME/.asdf/shims:$PATH"
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+./gradlew testModernDebugUnitTest testLegacyDebugUnitTest assembleModernDebug assembleLegacyDebug
+
+Result:
+BUILD SUCCESSFUL in 23s
+88 actionable tasks: 5 executed, 83 up-to-date
+
+Screenshot evidence:
+- docs/evidence/card2308-review-test-report.png captures the Gradle modern unit test report showing the cassette reel graphics contract package at 3 tests, 0 failures, 100% success.
+
+Repository state:
+- Implementation was already committed as ba604d2.
+- This review evidence is committed separately before moving the card to Done.

@@ -1,0 +1,5 @@
+/tmp/card2497-app-modern-debug.apk: 1 file pushed, 0 skipped. 223.1 MB/s (839852047 bytes in 3.591s)
+Performing Push Install
+Success
+  mCurrentFocus=Window{de999f6 u0 com.example.androidmixtape/com.example.androidmixtape.MainActivity}
+  mFocusedApp=AppWindowToken{561997a token=Token{1b8b39c ActivityRecord{af2b70f u0 com.example.androidmixtape/.MainActivity t52}}}

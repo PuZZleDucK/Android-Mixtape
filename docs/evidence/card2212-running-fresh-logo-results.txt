@@ -1,0 +1,27 @@
+Card 2212 Running evidence — fresh transparent logo graphic
+
+Implemented:
+- Generated a new fresh transparent cassette logo source at app/icon-source/android_mixtape_logo_transparent_1024.png.
+- Rewired scripts/generate_launcher_icons.rb to consume the fresh source directly.
+- Removed the previous archived opaque-source mask polygon / CopyOpacity workflow from the generator.
+- Regenerated app/icon-source/ic_launcher_cassette_1024.png plus all legacy and adaptive launcher PNGs.
+- Added checkerboard review evidence at docs/evidence/card2212-running-fresh-logo-checkerboard.png.
+
+Static asset check:
+- app/icon-source/android_mixtape_logo_transparent_1024.png: 1024x1024 srgba, bbox=870x588+77+218, transparent corners.
+- app/icon-source/ic_launcher_cassette_1024.png: 1024x1024 srgba, bbox=870x588+77+218, transparent corners.
+- Regenerated launcher density PNGs are srgba with transparent corners and 80-92% visible width ratios per LauncherIconResourceContractTest.
+
+Commands run from /home/puzzleduck/x/android-mixtape with JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS and ANDROID_HOME=$HOME/Android/Sdk:
+
+1. ruby scripts/generate_launcher_icons.rb
+   Result: generated transparent launcher icons from app/icon-source/android_mixtape_logo_transparent_1024.png.
+
+2. ./gradlew --rerun-tasks testModernDebugUnitTest --tests com.example.androidmixtape.icons.LauncherIconResourceContractTest
+   Result: BUILD SUCCESSFUL in 21s; 26 actionable tasks executed.
+
+3. ./gradlew --rerun-tasks testLegacyDebugUnitTest --tests com.example.androidmixtape.icons.LauncherIconResourceContractTest
+   Result: BUILD SUCCESSFUL in 13s; 26 actionable tasks executed.
+
+4. ./gradlew assembleModernDebug assembleLegacyDebug
+   Result: BUILD SUCCESSFUL in 2s; 66 actionable tasks, 2 executed and 64 up-to-date.

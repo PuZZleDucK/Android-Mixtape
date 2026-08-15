@@ -1,0 +1,27 @@
+Command:
+cd /home/puzzleduck/x/android-mixtape
+export PATH="$HOME/.asdf/shims:$PATH"
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+./gradlew testModernDebugUnitTest --tests 'com.example.androidmixtape.ui.CassetteReelGraphicsContractTest'
+
+Result:
+> Task :app:testModernDebugUnitTest
+
+CassetteReelGraphicsContractTest > cassetteTapeUsesAnticlockwiseLeftReelAndOppositeRightReel FAILED
+    java.lang.AssertionError at CassetteReelGraphicsContractTest.kt:32
+
+3 tests completed, 1 failed
+
+> Task :app:testModernDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testModernDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/puzzleduck/x/android-mixtape/app/build/reports/tests/testModernDebugUnitTest/index.html
+
+BUILD FAILED
+
+Interpretation:
+The updated TDD source contract now expects the left reel at shell.width * 0.31f to use negative animated rotation so it appears anticlockwise, and the right reel at shell.width * 0.69f to use positive animated rotation. Current implementation still has the old signs, so this is the intended red test for Running.

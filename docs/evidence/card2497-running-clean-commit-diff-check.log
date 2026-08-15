@@ -1,0 +1,4 @@
+# Card 2497 Running source/test/doc diff check
+2026-07-09T14:51:28+10:00
+Command: git diff --check -- . :(exclude)dist/*.apk :(exclude)dist/*.sha256
+exit_code=0

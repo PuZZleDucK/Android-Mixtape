@@ -1,0 +1,68 @@
+# Card 2497 clean committed emulator-compatible modern debug APK build
+2026-07-09T15:03:04+10:00
+HEAD=39d0491
+Note: temporary local build.gradle.kts ABI override adds x86/x86_64 for Kunlun emulator install; committed source remains unchanged.
+Command: ./gradlew assembleModernDebug
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:mergeModernDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:desugarModernDebugFileDependencies
+> Task :app:checkModernDebugDuplicateClasses
+> Task :app:compressModernDebugAssets
+> Task :app:dexBuilderModernDebug
+> Task :app:mergeLibDexModernDebug
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:mergeModernDebugGlobalSynthetics
+> Task :app:mergeProjectDexModernDebug
+> Task :app:mergeModernDebugJavaResource
+> Task :app:mergeExtDexModernDebug
+> Task :app:configureCMakeDebug[arm64-v8a]
+C/C++: CMAKE_BUILD_TYPE=Debug
+
+> Task :app:buildCMakeDebug[arm64-v8a]
+> Task :app:configureCMakeDebug[x86]
+C/C++: CMAKE_BUILD_TYPE=Debug
+
+> Task :app:buildCMakeDebug[x86]
+> Task :app:configureCMakeDebug[x86_64]
+C/C++: CMAKE_BUILD_TYPE=Debug
+
+> Task :app:buildCMakeDebug[x86_64]
+> Task :app:mergeModernDebugJniLibFolders
+> Task :app:validateSigningModernDebug
+> Task :app:writeModernDebugAppMetadata
+> Task :app:writeModernDebugSigningConfigVersions
+> Task :app:mergeModernDebugNativeLibs
+> Task :app:stripModernDebugDebugSymbols
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect
+> Task :app:assembleModernDebug
+
+BUILD SUCCESSFUL in 28m 55s
+41 actionable tasks: 23 executed, 18 up-to-date
+exit_code=0

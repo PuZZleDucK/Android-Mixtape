@@ -1,0 +1,30 @@
+Card 2337 Running verification
+
+Implementation summary:
+- Added DeleteTrackResult.RequiresUserAction(IntentSender) for scoped-storage delete confirmation.
+- MediaStoreAudioRepository now returns MediaStore.createDeleteRequest(...).intentSender on API 30+ and converts API 29 RecoverableSecurityException.userAction into the same pending user action result.
+- MixtapeViewModel now defers list mutation while Android delete confirmation is pending, launches an Activity callback, and removes the confirmed deleted track from libraryTracks, mixTapeGroups, and the open queue after direct success or RESULT_OK confirmation.
+- Modern MainActivity registers ActivityResultContracts.StartIntentSenderForResult, launches IntentSenderRequest for pending delete actions, finalizes on RESULT_OK, and preserves state on cancel/failure.
+
+Verification commands:
+
+1) Targeted regression/spec run:
+cd /home/puzzleduck/x/android-mixtape
+export PATH="$HOME/.asdf/shims:$PATH"
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+./gradlew testModernDebugUnitTest \
+  --tests 'com.example.androidmixtape.viewmodel.MixtapeViewModelTest.successfulDeleteFromDeviceRemovesTrackFromLibraryGroupsAndOpenQueue' \
+  --tests 'com.example.androidmixtape.viewmodel.MixtapeViewModelTest.failedDeleteFromDeviceLeavesLibraryGroupsAndOpenQueueUnchanged' \
+  --tests 'com.example.androidmixtape.data.DeleteFromDeviceScopedStorageContractTest'
+Result: BUILD SUCCESSFUL in 1m 15s; 26 actionable tasks: 5 executed, 21 up-to-date.
+
+2) Legacy unit suite:
+./gradlew testLegacyDebugUnitTest
+Result: BUILD SUCCESSFUL in 38s; 178 tests completed.
+
+3) Modern unit suite:
+./gradlew testModernDebugUnitTest
+Result: BUILD SUCCESSFUL in 40s.
+
+Manual device scoped-storage deletion was not run in this worker; verification here is JVM/source-contract coverage for the implementation path.

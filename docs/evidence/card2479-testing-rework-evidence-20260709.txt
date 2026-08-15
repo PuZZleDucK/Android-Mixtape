@@ -1,0 +1,35 @@
+# Card 2479 Testing rework evidence (2026-07-09)
+
+Goal: add executable TDD gates for the Review-blocked phone/car playback coherence bug.
+
+Changed tests/docs:
+- app/src/test/java/com/example/androidmixtape/playback/MixtapeControllerTest.kt
+  - externalPlaybackSnapshotReplacesStalePhoneQueueAndPlayState
+- app/src/test/java/com/example/androidmixtape/viewmodel/MixtapeViewModelTest.kt
+  - carInitiatedPlaybackUpdatesPhoneNowPlayingQueueAndCurrentTrack
+- app/src/test/java/com/example/androidmixtape/playback/PlaybackContinuityContractTest.kt
+  - playerEngineExposesExternalPlaybackSnapshotForCarInitiatedQueueChanges
+  - mediaControllerPlayerEngineObservesExternalTimelineMediaItemAndPlayingEvents
+  - mixtapeControllerHandlesExternalPlaybackSnapshotByReplacingQueue
+- docs/CARD_2479_CUSTOM_CAR_UI_TEST_PLAN.md documents these executable rework gates.
+
+Focused TDD command:
+PATH="$HOME/.asdf/shims:$PATH" ANDROID_HOME=/home/puzzleduck/Android/Sdk ./gradlew testModernDebugUnitTest --tests '*PlaybackContinuity*' --tests '*MixtapeController*' --tests '*MixtapeViewModel*' --tests '*AndroidAuto*' --tests '*AndroidCustomCarUi*'
+
+Expected TDD result on the current implementation: FAILED with 5 intentional failures:
+- MixtapeControllerTest.externalPlaybackSnapshotReplacesStalePhoneQueueAndPlayState
+- MixtapeViewModelTest.carInitiatedPlaybackUpdatesPhoneNowPlayingQueueAndCurrentTrack
+- PlaybackContinuityContractTest.playerEngineExposesExternalPlaybackSnapshotForCarInitiatedQueueChanges
+- PlaybackContinuityContractTest.mediaControllerPlayerEngineObservesExternalTimelineMediaItemAndPlayingEvents
+- PlaybackContinuityContractTest.mixtapeControllerHandlesExternalPlaybackSnapshotByReplacingQueue
+
+Legacy compatibility smoke:
+PATH="$HOME/.asdf/shims:$PATH" ANDROID_HOME=/home/puzzleduck/Android/Sdk ./gradlew testLegacyDebugUnitTest --tests '*Api19VariantContractTest*'
+Result: BUILD SUCCESSFUL.
+
+APK/emulator evidence per project policy:
+- ./gradlew assembleModernDebug passed normally.
+- Temporary local ABI override built an emulator-compatible modern debug APK with arm64-v8a, x86, and x86_64 native libraries; app/build.gradle.kts was restored afterward.
+- Installed /tmp/card2479-testing-modern-debug.apk on Kunlun emulator-5554 and launched com.example.androidmixtape/.MainActivity successfully.
+- Screenshot: docs/evidence/card2479-testing-rework-phone-launch-20260709.png
+- Recent logcat after launch showed no FATAL EXCEPTION for com.example.androidmixtape.

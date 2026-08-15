@@ -1,0 +1,23 @@
+=== adb devices ===
+List of devices attached
+RQ3002PT6X             device usb:2-3 product:F3115 model:F3115 device:F3115 transport_id:1
+
+=== device ===
+sdk=24
+
+model=F3115
+
+=== install modern ===
+Performing Streamed Install
+Success
+=== install legacy ===
+Performing Streamed Install
+Success
+=== launcher resolves ===
+priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+com.example.androidmixtape/.MainActivity
+priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+com.example.androidmixtape.legacy/com.example.androidmixtape.MainActivity
+=== package paths ===
+package:/data/app/com.example.androidmixtape-2/base.apk
+package:/data/app/com.example.androidmixtape.legacy-2/base.apk

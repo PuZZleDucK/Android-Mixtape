@@ -1,0 +1,31 @@
+Command:
+cd /home/puzzleduck/x/android-mixtape
+export PATH="$HOME/.asdf/shims:$PATH"
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+./gradlew testModernDebugUnitTest \
+  --tests 'com.example.androidmixtape.viewmodel.MixtapeViewModelTest.successfulDeleteFromDeviceRemovesTrackFromLibraryGroupsAndOpenQueue' \
+  --tests 'com.example.androidmixtape.viewmodel.MixtapeViewModelTest.failedDeleteFromDeviceLeavesLibraryGroupsAndOpenQueueUnchanged' \
+  --tests 'com.example.androidmixtape.data.DeleteFromDeviceScopedStorageContractTest'
+
+Result:
+> Task :app:testModernDebugUnitTest
+
+DeleteFromDeviceScopedStorageContractTest > deleteResultExposesScopedStorageUserActionResult FAILED
+    java.lang.AssertionError at DeleteFromDeviceScopedStorageContractTest.kt:12
+
+DeleteFromDeviceScopedStorageContractTest > mediaStoreDeleteUsesApiGatedScopedStorageRequests FAILED
+    java.lang.AssertionError at DeleteFromDeviceScopedStorageContractTest.kt:27
+
+DeleteFromDeviceScopedStorageContractTest > viewModelDefersMutationUntilScopedStorageConfirmation FAILED
+    java.lang.AssertionError at DeleteFromDeviceScopedStorageContractTest.kt:68
+
+DeleteFromDeviceScopedStorageContractTest > modernActivityLaunchesScopedStorageDeleteRequestAndFinalizesResult FAILED
+    java.lang.AssertionError at DeleteFromDeviceScopedStorageContractTest.kt:49
+
+6 tests completed, 4 failed
+
+> Task :app:testModernDebugUnitTest FAILED
+
+Interpretation:
+The two new MixtapeViewModel behavior tests document confirmed direct-delete success and failure/cancel invariants and passed during this targeted run. The four new scoped-storage contract tests are intentionally red: current code still only exposes Success/Failure, uses direct ContentResolver.delete without API-gated MediaStore.createDeleteRequest or RecoverableSecurityException handling, has no StartIntentSenderForResult launcher in modern MainActivity, and has no ViewModel pending/finalization path. Running should implement those contracts before moving forward.

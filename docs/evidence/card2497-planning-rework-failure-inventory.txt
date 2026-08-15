@@ -1,0 +1,45 @@
+Card 2497 planning rework failure inventory
+Source: existing app/build/test-results/testModernDebugUnitTest XML after review failure.
+Date: 2026-07-09
+
+Review blocker: focused card contract and emulator rapid-next smoke were green, but full modern unit suite failed with 13 failures in 263 tests.
+
+Failing modern unit buckets:
+
+1. com.example.androidmixtape.title.LlmProgressLoggingContractTest — 2 failures
+   - localGeneratorAcceptsTrackNameEchoesWhileOriginalityFilterIsDisabledForTesting
+   - localGeneratorLogsFullPromptRawResponseAndAcceptedParseResult
+   Cause shown in XML: RuntimeException: Method w in android.util.Log not mocked.
+
+2. com.example.androidmixtape.ui.HandDrawnEmbellishmentUiContractTest — 1 failure
+   - cassetteTapePlacesSamePersistedEmbellishmentBeforeNowPlayingName
+   Cause shown in XML: NowPlaying must pass state.currentMixtapeVisualProperties.embellishment into CassetteTape.
+
+3. com.example.androidmixtape.ui.HandwritingJitterRendererSourceContractTest — 2 failures
+   - cassetteHandwrittenSurfacesAreRenderedThroughJitteredHandwritingText
+   - cassetteHandwrittenJitterCallSitesAllocateRealWidth
+   Cause shown in XML: CassetteTape expected additional JitteredHandwritingText calls and seed material for cassette-current-track.
+
+4. com.example.androidmixtape.ui.MixtapeSymbolInteractionUiContractTest — 2 failures
+   - nowPlayingSymbolTapAndLongPressCallbacksAreWiredFromAppToCassetteTape
+   - nowPlayingSymbolColorComesFromPersistedVisualProperties
+   Cause shown in XML: NowPlaying must forward playback state and current visual symbol color/ink into CassetteTape.
+
+5. com.example.androidmixtape.ui.NowPlayingMixTapeToggleContractTest — 1 failure
+   - nowPlayingExposesTracksVsMixTapesToggleWithoutLeavingNowPlaying
+   Cause shown in XML: NowPlaying should render an accessible Tracks toggle.
+
+6. com.example.androidmixtape.viewmodel.MixtapeViewModelTest — 4 failures
+   - deletingCurrentlyPlayingTrackStopsWithValidRemainingQueueState
+   - successfulDeleteFromDeviceRemovesTrackFromLibraryGroupsAndOpenQueue
+   - successfulDeleteFromDevicePreservesPlayingNonDeletedTrackPositionAndVisualIdentity
+   - confirmedScopedStorageDeletePreservesPlayingNonDeletedTrackAndPosition
+   Cause shown in XML: deleted tracks remain in queue/library or playing position handling is invalid.
+
+7. com.example.androidmixtape.viewmodel.TrackActionsViewModelContractTest — 1 failure
+   - removeFromMixtapeHasDeterministicSwapContractAndSingleTapeNoop
+   Cause shown in XML: Remove-from-mixtape should use injected mixtapeRandom.
+
+Planning conclusion:
+- The current CassetteCoverTrackList fast-forward scroll implementation should be preserved unless its focused contract or emulator smoke regresses.
+- Next Testing/Running pass should use this inventory as the broad-gate checklist and either make full modern tests green or prove any remaining broad failures are unrelated/pre-existing with reviewer-approved evidence.

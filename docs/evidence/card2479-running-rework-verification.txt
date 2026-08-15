@@ -1,0 +1,20 @@
+# Card 2479 Running rework verification
+
+Implementation summary:
+- Added `ExternalPlaybackSnapshot` to `PlayerEngine` so a shared Media3 session can publish queue tracks, current index/media ID, play state, position, and duration to the phone controller.
+- Updated `MediaControllerPlayerEngine` to publish snapshots from Media3 `onEvents` for timeline, media-item, is-playing, and playback-state changes, reconstructing `Track` objects from MediaItem metadata/extras.
+- Updated the car media controller to include full source track metadata/duration in the MediaItems it places in the shared session queue.
+- Updated `MixtapeController` and `MixtapeViewModel` so car-initiated queue changes replace the stale phone queue/current track/play state and, when possible, remap the selected mixtape key.
+- Legacy and phone-local engines implement the new callback as no-op because they do not receive external car session changes.
+
+Verification:
+- PASS: `PATH="$HOME/.asdf/shims:$PATH" ANDROID_HOME=/home/puzzleduck/Android/Sdk ./gradlew testModernDebugUnitTest --tests '*AndroidAuto*' --tests '*AndroidCustomCarUi*' --tests '*PlaybackContinuity*' --tests '*MixtapeController*' --tests '*MixtapeViewModel*'`
+- PASS: `PATH="$HOME/.asdf/shims:$PATH" ANDROID_HOME=/home/puzzleduck/Android/Sdk ./gradlew testModernDebugUnitTest testLegacyDebugUnitTest assembleModernDebug`
+  - Initial full run is recorded in `docs/evidence/card2479-running-rework-gradle-verification.log`; it completed successfully after Kotlin fell back from the daemon because local `/tmp` was full.
+  - Re-run with `GRADLE_OPTS=-Djava.io.tmpdir=$PWD/build/gradle-tmp --no-daemon` is recorded in `docs/evidence/card2479-running-rework-gradle-verification-tmpdir.log` and completed successfully without the `/tmp` warning.
+- PASS: temporary emulator-compatible modern debug APK build with x86/x86_64 ABI override for Kunlun emulator install. Source `app/build.gradle.kts` was restored afterward. Log: `docs/evidence/card2479-running-rework-assemble-modern-emulator-compatible.log`.
+- PASS: installed `/tmp/card2479-rework-app-modern-debug.apk` on Kunlun `emulator-5554` (API 24, x86_64), granted audio permission, launched `com.example.androidmixtape/.MainActivity`, and found no `FATAL EXCEPTION` in recent logcat. Log: `docs/evidence/card2479-running-rework-kunlun-install-launch.log`.
+- Screenshot evidence: `docs/evidence/card2479-running-rework-emulator-phone-ui.png`.
+
+Manual car-host note:
+- This rework targets the Review-blocked phone/car playback-coherence bug. The earlier Running evidence still applies for the custom Cars App Library UI path and documented that the available Kunlun emulator is a generic API 24 phone image without a car/projection/media-template host, so live car-template navigation screenshots remain blocked in this environment.

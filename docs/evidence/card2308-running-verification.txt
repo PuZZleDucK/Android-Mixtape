@@ -1,0 +1,30 @@
+Card 2308 running verification
+
+Implementation:
+- Updated CassetteTape so the left reel at shell.width * 0.31f uses rotation = -reelRotation.
+- Updated the right reel at shell.width * 0.69f to use rotation = reelRotation, keeping reels opposite.
+- No animation timing, semantics, layout, or drawReel artwork changes were made.
+
+Focused verification:
+Command:
+cd /home/puzzleduck/x/android-mixtape
+export PATH="$HOME/.asdf/shims:$PATH"
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+./gradlew testModernDebugUnitTest --tests 'com.example.androidmixtape.ui.CassetteReelGraphicsContractTest'
+
+Result:
+BUILD SUCCESSFUL in 38s
+26 actionable tasks: 4 executed, 22 up-to-date
+
+Broader verification:
+Command:
+cd /home/puzzleduck/x/android-mixtape
+export PATH="$HOME/.asdf/shims:$PATH"
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+./gradlew testModernDebugUnitTest testLegacyDebugUnitTest assembleModernDebug assembleLegacyDebug
+
+Result:
+BUILD SUCCESSFUL in 1m 17s
+88 actionable tasks: 12 executed, 76 up-to-date

@@ -1,0 +1,29 @@
+Card 2234 Running evidence — eject button implementation
+
+Implemented:
+- MixtapeViewModel.eject(): stops/rewinds current track then returns to MixtapeScreen.MixTapes.
+- Modern MainActivity wires onEject to viewModel::eject.
+- Now-playing screen removes previous Mix Tapes/Settings header and Now Playing title.
+- Walkman transport controls include accessible Eject button (label ⏏, contentDescription Eject).
+
+Verification commands:
+
+1) Unit/source-contract regression:
+PATH="$HOME/.asdf/shims:$HOME/.local/bin:$PATH" \
+JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS" \
+ANDROID_HOME="$HOME/Android/Sdk" \
+./gradlew testModernDebugUnitTest
+
+Result: BUILD SUCCESSFUL (26 actionable tasks: 5 executed, 21 up-to-date).
+
+2) Targeted modern Compose instrumentation for the changed now-playing behavior on attached F3115 / Android 7.0:
+PATH="$HOME/.asdf/shims:$HOME/.local/bin:$PATH" \
+JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS" \
+ANDROID_HOME="$HOME/Android/Sdk" \
+./gradlew connectedModernDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.class=com.example.androidmixtape.ui.MixtapeAppTest#nowPlayingScreenDoesNotOfferHeaderNavigationOrTitle,com.example.androidmixtape.ui.MixtapeAppTest#nowPlayingRendersCassetteWalkmanTransportAndCompleteJCardTrackList
+
+Result: BUILD SUCCESSFUL (Starting 2 tests on F3115 - 7.0; Finished 2 tests).
+
+Additional note:
+- A broader MixtapeAppTest class run reached the new now-playing tests but failed one unrelated pre-existing library-spine bounds test: mixTapesScreenGivesSpineHandwritingLabelsNonCollapsedBounds expected a wider handwriting lane (observed width 126.0dp). This failure is not in the eject/nav/title behavior changed for this card.

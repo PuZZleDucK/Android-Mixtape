@@ -1,0 +1,32 @@
+Card 2432 Testing evidence — failing TDD contracts
+
+Command run from /home/puzzleduck/x/android-mixtape:
+
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+./gradlew testModernDebugUnitTest \
+  --tests com.example.androidmixtape.viewmodel.MixtapeViewModelTest.selectedMixtapeIndexIsExposedForNowPlayingCenteringAndSurvivesEject \
+  --tests com.example.androidmixtape.ui.NowPlayingMixTapeToggleContractTest
+
+Result: FAILED as expected for TDD before implementation.
+
+Failing tests:
+- NowPlayingMixTapeToggleContractTest.nowPlayingExposesTracksVsMixTapesToggleWithoutLeavingNowPlaying
+- NowPlayingMixTapeToggleContractTest.nowPlayingUsesSameHoistedMixtapeScrollStateAsLibraryForEjectPreservation
+- NowPlayingMixTapeToggleContractTest.nowPlayingMixTapePaneCentersCurrentMixtapeOnlyWhenPaneOpens
+- NowPlayingMixTapeToggleContractTest.reusableBriefcaseListSupportsCurrentMixtapeHighlightAndSharedSelection
+- MixtapeViewModelTest.selectedMixtapeIndexIsExposedForNowPlayingCenteringAndSurvivesEject
+
+Gradle summary:
+5 tests completed, 5 failed
+Execution failed for task ':app:testModernDebugUnitTest'.
+Report: file:///home/puzzleduck/x/android-mixtape/app/build/reports/tests/testModernDebugUnitTest/index.html
+
+Expected implementation work:
+- Expose MixtapeUiState.currentMixtapeIndex and preserve it after eject.
+- Reuse the app-hoisted LazyListState/LazyGridState inside Now Playing's Mix tapes pane.
+- Add accessible Tracks / Mix tapes toggle controls while staying on Now Playing.
+- Extract/reuse MixTapeBriefcaseList from MixTapeLibrary.
+- Center the current mixtape on first Mix tapes pane exposure, guarded so recomposition does not override user scrolling.
+- Mark the current cassette spine with visible/semantic Current mixtape state.

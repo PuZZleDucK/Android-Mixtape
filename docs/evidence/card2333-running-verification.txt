@@ -1,0 +1,18 @@
+Card 2333 Running verification: control button layout
+
+Implementation:
+- Updated app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt so WalkmanTransportControls renders Eject, divider, Rewind, Stop, Play, Pause, Fast-forward.
+- Preserved labels, content descriptions, enabled states, and callbacks.
+- Included the Testing-stage red/green coverage updates:
+  - app/src/test/java/com/example/androidmixtape/ui/NowPlayingTransportControlLayoutContractTest.kt
+  - app/src/androidTestModern/java/com/example/androidmixtape/ui/MixtapeAppTest.kt
+
+Verification after implementation:
+1. JAVA_HOME="$(asdf where java)" ANDROID_HOME="$HOME/Android/Sdk" ./gradlew :app:testModernDebugUnitTest --tests com.example.androidmixtape.ui.NowPlayingTransportControlLayoutContractTest
+   Result: BUILD SUCCESSFUL.
+
+2. JAVA_HOME="$(asdf where java)" ANDROID_HOME="$HOME/Android/Sdk" ./gradlew :app:compileModernDebugAndroidTestKotlin
+   Result: BUILD SUCCESSFUL.
+
+3. JAVA_HOME="$(asdf where java)" ANDROID_HOME="$HOME/Android/Sdk" ./gradlew :app:connectedModernDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.androidmixtape.ui.MixtapeAppTest#nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay
+   Result: blocked before running tests on attached F3115 by INSTALL_FAILED_INSUFFICIENT_STORAGE while installing app-modern-debug.apk. Gradle reported "Finished 0 tests on F3115 - 7.0" before the install failure.

@@ -1,0 +1,43 @@
+# Card 2494 Running Kunlun emulator install/launch
+2026-07-09T19:47:04+10:00
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 devices
+List of devices attached
+21e098e8	device
+emulator-5554	device
+
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell getprop ro.product.cpu.abi
+x86_64
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell df -h /data
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/block/dm-0 5.8G  1.9G  3.8G  33% /data
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 install --no-streaming -r /tmp/card2494-app-modern-debug.apk
+/tmp/card2494-app-modern-debug.apk: 1 file pushed, 0 skipped. 250.5 MB/s (839858828 bytes in 3.197s)
+Performing Push Install
+Success
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell pm grant com.example.androidmixtape android.permission.READ_EXTERNAL_STORAGE
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell input keyevent WAKEUP
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell monkey -p com.example.androidmixtape 1
++ sleep 3
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell dumpsys window windows
++ grep -E 'mCurrentFocus|mFocusedApp'
++ head -5
+  mCurrentFocus=Window{a6eee7f u0 com.example.androidmixtape/com.example.androidmixtape.MainActivity}
+  mFocusedApp=AppWindowToken{3742733 token=Token{1fb826d ActivityRecord{c312a84 u0 com.example.androidmixtape/.MainActivity t59}}}
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 logcat -d -t 200
++ grep -i -E 'AndroidRuntime|FATAL EXCEPTION'
+07-09 19:47:08.152 22135 22135 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+07-09 19:47:08.156 22135 22135 D AndroidRuntime: CheckJNI is OFF
+07-09 19:47:08.452 22135 22135 D AndroidRuntime: Calling main entry com.android.commands.pm.Pm
+07-09 19:47:21.179 22135 22135 I AndroidRuntime: VM exiting with result code 0.
+07-09 19:47:22.068 22165 22165 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+07-09 19:47:22.094 22165 22165 D AndroidRuntime: CheckJNI is OFF
+07-09 19:47:22.573 22165 22165 D AndroidRuntime: Calling main entry com.android.commands.pm.Pm
+07-09 19:47:22.576 22165 22165 I AndroidRuntime: VM exiting with result code 0.
+07-09 19:47:22.692 22202 22202 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+07-09 19:47:22.695 22202 22202 D AndroidRuntime: CheckJNI is OFF
+07-09 19:47:22.776 22202 22202 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+07-09 19:47:22.780 22202 22202 D AndroidRuntime: Shutting down VM
+07-09 19:47:22.872 22212 22212 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+07-09 19:47:22.873 22212 22212 D AndroidRuntime: CheckJNI is OFF
+07-09 19:47:22.929 22212 22212 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+07-09 19:47:23.158 22212 22212 I AndroidRuntime: VM exiting with result code 0.

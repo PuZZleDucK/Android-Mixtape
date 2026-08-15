@@ -1,0 +1,46 @@
+# Card 2497 clean committed legacy unit gate
+2026-07-09T15:01:46+10:00
+HEAD=39d0491
+Command: ./gradlew testLegacyDebugUnitTest
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preLegacyDebugBuild UP-TO-DATE
+> Task :app:checkLegacyDebugAarMetadata
+> Task :app:generateLegacyDebugResValues
+> Task :app:mapLegacyDebugSourceSetPaths
+> Task :app:generateLegacyDebugResources
+> Task :app:mergeLegacyDebugResources
+> Task :app:packageLegacyDebugResources
+> Task :app:createLegacyDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksLegacyDebug
+> Task :app:parseLegacyDebugLocalResources
+> Task :app:processLegacyDebugMainManifest
+> Task :app:processLegacyDebugManifest
+> Task :app:processLegacyDebugManifestForPackage
+> Task :app:javaPreCompileLegacyDebug
+> Task :app:preLegacyDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileLegacyDebugUnitTest
+> Task :app:mergeLegacyDebugShaders
+> Task :app:compileLegacyDebugShaders NO-SOURCE
+> Task :app:generateLegacyDebugAssets UP-TO-DATE
+> Task :app:processLegacyDebugResources
+> Task :app:mergeLegacyDebugAssets
+> Task :app:packageLegacyDebugUnitTestForUnitTest
+> Task :app:generateLegacyDebugUnitTestConfig
+> Task :app:compileLegacyDebugKotlin
+> Task :app:compileLegacyDebugJavaWithJavac NO-SOURCE
+> Task :app:processLegacyDebugJavaRes
+> Task :app:bundleLegacyDebugClassesToCompileJar
+> Task :app:bundleLegacyDebugClassesToRuntimeJar
+> Task :app:compileLegacyDebugUnitTestKotlin
+> Task :app:compileLegacyDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processLegacyDebugUnitTestJavaRes
+> Task :app:testLegacyDebugUnitTest
+
+BUILD SUCCESSFUL in 59s
+26 actionable tasks: 26 executed
+exit_code=0

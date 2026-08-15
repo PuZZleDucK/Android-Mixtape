@@ -1,0 +1,22 @@
+Card 2309 Running verification
+
+Implementation summary:
+- Reordered Now Playing Walkman transport controls to Eject, divider, Stop, Play, Pause, Rewind, Fast-forward.
+- Added a visible/semantic "Transport control divider" between Eject and the grouped transport controls.
+
+Environment:
+- JAVA_HOME from asdf java temurin-21.0.10+7.0.LTS
+- ANDROID_HOME=/home/puzzleduck/Android/Sdk
+- Connected device reported by Gradle: F3115 - 7.0
+
+Commands run:
+1. ./gradlew compileModernDebugKotlin compileModernDebugAndroidTestKotlin
+   Result: BUILD SUCCESSFUL in 47s
+
+2. ./gradlew connectedModernDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.androidmixtape.ui.MixtapeAppTest#nowPlayingTransportControlsPlaceEjectAtFarLeftAndStopBeforePlay
+   Result: BUILD SUCCESSFUL in 2m 1s
+   Relevant output: 1 tests completed, 0 skipped, 0 failed
+
+3. ./gradlew connectedModernDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.androidmixtape.ui.MixtapeAppTest
+   Result: BUILD SUCCESSFUL in 2m 36s
+   Relevant output: 14 tests completed, 0 skipped, 0 failed

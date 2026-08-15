@@ -1,0 +1,25 @@
+Card 2337 Testing red evidence — API 29 lint/source contract
+
+Modern command:
+JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.data.DeleteFromDeviceScopedStorageContractTest --rerun-tasks
+
+Modern result:
+FAILED as intended for the new Testing-stage regression contract.
+DeleteFromDeviceScopedStorageContractTest > api29RecoverableSecurityExceptionAccessIsHiddenBehindSdkGuard FAILED
+    java.lang.AssertionError at DeleteFromDeviceScopedStorageContractTest.kt:50
+5 tests completed, 1 failed
+
+Legacy command:
+JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testLegacyDebugUnitTest --tests com.example.androidmixtape.data.DeleteFromDeviceScopedStorageContractTest --rerun-tasks
+
+Legacy result:
+FAILED as intended for the same new regression contract.
+DeleteFromDeviceScopedStorageContractTest > api29RecoverableSecurityExceptionAccessIsHiddenBehindSdkGuard FAILED
+    java.lang.AssertionError at DeleteFromDeviceScopedStorageContractTest.kt:50
+5 tests completed, 1 failed
+
+Expected red behavior:
+The current shared minSdk source still directly catches RecoverableSecurityException in AudioRepository.kt. That API-29 type and userAction/actionIntent access must be reached only after catching SecurityException and checking Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q or via a @RequiresApi(Build.VERSION_CODES.Q) helper, so lintModernDebug/lintLegacyDebug do not report NewApi errors.
+
+Required Running gates after fixing:
+./gradlew testModernDebugUnitTest testLegacyDebugUnitTest lintModernDebug lintLegacyDebug

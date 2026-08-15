@@ -1,0 +1,38 @@
+Card 2432 Running verification — implementation complete
+
+Commands run from /home/puzzleduck/x/android-mixtape with:
+export JAVA_HOME="$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS"
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+
+1. Targeted TDD contracts:
+./gradlew testModernDebugUnitTest \
+  --tests com.example.androidmixtape.viewmodel.MixtapeViewModelTest.selectedMixtapeIndexIsExposedForNowPlayingCenteringAndSurvivesEject \
+  --tests com.example.androidmixtape.ui.NowPlayingMixTapeToggleContractTest
+Result: PASS
+
+2. Full JVM unit coverage:
+./gradlew testModernDebugUnitTest testLegacyDebugUnitTest
+Result: PASS
+
+3. Debug APK builds:
+./gradlew assembleModernDebug assembleLegacyDebug
+Result: PASS
+
+4. Connected modern instrumentation attempt:
+adb devices showed RQ3002PT6X as device.
+./gradlew connectedModernDebugAndroidTest
+Result: BLOCKED by environment storage, not a product/test failure.
+Failure: INSTALL_FAILED_INSUFFICIENT_STORAGE while installing app-modern-debug.apk.
+Device facts:
+- adb target: RQ3002PT6X / F3115 Android 7.0
+- /data: 10G size, 10G used, 481M available, 96% used
+- modern debug APK: 452M
+- modern androidTest APK: 1.1M
+
+Implemented behavior:
+- MixtapeUiState exposes currentMixtapeIndex and preserves it through eject.
+- Now Playing has Tracks / Mix tapes toggle controls.
+- Now Playing reuses app-hoisted LazyListState/LazyGridState via MixTapeBriefcaseList.
+- Opening the Mix tapes pane scrolls the shared list/grid near the current mixtape once per current mixtape selection.
+- Current mixtape rows get visible/semantic Current mixtape treatment.

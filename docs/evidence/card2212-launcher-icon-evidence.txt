@@ -1,0 +1,19 @@
+Card 2212 launcher icon implementation evidence
+
+Static PNG inspection:
+ic_launcher_cassette_1024.png 1024x1024 srgba 4.0 bbox=870x615+77+204
+ic_launcher.png 72x72 srgba 4.0 bbox=61x43+5+14
+ic_launcher.png 48x48 srgba 4.0 bbox=41x29+3+9
+ic_launcher.png 96x96 srgba 4.0 bbox=82x58+7+19
+ic_launcher.png 144x144 srgba 4.0 bbox=122x86+11+29
+ic_launcher.png 192x192 srgba 4.0 bbox=163x115+14+38
+ic_launcher_foreground.png 162x162 srgba 4.0 bbox=138x98+12+32
+ic_launcher_foreground.png 108x108 srgba 4.0 bbox=92x65+8+21
+ic_launcher_foreground.png 216x216 srgba 4.0 bbox=184x130+16+43
+ic_launcher_foreground.png 324x324 srgba 4.0 bbox=275x194+24+65
+ic_launcher_foreground.png 432x432 srgba 4.0 bbox=367x259+32+86
+
+Checks passed:
+./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.icons.LauncherIconResourceContractTest
+./gradlew testLegacyDebugUnitTest --tests com.example.androidmixtape.icons.LauncherIconResourceContractTest
+./gradlew assembleModernDebug assembleLegacyDebug

@@ -1,0 +1,75 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Card 2497 Review Evidence</title>
+<style>
+body{font-family:system-ui, sans-serif;background:#111;color:#eee;margin:28px;}
+.panel{border:3px solid #e05b5b;border-radius:14px;padding:22px;max-width:1200px;background:#1c1c1c;}
+h1{color:#ff7777;margin-top:0} .meta{color:#ddd;font-size:20px;line-height:1.45}
+pre{white-space:pre-wrap;background:#050505;color:#ffd0d0;padding:16px;border-radius:10px;font:17px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
+.pass{color:#99e699}.fail{color:#ff8888;font-weight:700}
+</style></head><body><div class="panel">
+<h1>Card 2497 Review Gate: FAIL</h1>
+<div class="meta">
+<p><b>Commit reviewed:</b> ec25c63 (clean detached worktree)</p>
+<p><b>Command:</b> JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.ui.CassetteFastForwardTrackListScrollContractTest</p>
+<p class="fail"><b>Result:</b> focused contract cannot compile from committed code. The final gate cannot pass because the claimed green tests rely on uncommitted workspace changes.</p>
+</div>
+<pre>e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:29:120 Unresolved reference &#39;title&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:31:152 Unresolved reference &#39;title&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:33:5 &#39;generateTitleResult&#39; overrides nothing.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:33:102 Unresolved reference &#39;MixtapeTitleGenerationResult&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:46:21 No parameter with name &#39;topP&#39; found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:46:45 Unresolved reference &#39;topP&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:47:21 No parameter with name &#39;topK&#39; found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:47:45 Unresolved reference &#39;topK&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:48:21 No parameter with name &#39;minP&#39; found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:48:45 Unresolved reference &#39;minP&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:49:21 No parameter with name &#39;presencePenalty&#39; found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:49:56 Unresolved reference &#39;presencePenalty&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:50:21 No parameter with name &#39;repeatPenalty&#39; found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:50:54 Unresolved reference &#39;repeatPenalty&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:60:21 Unresolved reference &#39;MixtapeTitleGenerationResult&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:64:21 Unresolved reference &#39;MixtapeTitleGenerationResult&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/title/LocalSmolLm2MixtapeTitleGenerator.kt:71:26 Unresolved reference &#39;MixtapeTitleGenerationResult&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:20:41 Unresolved reference &#39;MixtapeTitleGenerationResult&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:22:41 Unresolved reference &#39;MixtapeTitleMetadata&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:634:13 No parameter with name &#39;nameColor&#39; found.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:634:56 Unresolved reference &#39;nameColor&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:940:24 Unresolved reference &#39;replaceQueueAfterCurrentRemoval&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1143:24 Unresolved reference &#39;replaceQueueAfterCurrentRemoval&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1145:24 Unresolved reference &#39;replaceQueueAfterCurrentRemoval&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1209:35 Unresolved reference &#39;metadataFor&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1209:84 Unresolved reference &#39;metadataFor&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1213:42 Unresolved reference &#39;modelDisplayName&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1214:46 Unresolved reference &#39;generationDurationMs&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1215:46 Unresolved reference &#39;totalOutputWordCount&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1216:44 Unresolved reference &#39;trackNameWordCount&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1217:43 Unresolved reference &#39;thinkingWordCount&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1229:24 Unresolved reference &#39;MixtapeTitleMetadata&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1238:20 Unresolved reference &#39;saveMetadata&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1239:20 Unresolved reference &#39;saveMetadata&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1299:60 Unresolved reference &#39;randomlySelectsConcreteModel&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1300:29 Unresolved reference &#39;concreteOptions&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1300:83 Unresolved reference &#39;concreteOptions&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1304:34 Unresolved reference &#39;randomlySelectsConcreteModel&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1334:36 Unresolved reference &#39;generateTitleResult&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1338:48 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1349:21 Unresolved reference &#39;MixtapeTitleGenerationResult&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1356:21 Unresolved reference &#39;MixtapeTitleGenerationResult&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1373:109 Unresolved reference &#39;rawResponse&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1373:156 Unresolved reference &#39;rawResponse&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1374:24 Unresolved reference &#39;rawResponse&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1378:28 Unresolved reference &#39;title&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1381:112 Unresolved reference &#39;title&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1385:41 Unresolved reference &#39;title&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1388:32 Unresolved reference &#39;MixtapeTitleMetadata&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1393:62 Unresolved reference &#39;rawResponse&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1395:66 Unresolved reference &#39;rawResponse&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1401:28 Unresolved reference &#39;saveMetadata&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1402:28 Unresolved reference &#39;saveMetadata&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt:1408:46 Unresolved reference &#39;rawResponse&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:2058:74 Unresolved reference &#39;nameColor&#39;.
+e: file:///tmp/android-mixtape-card2497-review/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:2128:70 Unresolved reference &#39;nameColor&#39;.
+&gt; Task :app:compileModernDebugKotlin FAILED
+BUILD FAILED in 1m 33s
+</pre>
+</div></body></html>

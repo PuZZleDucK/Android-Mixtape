@@ -1,0 +1,23 @@
+Card 2212 Testing evidence — fresh transparent logo rework
+
+Added TDD coverage in LauncherIconResourceContractTest for the Review direction: "just generate a new transparent logo graphic".
+
+Commands run from /home/puzzleduck/x/android-mixtape with JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS and ANDROID_HOME=$HOME/Android/Sdk:
+
+1. ./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.icons.LauncherIconResourceContractTest
+   Result: expected failure, test task compiled and ran; 8 tests completed, 2 failed.
+   Failing tests:
+   - freshTransparentLogoSourceExistsBeforeLauncherExportsAreRegenerated at LauncherIconResourceContractTest.kt:48
+   - launcherIconGeneratorUsesFreshLogoSourceInsteadOfMaskingTheOldOpaqueTile at LauncherIconResourceContractTest.kt:87
+
+2. ./gradlew testLegacyDebugUnitTest --tests com.example.androidmixtape.icons.LauncherIconResourceContractTest
+   Result: expected failure, test task compiled and ran; 8 tests completed, 2 failed.
+   Failing tests:
+   - freshTransparentLogoSourceExistsBeforeLauncherExportsAreRegenerated at LauncherIconResourceContractTest.kt:48
+   - launcherIconGeneratorUsesFreshLogoSourceInsteadOfMaskingTheOldOpaqueTile at LauncherIconResourceContractTest.kt:87
+
+Expected next Running fixes:
+- add app/icon-source/android_mixtape_logo_transparent_1024.png as fresh 1024x1024 transparent cassette logo source art;
+- update scripts/generate_launcher_icons.rb to consume that fresh source;
+- remove the previous archived-opaque-source mask polygon / CopyOpacity workflow;
+- regenerate launcher resources and rerun both unit-test commands plus assembleModernDebug assembleLegacyDebug.

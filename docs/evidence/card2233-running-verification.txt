@@ -1,0 +1,40 @@
+# Card 2233 Running verification
+
+Implemented the bounded connected SmolLM2 smoke workload and kept the cassette spine handwriting lane wide enough for connected Compose checks.
+
+Changes committed on `master`:
+
+- `d5ba0f1 Bound connected title smoke workload`
+  - `LlamaRuntimeSmokeTest` now uses one packaged GGUF generation, `maxTokens = 16`, and `@Test(timeout = 600_000)` while preserving greedy `temperature = 0.0f`, parser-usable quoted title checks, and originality checks.
+- `2ea8150 Log title smoke runtime progress`
+  - Adds instrumentation progress logs around runtime creation/generation for slow-device evidence.
+- `785303f Keep cassette spine handwriting lane visible`
+  - Keeps the Mix Tapes cassette spine handwriting Canvas from collapsing on the F3115 connected Compose run.
+
+Verification commands run from `/home/puzzleduck/x/android-mixtape` with `JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS` and `ANDROID_HOME=$HOME/Android/Sdk`:
+
+```sh
+./gradlew testModernDebugUnitTest \
+  --tests com.example.androidmixtape.ui.NowPlayingLandscapeLayoutContractTest \
+  --tests com.example.androidmixtape.ui.MixTapeLandscapeTwoColumnContractTest \
+  --tests com.example.androidmixtape.title.MixtapeTitleDeterminismContractTest
+```
+
+Result: BUILD SUCCESSFUL.
+
+```sh
+./gradlew --no-daemon :app:connectedModernDebugAndroidTest
+```
+
+Result: BUILD SUCCESSFUL on `F3115 - 7.0`, 12/12 connected modern debug Android tests passed.
+
+```sh
+./gradlew test
+```
+
+Result: BUILD SUCCESSFUL.
+
+Notes:
+
+- Cleared stale `com.example.androidmixtape.card2233full*` test packages from the connected device to recover internal storage before the final connected run. No project code depends on that device-specific cleanup.
+- A manual one-test instrumentation rerun was also used while diagnosing device storage/UTP cleanup behavior; the final accepted connected evidence is the full Gradle connected run above.

@@ -1,0 +1,25 @@
+# Card 2479 Running verification
+
+Implementation summary:
+- Added modern-flavor Android for Cars App Library dependency and manifest metadata for templated media (`MEDIA_TEMPLATES`, min Car API 8, `<uses name="template"/>`).
+- Added `MixtapeCarAppService`, `MixtapeCarSession`, `MixtapeListScreen`, `MixtapeSideScreen`, and `MixtapePlaybackScreen` using Cars App Library templates.
+- Added `CarMixtapeCatalog` so the car UI opens on mixtape groups built with the same `buildMixTapeGroups` logic as the phone UI.
+- Added `MixtapeCarMediaController` to load selected mixtape/track rows into the shared `MixtapeMediaLibraryService` Media3 session and register the compat token for `MediaPlaybackTemplate`.
+- Demoted `MixtapeMediaLibraryService` to playback/search/media-browser compatibility plumbing and removed the old primary stock media-browser tree language from the service/README.
+
+Automated verification:
+- PASS: `./gradlew testModernDebugUnitTest --tests '*AndroidAuto*' --tests '*AndroidCustomCarUi*'`
+- PASS: `./gradlew testModernDebugUnitTest --tests '*AndroidAuto*' --tests '*AndroidCustomCarUi*' --tests '*PlaybackContinuity*' --tests '*MixTapeGrouping*' testLegacyDebugUnitTest --tests '*Api19VariantContractTest*'`
+- PASS: `./gradlew testModernDebugUnitTest`
+- PASS: `./gradlew testLegacyDebugUnitTest`
+- PASS: `./gradlew assembleModernDebug` from restored source.
+- PASS: temporary emulator-compatible `assembleModernDebug` with x86/x86_64 ABI override for Kunlun emulator install; source restored afterward. Log: `docs/evidence/card2479-running-assemble-modern-emulator-compatible.log`.
+
+Kunlun emulator verification:
+- PASS: installed `/tmp/card2479-app-modern-debug.apk` on Kunlun `emulator-5554` (Android SDK built for x86_64, API 24, ABI x86_64), granted audio permission, launched `com.example.androidmixtape/.MainActivity`, and found no recent `FATAL EXCEPTION` in logcat. Log: `docs/evidence/card2479-running-kunlun-install-launch.log`.
+- PASS: installed package exposes `MixtapeCarAppService` for `androidx.car.app.CarAppService` with `androidx.car.app.category.MEDIA`, keeps `MixtapeMediaLibraryService`, and requests `androidx.car.app.MEDIA_TEMPLATES`. Log: `docs/evidence/card2479-running-installed-manifest-smoke.log`.
+- Screenshot evidence: `docs/evidence/card2479-running-emulator-phone-ui.png`.
+
+Manual custom car UI blocker:
+- The available Kunlun target is a generic API 24 phone emulator (`Android SDK built for x86_64`) and reports no car, automotive, projection, or media-template host features/packages. Log: `docs/evidence/card2479-running-car-host-capability.log`.
+- Because no DHU/AAOS media-template host is present in this environment, the runtime custom car template path was covered by source/manifest contract tests and installed manifest inspection rather than live head-unit navigation screenshots.

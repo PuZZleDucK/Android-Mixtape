@@ -1,0 +1,121 @@
+# Card 2233 Running final verification
+2026-07-02T06:16:14+10:00
+
+## Device hygiene
+List of devices attached
+RQ3002PT6X             device usb:2-3 product:F3115 model:F3115 device:F3115 transport_id:10
+
+
+## Unit gates run before connected
+
+```sh
+./gradlew --no-daemon --max-workers=1 --console=plain -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false testModernDebugUnitTest --tests '*ConnectedComposeIsolationContractTest*' --tests '*NowPlayingLandscapeLayoutContractTest*' --tests '*MixtapeTitle*' --tests '*LlamaRuntime*'
+```
+
+Result: BUILD SUCCESSFUL in 1m 45s; 26 actionable tasks executed.
+
+```sh
+./gradlew --no-daemon --max-workers=1 --console=plain -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false test
+```
+
+Result: BUILD SUCCESSFUL in 2m 48s; 105 actionable tasks (80 executed, 25 up-to-date).
+
+## Connected command
+./gradlew --no-daemon --max-workers=1 --console=plain -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false :app:connectedModernDebugAndroidTest
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+WARNING: The option setting 'android.ndk.suppressMinSdkVersionError=21' is experimental.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleModernDebugClassesToCompileJar UP-TO-DATE
+> Task :app:preModernDebugAndroidTestBuild SKIPPED
+> Task :app:checkModernDebugAndroidTestAarMetadata
+> Task :app:generateModernDebugAndroidTestResValues
+> Task :app:mapModernDebugAndroidTestSourceSetPaths
+> Task :app:generateModernDebugAndroidTestResources
+> Task :app:mergeModernDebugAndroidTestResources
+> Task :app:processModernDebugAndroidTestManifest
+> Task :app:processModernDebugAndroidTestResources
+> Task :app:compileModernDebugAndroidTestKotlin
+> Task :app:javaPreCompileModernDebugAndroidTest
+> Task :app:compileModernDebugAndroidTestJavaWithJavac NO-SOURCE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:compressModernDebugAssets
+> Task :app:checkModernDebugDuplicateClasses
+> Task :app:desugarModernDebugFileDependencies
+> Task :app:mergeExtDexModernDebug
+> Task :app:mergeLibDexModernDebug
+> Task :app:dexBuilderModernDebug
+> Task :app:mergeModernDebugGlobalSynthetics
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:mergeModernDebugJavaResource
+> Task :app:mergeProjectDexModernDebug
+> Task :app:configureCMakeDebug[arm64-v8a]
+> Task :app:buildCMakeDebug[arm64-v8a]
+> Task :app:mergeModernDebugJniLibFolders
+> Task :app:mergeModernDebugNativeLibs
+> Task :app:stripModernDebugDebugSymbols
+> Task :app:validateSigningModernDebug
+> Task :app:writeModernDebugAppMetadata
+> Task :app:writeModernDebugSigningConfigVersions
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect
+> Task :app:mergeModernDebugAndroidTestShaders
+> Task :app:compileModernDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateModernDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeModernDebugAndroidTestAssets
+> Task :app:compressModernDebugAndroidTestAssets
+> Task :app:checkModernDebugAndroidTestDuplicateClasses
+> Task :app:desugarModernDebugAndroidTestFileDependencies
+> Task :app:mergeExtDexModernDebugAndroidTest
+> Task :app:mergeLibDexModernDebugAndroidTest
+> Task :app:dexBuilderModernDebugAndroidTest
+> Task :app:mergeModernDebugAndroidTestGlobalSynthetics
+> Task :app:processModernDebugAndroidTestJavaRes
+> Task :app:mergeModernDebugAndroidTestJavaResource
+> Task :app:mergeProjectDexModernDebugAndroidTest
+> Task :app:mergeModernDebugAndroidTestJniLibFolders
+> Task :app:mergeModernDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripModernDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningModernDebugAndroidTest
+> Task :app:writeModernDebugAndroidTestSigningConfigVersions
+> Task :app:packageModernDebugAndroidTest
+> Task :app:createModernDebugAndroidTestApkListingFileRedirect
+> Task :app:connectedModernDebugAndroidTest
+Starting 12 tests on F3115 - 7.0
+
+F3115 - 7.0 Tests 0/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 2/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 4/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 6/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 8/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 10/12 completed. (0 skipped) (0 failed)
+F3115 - 7.0 Tests 12/12 completed. (0 skipped) (0 failed)
+Finished 12 tests on F3115 - 7.0
+
+BUILD SUCCESSFUL in 8m 4s
+65 actionable tasks: 46 executed, 19 up-to-date
+EXIT:0

@@ -1,0 +1,19 @@
+# Card 2497 clean committed Kunlun emulator install/launch
+2026-07-09T15:32:47+10:00
+APK: /tmp/card2497-clean-head-app-modern-debug.apk
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 install -r --no-streaming /tmp/card2497-clean-head-app-modern-debug.apk
+/tmp/card2497-clean-head-app-modern-debug.apk: 1 file pushed, 0 skipped. 75.5 MB/s (839563628 bytes in 10.601s)
+Performing Push Install
+Success
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell input keyevent WAKEUP
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell monkey -p com.example.androidmixtape 1
++ sleep 3
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell dumpsys window windows
++ grep -E 'mCurrentFocus|mFocusedApp'
++ head -5
+  mCurrentFocus=Window{bf6562c u0 com.example.androidmixtape/com.example.androidmixtape.MainActivity}
+  mFocusedApp=AppWindowToken{1583493 token=Token{893b8cd ActivityRecord{b88be64 u0 com.example.androidmixtape/.MainActivity t53}}}
++ /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 shell df -h /data
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/block/dm-0 5.8G  3.4G  2.3G  60% /data
+exit_code=0

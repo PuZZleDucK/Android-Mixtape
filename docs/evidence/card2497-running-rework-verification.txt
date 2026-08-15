@@ -1,0 +1,27 @@
+Card 2497 Running rework verification
+Date: 2026-07-09
+
+Implemented rework to keep the current track visible after rapid Next jumps and clear the review blocker full-unit failures.
+
+Changes verified:
+- CassetteCoverTrackList now measures the scroll viewport on the card container, keeps current-row top/center/bottom maps, and falls back to estimated row pitch targeting when a rapid jump lands outside the visible/center band.
+- JVM title logging no longer trips unmocked android.util.Log in local unit tests.
+- Now Playing/CassetteTape source-contract wiring and current-track handwriting label are preserved.
+- Delete/remove queue handling uses deterministic injected random and updates library/open queue after confirmed deletes.
+
+Verification commands:
+- PASS: JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest --tests com.example.androidmixtape.ui.CassetteFastForwardTrackListScrollContractTest
+  Log: docs/evidence/card2497-running-rework-focused-contract.log
+- PASS: JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testModernDebugUnitTest
+  Log: docs/evidence/card2497-running-rework-full-modern.log
+- PASS: JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS ANDROID_HOME=$HOME/Android/Sdk ./gradlew testLegacyDebugUnitTest
+  Log: docs/evidence/card2497-running-rework-legacy.log
+- PASS: temporary emulator-compatible modern debug APK build with x86/x86_64 native libs for Kunlun emulator.
+  Log: docs/evidence/card2497-running-rework-assemble-modern-emulator-compatible.log
+- PASS: installed via adb --no-streaming to Kunlun emulator-5554 (x86_64) and launched com.example.androidmixtape.MainActivity.
+  Log: docs/evidence/card2497-running-rework-kunlun-install-launch.log
+
+Emulator evidence:
+- Before rapid Next: docs/evidence/card2497-running-rework-nowplaying-start.png
+- After 6 rapid Next taps: docs/evidence/card2497-running-rework-after-rapid-next.png
+  Result: highlighted current row 12 is visible in the track list after the rapid jump.
