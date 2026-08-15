@@ -35,6 +35,8 @@ Connected tests must run on the appropriate Kunlun emulator after deploying thro
 ./gradlew connectedLegacyDebugAndroidTest
 ```
 
+After card-owned Artigas builds/tests finish, check that no Gradle client or other Android build is still active. If the task's Gradle/Kotlin daemons are then only idle keepalive processes, run `./gradlew --stop` and verify those daemons exited; never stop them while another build is active.
+
 To refresh distributable APKs after a successful build:
 
 ```bash
