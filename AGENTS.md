@@ -15,6 +15,36 @@
 - When storage blocks install or connected/manual verification, document the environment facts (device/emulator, free `/data`, APK size, command output), keep any source/unit/build evidence, and either use another compatible target or move forward with the storage limitation clearly noted.
 - For any Kanban-card work on this project, build and deploy the updated app to the Kunlun Android emulator before reporting completion, then capture screenshots of the updated UI/evidence from the emulator. The Kunlun emulator is usually `emulator-5554`; because it is `x86_64,x86`, build an emulator-compatible APK when the default APK is `arm64-v8a` only.
 - Kunlun also has the visible Android Automotive emulator `android-auto-mixtape`, normally running as `emulator-5556` on API 35 with the `x86_64` ABI. For Android Auto/car UI changes, build and install an `x86_64`-compatible modern APK on this emulator, review the affected UI there, and capture a screenshot that clearly highlights the update in the car environment before reporting completion. Where behavior specifically depends on Android Auto projection rather than Android Automotive OS, also verify with the Desktop Head Unit or a connected head unit when available and document any host limitation.
+- Keep `README.md` user-facing. Put agent workflows, host details, test procedures, device serials, and deployment commands in this file instead.
+
+## Build and test
+
+The project uses Java 21 and the Android SDK. The main local verification commands are:
+
+```bash
+./gradlew testModernDebugUnitTest testLegacyDebugUnitTest
+./gradlew assembleModernDebug assembleLegacyDebug
+./gradlew lintModernDebug lintLegacyDebug
+```
+
+Connected tests must run on the appropriate Kunlun emulator after deploying through `kunlun-sync.sh`:
+
+```bash
+./gradlew connectedModernDebugAndroidTest
+./gradlew connectedLegacyDebugAndroidTest
+```
+
+To refresh distributable APKs after a successful build:
+
+```bash
+mkdir -p dist
+cp app/build/outputs/apk/modern/debug/app-modern-debug.apk dist/android-mixtape-v0.1.0-modern-debug.apk
+cp app/build/outputs/apk/legacy/debug/app-legacy-debug.apk dist/android-mixtape-v0.1.0-legacy-debug.apk
+sha256sum dist/android-mixtape-v0.1.0-modern-debug.apk > dist/android-mixtape-v0.1.0-modern-debug.apk.sha256
+sha256sum dist/android-mixtape-v0.1.0-legacy-debug.apk > dist/android-mixtape-v0.1.0-legacy-debug.apk.sha256
+```
+
+For manual emulator smoke testing, seed local audio on the emulator, grant the relevant media permission, and verify scanning, playback, rotation continuity, seeking, transport controls, permission handling, and empty-library behavior. Use `kunlun-sync.sh` rather than treating any copied Kunlun directory as project source.
 
 ## Projected Android Auto on the Nokia
 
