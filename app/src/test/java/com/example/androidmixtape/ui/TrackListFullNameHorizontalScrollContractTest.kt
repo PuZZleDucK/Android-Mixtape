@@ -16,11 +16,11 @@ class TrackListFullNameHorizontalScrollContractTest {
         )
         assertTrue(
             "The track-list paper should pan horizontally when scrollContent is enabled.",
-            body.contains("horizontalScroll(contentHorizontalScrollState)"),
+            Regex("horizontalScroll\\(\\s*contentHorizontalScrollState").containsMatchIn(body),
         )
         assertTrue(
             "Horizontal panning must retain the existing independent vertical track-list scroll state.",
-            body.contains("verticalScroll(contentScrollState)"),
+            Regex("verticalScroll\\(\\s*contentScrollState").containsMatchIn(body),
         )
         assertTrue(
             "Opening a different track set should return the shared horizontal viewport to its left edge.",

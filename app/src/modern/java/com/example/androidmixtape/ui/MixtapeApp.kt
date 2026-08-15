@@ -1,6 +1,7 @@
 package com.example.androidmixtape.ui
 
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
@@ -14,6 +15,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.gestures.draggable2D
+import androidx.compose.foundation.gestures.rememberDraggable2DState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -68,6 +72,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
@@ -137,6 +142,9 @@ import com.example.androidmixtape.viewmodel.SleeveTheme
 import com.example.androidmixtape.viewmodel.StickerTheme
 import com.example.androidmixtape.viewmodel.XLP_SONGS_PER_MIXTAPE
 import java.util.Locale
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -4334,7 +4342,21 @@ private fun CassetteCoverTrackList(
     val headerText = mixtapeName
     val contentScrollState = rememberScrollState()
     val contentHorizontalScrollState = rememberScrollState()
+    val trackListCoroutineScope = rememberCoroutineScope()
+    var trackListFlingJob by remember { mutableStateOf<Job?>(null) }
+    val trackListDragState = rememberDraggable2DState { dragDelta ->
+        // Finger movement moves the paper; ScrollState values move its viewport
+        // in the opposite direction. Dispatch each component independently so
+        // reaching an edge on one axis never blocks the other.
+        contentHorizontalScrollState.dispatchRawDelta(-dragDelta.x)
+        contentScrollState.dispatchRawDelta(-dragDelta.y)
+    }
     val textMeasurer = rememberTextMeasurer()
+    val trackRowTexts = remember(tracks) {
+        tracks.map { track ->
+            "${track.title} — ${track.artist}  ${formatDuration(track.durationMs)}"
+        }
+    }
     val trackCenterOffsetsInViewport = remember { mutableStateMapOf<Long, Float>() }
     val trackTopOffsetsInViewport = remember { mutableStateMapOf<Long, Float>() }
     val trackBottomOffsetsInViewport = remember { mutableStateMapOf<Long, Float>() }
@@ -4356,6 +4378,7 @@ private fun CassetteCoverTrackList(
     LaunchedEffect(currentTrackId, scrollContent) {
         if (!scrollContent || currentTrackId == null) return@LaunchedEffect
 
+        trackListFlingJob?.cancel()
         var centerOffset = trackCenterOffsetsInViewport[currentTrackId]
         var currentRowTop = trackTopOffsetsInViewport[currentTrackId]
         var currentRowBottom = trackBottomOffsetsInViewport[currentTrackId]
@@ -4421,7 +4444,41 @@ private fun CassetteCoverTrackList(
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
-                .then(if (scrollContent) Modifier.fillMaxSize() else Modifier),
+                .then(if (scrollContent) Modifier.fillMaxSize() else Modifier)
+                .then(
+                    if (scrollContent) {
+                        Modifier.draggable2D(
+                            state = trackListDragState,
+                            onDragStarted = { trackListFlingJob?.cancel() },
+                            onDragStopped = { velocity ->
+                                // Coast both axes together. Each ScrollState still
+                                // clamps independently when its edge is reached.
+                                trackListFlingJob = trackListCoroutineScope.launch {
+                                    coroutineScope {
+                                        launch {
+                                            contentHorizontalScrollState.animateScrollBy(
+                                                value = -velocity.x * 0.18f,
+                                                animationSpec = tween(
+                                                    durationMillis = 450,
+                                                    easing = LinearOutSlowInEasing,
+                                                ),
+                                            )
+                                        }
+                                        launch {
+                                            contentScrollState.animateScrollBy(
+                                                value = -velocity.y * 0.18f,
+                                                animationSpec = tween(
+                                                    durationMillis = 450,
+                                                    easing = LinearOutSlowInEasing,
+                                                ),
+                                            )
+                                        }
+                                    }
+                                }
+                            },
+                        )
+                    } else Modifier,
+                ),
         ) {
             val horizontalPaperPadding = 18.dp
             val jitterSafetyPadding = 8.dp
@@ -4435,17 +4492,33 @@ private fun CassetteCoverTrackList(
                 fontSize = 48.sp,
                 fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
             )
-            val widestRowWidthPx = tracks.maxOfOrNull { track ->
-                val rowText = "${track.title} — ${track.artist}  ${formatDuration(track.durationMs)}"
-                // The renderer measures tokens independently, so reserve one rounding pixel per token.
-                val tokenRoundingSafetyPx = Regex("\\S+|\\s+").findAll(rowText).count()
-                textMeasurer.measure(text = rowText, style = rowTextStyle, maxLines = 1).size.width +
-                    tokenRoundingSafetyPx
-            } ?: 0
-            val headerWidthPx = if (showHeader) {
-                textMeasurer.measure(text = headerText, style = headerTextStyle, maxLines = 1).size.width
-            } else {
-                0
+            val widestRowWidthPx = remember(
+                trackRowTexts,
+                rowTextStyle,
+                textMeasurer,
+                density.density,
+                density.fontScale,
+            ) {
+                trackRowTexts.maxOfOrNull { rowText ->
+                    // The renderer measures tokens independently, so reserve one rounding pixel per token.
+                    val tokenRoundingSafetyPx = Regex("\\S+|\\s+").findAll(rowText).count()
+                    textMeasurer.measure(text = rowText, style = rowTextStyle, maxLines = 1).size.width +
+                        tokenRoundingSafetyPx
+                } ?: 0
+            }
+            val headerWidthPx = remember(
+                showHeader,
+                headerText,
+                headerTextStyle,
+                textMeasurer,
+                density.density,
+                density.fontScale,
+            ) {
+                if (showHeader) {
+                    textMeasurer.measure(text = headerText, style = headerTextStyle, maxLines = 1).size.width
+                } else {
+                    0
+                }
             }
             val measuredTextWidth = with(density) { maxOf(widestRowWidthPx, headerWidthPx).toDp() }
             val viewportTextWidth = (maxWidth - horizontalPaperPadding * 2).coerceAtLeast(1.dp)
@@ -4459,8 +4532,12 @@ private fun CassetteCoverTrackList(
                 modifier = Modifier
                     .fillMaxSize()
                     .then(
-                        if (scrollContent) Modifier.horizontalScroll(contentHorizontalScrollState)
-                        else Modifier,
+                        if (scrollContent) {
+                            Modifier.horizontalScroll(
+                                contentHorizontalScrollState,
+                                enabled = false,
+                            )
+                        } else Modifier,
                     ),
             ) {
                 Column(
@@ -4470,7 +4547,10 @@ private fun CassetteCoverTrackList(
                             if (scrollContent) {
                                 Modifier
                                     .fillMaxHeight()
-                                    .verticalScroll(contentScrollState)
+                                    .verticalScroll(
+                                        contentScrollState,
+                                        enabled = false,
+                                    )
                             } else {
                                 Modifier
                             },
@@ -4528,7 +4608,7 @@ private fun CassetteCoverTrackList(
             }
             tracks.forEachIndexed { index, track ->
                 val selected = index == currentIndex
-                val rowText = "${track.title} — ${track.artist}  ${formatDuration(track.durationMs)}"
+                val rowText = trackRowTexts[index]
                 Box(
                     modifier = Modifier
                         .width(trackListTextWidth)

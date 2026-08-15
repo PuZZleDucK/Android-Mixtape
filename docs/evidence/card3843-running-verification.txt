@@ -1,0 +1,32 @@
+# Card 3843 Running verification
+
+## Implementation
+
+- Replaced nested user-enabled horizontal/vertical gesture recognizers with one `draggable2D` viewport owner.
+- Both independent `ScrollState`s receive every drag delta and clamp separately; one-axis modifiers remain disabled layout/programmatic-scroll owners.
+- Added simultaneous x/y coast animations, interrupted by a new drag or current-track auto-centering.
+- Cached handwriting token measurement outside `Canvas`, without selection color in geometry keys.
+- Remembered complete track row strings and widest paper geometry for each track set/font/density.
+
+## Automated verification
+
+- PASS: focused fluid-scroll, full-name, fast-forward centering, double-click, and long-press contracts.
+- PASS: `testModernDebugUnitTest testLegacyDebugUnitTest`.
+- PASS: `assembleModernDebug assembleLegacyDebug`.
+- PASS: `lintLegacyDebug`.
+- Existing unrelated `lintModernDebug` baseline remains red: 7 `WrongConstant` errors in `MixtapeMediaLibraryService.kt` (first at line 94). Full command log: `card3843-running-gradle.log`.
+
+## Kunlun API 24 x86_64 emulator
+
+Deployed with `./kunlun-sync.sh --all ...`; install succeeded and `com.example.androidmixtape/.MainActivity` was resumed. Existing seeded media supplied a long multi-row tape.
+
+A single continuous up-left swipe moved the track-list sheet both downward through later rows and leftward through long names:
+
+- Portrait before/after: `card3843-kunlun-portrait-before-pan.png`, `card3843-kunlun-portrait-after-diagonal.png`.
+- Landscape before/after: `card3843-kunlun-landscape-before-pan.png`, `card3843-kunlun-landscape-after-diagonal.png`.
+
+The post-gesture UI hierarchy changed from early rows at x=79 to later rows at x=32/partly clipped, corroborating simultaneous y and x movement. The same interaction visibly worked in landscape.
+
+One warmed emulator gfxinfo sample after the gesture reported 325 rendered frames, 324 janky (99.69%), p90 34 ms, p95 38 ms, p99 44 ms. This misses the release threshold and is not representative physical-device proof, so the required physical-device 100+ track profiling item was added to `publish-todo.md`. Raw output: `card3843-kunlun-gfxinfo-after.txt`.
+
+Connected instrumentation was not run because the project-supported `kunlun-sync.sh` transfers only the app APK and has no connected-test APK mode; manual source/test synchronization to Kunlun is prohibited by project policy.

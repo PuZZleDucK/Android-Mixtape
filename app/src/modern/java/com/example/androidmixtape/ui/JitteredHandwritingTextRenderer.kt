@@ -77,13 +77,53 @@ fun JitteredHandwritingText(
             handwritingJitterSamples(startIndex, tokens.size, effectiveStrength)
         }
     }
-    val style = TextStyle(
-        color = color,
-        fontSize = fontSize,
-        fontFamily = fontFamily,
-        fontStyle = fontStyle,
-        fontWeight = fontWeight,
-    )
+    // Keep geometry independent from the draw-time color so highlighting the
+    // current row does not remeasure every character.
+    val measuredTokens = remember(
+        tokens,
+        textMeasurer,
+        fontSize,
+        fontFamily,
+        fontStyle,
+        fontWeight,
+        density.density,
+        density.fontScale,
+    ) {
+        val measurementStyle = TextStyle(
+            fontSize = fontSize,
+            fontFamily = fontFamily,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+        )
+        tokens.map { token ->
+            token to textMeasurer.measure(AnnotatedString(token), style = measurementStyle, maxLines = 1)
+        }
+    }
+    val ellipsisLayout = remember(
+        overflow,
+        textMeasurer,
+        fontSize,
+        fontFamily,
+        fontStyle,
+        fontWeight,
+        density.density,
+        density.fontScale,
+    ) {
+        if (overflow == TextOverflow.Ellipsis) {
+            textMeasurer.measure(
+                AnnotatedString("…"),
+                style = TextStyle(
+                    fontSize = fontSize,
+                    fontFamily = fontFamily,
+                    fontStyle = fontStyle,
+                    fontWeight = fontWeight,
+                ),
+                maxLines = 1,
+            )
+        } else {
+            null
+        }
+    }
 
     Canvas(
         modifier = modifier
@@ -93,14 +133,6 @@ fun JitteredHandwritingText(
         val minimumDrawableWidth = 1f
         if (text.isEmpty() || maxLines <= 0 || size.width < minimumDrawableWidth) return@Canvas
 
-        val measuredTokens = tokens.map { token ->
-            token to textMeasurer.measure(AnnotatedString(token), style = style, maxLines = 1)
-        }
-        val ellipsisLayout = if (overflow == TextOverflow.Ellipsis) {
-            textMeasurer.measure(AnnotatedString("…"), style = style, maxLines = 1)
-        } else {
-            null
-        }
         val emPx = max(fontSize.toPx(), 1f)
         var measuredWidth = 0f
         val visibleTokens = mutableListOf<Pair<String, androidx.compose.ui.text.TextLayoutResult>>()

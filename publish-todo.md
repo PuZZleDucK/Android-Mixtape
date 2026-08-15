@@ -83,6 +83,7 @@ Research checked against current Google Play and Android documentation on 2026-0
 
 ## Final release preparation
 
+- [ ] Profile and optimize Now Playing track-list scrolling on a representative physical device with a 100+ track tape; resolve sustained >10% janky frames or >32 ms 95th-percentile frame time. Emulator evidence: `docs/evidence/card3843-kunlun-gfxinfo-after.txt`.
 - [ ] Test a clean install from the Play-generated package with no previous preferences or media permissions.
 - [ ] Test upgrade behavior from the last distributed build without clearing user data.
 - [ ] Verify the store listing, privacy policy, Data safety answers, content rating, screenshots, and submitted bundle all describe the same release.
