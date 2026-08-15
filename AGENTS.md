@@ -1,6 +1,7 @@
 # Android Mixtape Agent Notes
 
 - The canonical project source is `/home/puzzleduck/x/android-mixtape` on Artigas.
+- Push commits to `origin` only when the user explicitly requests a push in the current conversation. Never push automatically as part of completing or committing work.
 - Use `./kunlun-sync.sh` for all routine testing on the Kunlun Android emulator. Do not manually copy or synchronize project source to Kunlun. The script sends only the modern debug APK to `kunlun.local:~/x/remote-mixtape-testing/`.
 - Main script options:
   - `--launch-emulator` plays an audible three-note warning, then launches the visible API 24 emulator.
