@@ -1,0 +1,11 @@
+09-09 01:11:34.876  3488  3503 I System.out: PASS ready with two tracks
+09-09 01:11:35.058  3488  3503 I System.out: PASS live playback snapshot
+09-09 01:11:35.086  3488  3503 I System.out: PASS pause snapshot
+09-09 01:11:35.614  3488  3503 I System.out: PASS external seek 10000 marks discontinuity
+09-09 01:11:35.842  3488  3503 I System.out: PASS external seek 2000 marks discontinuity
+09-09 01:11:36.069  3488  3503 I System.out: PASS external seek 25000 marks discontinuity
+09-09 01:11:36.296  3488  3503 I System.out: PASS external seek 0 marks discontinuity
+09-09 01:11:36.525  3488  3503 I System.out: PASS track change settles at second track
+09-09 01:11:36.553  3488  3503 I System.out: PASS resume after seeks
+09-09 01:11:36.580  3488  3503 I System.out: PASS stop publishes not playing
+09-09 01:11:36.608  3488  3503 I System.out: PASS queue reset clears tracks
