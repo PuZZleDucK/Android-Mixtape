@@ -1,0 +1,5 @@
+--- a/app/src/modern/java/com/example/androidmixtape/ui/SettingsComponents.kt
++++ b/app/src/modern/java/com/example/androidmixtape/ui/SettingsComponents.kt
+@@ -64,1 +64,1 @@
+-                        modifier = Modifier.semantics { contentDescription = "Back to $backLabel" },
++                        modifier = Modifier.semantics { contentDescription = if (backLabel == "Back") "Back" else "Back to $backLabel" },

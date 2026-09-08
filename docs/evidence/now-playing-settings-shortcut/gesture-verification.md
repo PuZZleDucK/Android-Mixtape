@@ -69,3 +69,16 @@ The remaining label comes from `SettingsComponents.kt:64`, which builds `Back to
 There is also a connected-test portability gap. `NowPlayingSettingsGestureTest.kt:55` requires the exact description `Back to Back`. The committed Settings screen instead has a text button labeled `Mix Tapes`, wired to the origin-aware callback. The previous isolated-tree unit run does not prove that this connected test passes against the committed UI. Before Review, give the root Settings Back button a stable semantic target in both layouts, remove the redundant accessible wording without importing unrelated changes, and rerun the connected gesture test against the resulting committed UI. Retain the already recorded playback and theme evidence, but do not describe it as an isolated-commit runtime test.
 
 This audit changed documentation only. No fresh build, deployment or runtime verification was performed.
+
+
+## Back target closure
+
+Committed fb49d9d gives the original Settings layout an enabled, origin-neutral Back button with content description `Back`. The gesture test now targets that description instead of the redesign-only `Back to Back` wording.
+
+A detached fb49d9d build passed all 257 unit tests. Kunlun API 24 passed both connected gesture and fresh-store persistence tests against that build. `committed-back/` contains logs, XML and gear/Settings/header-Back screenshots. The committed Gradle configuration still uses the historical `com.example.androidmixtape` ID. Deployment initially launched the existing org.puzzleduck.mixtape installation; those exploratory screenshots were replaced. The retained scoped screenshots were captured after an explicit historical-package launch through kunlun-sync.sh. Scoped APK SHA-256: 24a252a9440034176b86e3d0daacc0def7cc5e83a0314da71688996be8e1a0df. The initial test-only APK rejection was resolved by repackaging with android.injected.testOnly=false.
+
+Also fixed the redundant label in the unrelated untracked SettingsComponents.kt, without committing that whole redesign. The exact one-line change is preserved in settings-redesign-back-label.patch and is already applied to the working tree. Rebuilt the current modern org.puzzleduck.mixtape APK, deployed through kunlun-sync.sh, and passed the connected gesture test against this layout too. Reinstalled after orchestration, granted emulator audio permission, and captured integration-settings.png and integration-back-player.png. These are current working-tree integration evidence, not isolated-commit screenshots.
+
+Earlier nested visual-edit, playing/paused continuity and theme matrix evidence remains applicable; this pass changed Back wording and its test target only. The documented seven unrelated lint errors remain, with the earlier baseline comparison unchanged. No lint rerun or new continuity measurement is claimed.
+
+All scoped implementation and test changes are committed. The integration-only label patch is committed as a patch so the unrelated redesign stays untracked. Stopped the owned Kunlun emulator, SSH tunnel and idle Gradle/Kotlin daemons, removed the detached worktree, and left the updated modern APK installed. Nothing pushed. Ready for Review.

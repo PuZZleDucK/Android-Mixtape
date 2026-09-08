@@ -1,0 +1,9 @@
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+Performing Streamed Install
+Success
+    mResumedActivity: ActivityRecord{9d24aa9 u0 org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity t462}
+Saved screenshot: .work/card-4834/back-fix/integration-launched.png
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+Performing Streamed Install
+Success
+    mResumedActivity: ActivityRecord{23e596e u0 org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity t463}
