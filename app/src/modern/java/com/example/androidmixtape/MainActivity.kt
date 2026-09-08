@@ -80,6 +80,7 @@ class MainActivity : ComponentActivity() {
                     onRequestPermission = { permission?.let(requestPermission::launch) ?: viewModel.onPermissionResult(true) },
                     onRefresh = viewModel::refresh,
                     onShowSettings = viewModel::showSettings,
+                    onExitSettings = viewModel::exitSettings,
                     onShowHelp = viewModel::showHelp,
                     onShowMixtapeNames = viewModel::showMixtapeNames,
                     onShowMixtapeSymbolSettings = viewModel::showMixtapeSymbolSettings,

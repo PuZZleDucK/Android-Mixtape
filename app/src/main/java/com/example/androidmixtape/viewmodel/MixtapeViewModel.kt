@@ -417,7 +417,22 @@ class MixtapeViewModel(
         )
     }
 
+    private var settingsReturnScreen = MixtapeScreen.MixTapes
+
+    fun exitSettings() {
+        _uiState.value = controller.toUiState(
+            status = LibraryStatus.Ready,
+            screen = settingsReturnScreen,
+            message = _uiState.value.message,
+        )
+    }
+
     fun showSettings() {
+        // Nested settings Back must not replace the original destination.
+        if (_uiState.value.screen == MixtapeScreen.NowPlaying ||
+            _uiState.value.screen == MixtapeScreen.MixTapes) {
+            settingsReturnScreen = _uiState.value.screen
+        }
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
             screen = MixtapeScreen.Settings,

@@ -1,5 +1,6 @@
 package com.example.androidmixtape.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -198,6 +199,7 @@ fun MixtapeApp(
     onShowExclusionSettings: () -> Unit = {},
     onMixTapeGroupClick: (Int) -> Unit = {},
     onBackToMixTapes: () -> Unit = {},
+    onExitSettings: () -> Unit = onBackToMixTapes,
     onTogglePlayPause: () -> Unit,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
@@ -229,8 +231,12 @@ fun MixtapeApp(
     onSleeveThemeEnabledChange: (SleeveTheme, Boolean) -> Unit = { _, _ -> },
     onUpdateCurrentMixtapeCustomization: (MixtapeCustomization) -> Unit = {},
 ) {
+    var bodyMode by rememberSaveable { mutableStateOf(NowPlayingBodyMode.Tracks) }
     val mixTapeListState = rememberLazyListState()
     val mixTapeGridState = rememberLazyGridState()
+    if (state.status == LibraryStatus.Ready && state.screen !in setOf(MixtapeScreen.MixTapes, MixtapeScreen.NowPlaying, MixtapeScreen.TrackInfo)) {
+        BackHandler { if (state.screen == MixtapeScreen.Settings) onExitSettings() else onShowSettings() }
+    }
     CompositionLocalProvider(LocalHandwritingMessiness provides state.mixtapeSettings.handwritingMessiness) {
         Scaffold(containerColor = state.mixtapeThemeSettings.deckTheme.backgroundColor()) { padding ->
         Column(
@@ -256,6 +262,9 @@ fun MixtapeApp(
                     )
                     MixtapeScreen.NowPlaying -> NowPlaying(
                         state = state,
+                        bodyMode = bodyMode,
+                        onBodyModeChange = { bodyMode = it },
+                        onShowSettings = onShowSettings,
                         mixTapeListState = mixTapeListState,
                         mixTapeGridState = mixTapeGridState,
                         onMixTapeGroupClick = onMixTapeGroupClick,
@@ -282,7 +291,7 @@ fun MixtapeApp(
                         songsPerMixTape = state.mixtapeSettings.songsPerMixTape,
                         artistGrouping = state.mixtapeSettings.artistGrouping,
                         handwritingMessiness = state.mixtapeSettings.handwritingMessiness,
-                        onBackToMixTapes = onBackToMixTapes,
+                        onBackToMixTapes = onExitSettings,
                         onShowHelp = onShowHelp,
                         onShowMixtapeNames = onShowMixtapeNames,
                         onShowMixtapeSymbolSettings = onShowMixtapeSymbolSettings,
@@ -2419,6 +2428,7 @@ private fun NowPlayingModeToggleAndSpine(
     bodyMode: NowPlayingBodyMode,
     onBodyModeChange: (NowPlayingBodyMode) -> Unit,
     onCustomize: () -> Unit,
+    onShowSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val currentGroup = state.mixTapeGroups.getOrNull(state.currentMixtapeIndex)
@@ -2485,6 +2495,7 @@ private fun NowPlayingModeToggleAndSpine(
                 )
             }
             DeckViewToggle(
+                onShowSettings = onShowSettings,
                 deckTheme = state.mixtapeThemeSettings.deckTheme,
                 bodyMode = bodyMode,
                 onClick = {
@@ -2497,10 +2508,12 @@ private fun NowPlayingModeToggleAndSpine(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DeckViewToggle(
     deckTheme: DeckTheme,
     bodyMode: NowPlayingBodyMode,
+    onShowSettings: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -2510,7 +2523,12 @@ private fun DeckViewToggle(
             .size(48.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(palette.body)
-            .clickable(onClick = onClick)
+            .combinedClickable(
+                role = androidx.compose.ui.semantics.Role.Button,
+                onClick = onClick,
+                onLongClickLabel = "Open Settings",
+                onLongClick = onShowSettings,
+            )
             .semantics {
                 contentDescription = if (bodyMode == NowPlayingBodyMode.Tracks) {
                     "Show mix tape list"
@@ -2552,6 +2570,17 @@ private fun DeckViewToggle(
             color = palette.button,
             reverseHead = true,
         )
+        // Decorative gear shares the arrows' full gesture target.
+        val gearCenter = Offset(size.width - 1.dp.toPx(), size.height - 1.dp.toPx())
+        drawCircle(palette.body, 8.dp.toPx(), gearCenter)
+        repeat(8) { tooth ->
+            rotate(tooth * 45f, gearCenter) {
+                drawLine(palette.accent, gearCenter + Offset(0f, -4.dp.toPx()),
+                    gearCenter + Offset(0f, -6.dp.toPx()), strokeWidth = 2.5.dp.toPx())
+            }
+        }
+        drawCircle(palette.accent, 4.dp.toPx(), gearCenter)
+        drawCircle(palette.body, 1.8.dp.toPx(), gearCenter)
     }
 }
 
@@ -2740,6 +2769,9 @@ private fun StaticTrackListPreview(modifier: Modifier = Modifier) {
 @Composable
 private fun NowPlaying(
     state: MixtapeUiState,
+    bodyMode: NowPlayingBodyMode,
+    onBodyModeChange: (NowPlayingBodyMode) -> Unit,
+    onShowSettings: () -> Unit,
     mixTapeListState: LazyListState,
     mixTapeGridState: LazyGridState,
     onMixTapeGroupClick: (Int) -> Unit,
@@ -2755,7 +2787,6 @@ private fun NowPlaying(
     onUpdateCurrentMixtapeCustomization: (MixtapeCustomization) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var bodyMode by rememberSaveable { mutableStateOf(NowPlayingBodyMode.Tracks) }
     var isCustomizerOpen by remember { mutableStateOf(false) }
     var lastCenteredMixtapeIndex by remember { mutableStateOf<Int?>(null) }
     val audioLevels by AudioLevelMonitor.levels.collectAsState()
@@ -2838,7 +2869,8 @@ private fun NowPlaying(
                     NowPlayingModeToggleAndSpine(
                         state = state,
                         bodyMode = bodyMode,
-                        onBodyModeChange = { bodyMode = it },
+                        onBodyModeChange = onBodyModeChange,
+                        onShowSettings = onShowSettings,
                         onCustomize = { isCustomizerOpen = true },
                     )
                 }
@@ -2920,7 +2952,8 @@ private fun NowPlaying(
                 NowPlayingModeToggleAndSpine(
                     state = state,
                     bodyMode = bodyMode,
-                    onBodyModeChange = { bodyMode = it },
+                    onBodyModeChange = onBodyModeChange,
+                    onShowSettings = onShowSettings,
                     onCustomize = { isCustomizerOpen = true },
                 )
                 if (bodyMode == NowPlayingBodyMode.Tracks) {
