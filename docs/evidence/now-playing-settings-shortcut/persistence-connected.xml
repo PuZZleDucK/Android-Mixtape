@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.example.androidmixtape.ui.NowPlayingSettingsPersistenceTest" tests="1" failures="0" errors="0" skipped="0" time="1.462" timestamp="2026-09-08T17:28:50" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 7.0" />
+    <property name="flavor" value="modern" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="visualEditsReloadFromFreshStores" classname="com.example.androidmixtape.ui.NowPlayingSettingsPersistenceTest" time="0.022" />
+</testsuite>
