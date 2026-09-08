@@ -30,6 +30,7 @@ class CounterWheelsTest {
     private val playing = mutableStateOf(true)
     private val revision = mutableStateOf(0L)
     private val motion = mutableStateOf(true)
+    private val counterVisible = mutableStateOf(true)
 
     private fun show() {
         compose.mainClock.autoAdvance = false
@@ -37,8 +38,10 @@ class CounterWheelsTest {
             AndroidMixtapeTheme {
                 Box(Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
                     Box(Modifier.size(84.dp, 30.dp).testTag("window"), contentAlignment = Alignment.Center) {
-                        CounterWheels(value.value, playing.value, revision.value, Color.White,
-                            Modifier.testTag("digits"), motion.value)
+                        if (counterVisible.value) {
+                            CounterWheels(value.value, playing.value, revision.value, Color.White,
+                                Modifier.testTag("digits"), motion.value)
+                        }
                     }
                 }
             }
@@ -154,6 +157,28 @@ class CounterWheelsTest {
         } finally {
             scale(original)
         }
+    }
+
+    @Test fun remountDuringCarryStartsAtLatestValueWithoutStaleCompletion() {
+        show()
+        update(99, discontinuity = true)
+        val before = frame("remount-099")
+        update(100)
+        compose.mainClock.advanceTimeBy(32)
+        assertFalse(equalPixels(before, frame("remount-moving-100")))
+        compose.runOnIdle { counterVisible.value = false }
+        compose.mainClock.advanceTimeByFrame()
+        compose.onNodeWithTag("digits").assertDoesNotExist()
+        // The composition and its animation coroutine are destroyed. The current
+        // player value survives outside it, as it does across layout replacement.
+        compose.runOnIdle { value.value = 321; counterVisible.value = true }
+        compose.mainClock.advanceTimeByFrame()
+        compose.onNodeWithContentDescription("Tape counter 321").assertExists()
+        val remounted = frame("remount-current-321")
+        compose.mainClock.advanceTimeBy(500)
+        assertTrue("Disposed carry must not restore 100", equalPixels(remounted, frame("remount-later-321")))
+        update(321, discontinuity = true)
+        assertTrue("Remount must start settled", equalPixels(remounted, frame("remount-reference-321")))
     }
 
     @Test fun interruptionsAndRepeatedUpdatesNeverRestoreStaleDigits() {
