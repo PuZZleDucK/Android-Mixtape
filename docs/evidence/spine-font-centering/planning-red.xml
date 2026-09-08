@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.example.androidmixtape.ui.SpineTitleHorizontalPlacementTest" tests="1" failures="1" errors="0" skipped="0" time="2.788" timestamp="2026-09-08T18:34:21" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 7.0" />
+    <property name="flavor" value="modern" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="fittingInkCentersWithinReservedTitleViewport" classname="com.example.androidmixtape.ui.SpineTitleHorizontalPlacementTest" time="1.35">
+    <failure>java.lang.AssertionError: 96/96 placement cases failed:
+Kalam width=180.0 title=W seed=971 ink=[5,31) viewport=132
+Kalam width=180.0 title=W seed=42 ink=[4,31) viewport=132
+Kalam width=180.0 title=gj seed=971 ink=[0,24) viewport=132
+Kalam width=180.0 title=gj seed=42 ink=[0,26) viewport=132
+Kalam width=280.0 title=W seed=971 ink=[7,48) viewport=206
+Kalam width=280.0 title=W seed=42 ink=[7,49) viewport=206
+Kalam width=280.0 title=gj seed=971 ink=[0,39) viewport=206
+Kalam width=280.0 title=gj seed=42 ink=[0,43) viewport=206
+Kalam width=480.0 title=W seed=971 ink=[13,82) viewport=353
+Kalam width=480.0 title=W seed=42 ink=[11,84) viewport=353
+Kalam width=480.0 title=gj seed=971 ink=[0,66) viewport=353
+Kalam width=480.0 title=gj seed=42 ink=[0,76) viewport=353
+PatrickHand width=180.0 title=W seed=971 ink=[5,28) viewport=132
+PatrickHand width=180.0 title=W seed=42 ink=[4,29) viewport=132
+PatrickHand width=180.0 title=gj seed=971 ink=[2,21) viewport=132
+PatrickHand width=180.0 title=gj seed=42 ink=[1,23) viewport=132
+PatrickHand width=280.0 title=W seed=971 ink=[8,43) viewport=206
+PatrickHand width=280.0 title=W seed=42 ink=[8,45) viewport=206
+PatrickHand width=280.0 title=gj seed=971 ink=[3,34) viewport=206
+PatrickHand width=280.0 title=gj seed=42 ink=[1,37) viewport=206
+PatrickHand width=480.0 title=W seed=971 ink=[14,73) viewport=353
+PatrickHand width=480.0 title=W seed=42 ink=[13,77) viewport=353
+PatrickHand width=480.0 title=gj seed=971 ink=[6,58) viewport=353
+PatrickHand width=480.0 title=gj seed=42 ink=[2,65) viewport=353
+Caveat width=180.0 title=W seed=971 ink=[6,36) viewport=132
+Caveat width=180.0 title=W seed=42 ink=[5,39) viewport=132
+Caveat width=180.0 title=gj seed=971 ink=[3,24) viewport=132
+Caveat width=180.0 title=gj seed=42 ink=[2,27) viewport=132
+Caveat width=280.0 title=W seed=971 ink=[10,59) viewport=206
+Caveat width=280.0 title=W seed=42 ink=[9,61) viewport=206
+Caveat width=280.0 title=gj seed=971 ink=[5,40) viewport=206
+Caveat width=280.0 title=gj seed=42 ink=[4,45) viewport=206
+Caveat width=480.0 title=W seed=971 ink=[17,101) viewport=353
+Caveat width=480.0 title=W seed=42 ink=[15,104) viewport=353
+Caveat width=480.0 title=gj seed=971 ink=[9,69) viewport=353
+Caveat width=480.0 title=gj seed=42 ink=[6,79) viewport=353
+NanumPenScript width=180.0 title=W seed=971 ink=[6,29) viewport=132
+NanumPenScript width=180.0 title=W seed=42 ink=[6,30) viewport=132
+NanumPenScript width=180.0 title=gj seed=971 ink=[2,25) viewport=132
+NanumPenScript width=180.0 title=gj seed=42 ink=[1,29) viewport=132
+NanumPenScript width=280.0 title=W seed=971 ink=[9,44) viewport=206
+NanumPenScript width=280.0 title=W seed=42 ink=[9,46) viewport=206
+NanumPenScript width=280.0 title=gj seed=971 ink=[4,37) viewport=206
+NanumPenScript width=280.0 title=gj seed=42 ink=[2,44) viewport=206
+NanumPenScript width=480.0 title=W seed=971 ink=[15,76) viewport=353
+NanumPenScript width=480.0 title=W seed=42 ink=[16,78) viewport=353
+NanumPenScript width=480.0 title=gj seed=971 ink=[7,64) viewport=353
+NanumPenScript width=480.0 title=gj seed=42 ink=[4,75) viewport=353
+IndieFlower width=180.0 title=W seed=971 ink=[4,27) viewport=132
+IndieFlower width=180.0 title=W seed=42 ink=[3,27) viewport=132
+IndieFlower width=180.0 title=gj seed=971 ink=[0,14) viewport=132
+IndieFlower width=180.0 title=gj seed=42 ink=[0,17) viewport=132
+IndieFlower width=280.0 title=W seed=971 ink=[6,41) viewport=206
+IndieFlower width=280.0 title=W seed=42 ink=[6,42) viewport=206
+IndieFlower width=280.0 title=gj seed=971 ink=[0,23) viewport=206
+IndieFlower width=280.0 title=gj seed=42 ink=[0,26) viewport=206
+IndieFlower width=480.0 title=W seed=971 ink=[9,70) viewport=353
+IndieFlower width=480.0 title=W seed=42 ink=[10,71) viewport=353
+IndieFlower width=480.0 title=gj seed=971 ink=[0,39) viewport=353
+IndieFlower width=480.0 title=gj seed=42 ink=[0,46) viewport=353
+GloriaHallelujah width=180.0 title=W seed=971 ink=[5,32) viewport=132
+GloriaHallelujah width=180.0 title=W seed=42 ink=[5,35) viewport=132
+GloriaHallelujah width=180.0 title=gj seed=971 ink=[1,17) viewport=132
+GloriaHallelujah width=180.0 title=gj seed=42 ink=[0,18) viewport=132
+GloriaHallelujah width=280.0 title=W seed=971 ink=[8,52) viewport=206
+GloriaHallelujah width=280.0 title=W seed=42 ink=[7,53) viewport=206
+GloriaHallelujah width=280.0 title=gj seed=971 ink=[2,28) viewport=206
+GloriaHallelujah width=280.0 title=gj seed=42 ink=[0,30) viewport=206
+GloriaHallelujah width=480.0 title=W seed=971 ink=[13,88) viewport=353
+GloriaHallelujah width=480.0 title=W seed=42 ink=[13,91) viewport=353
+GloriaHallelujah width=480.0 title=gj seed=971 ink=[3,49) viewport=353
+GloriaHallelujah width=480.0 title=gj seed=42 ink=[0,52) viewport=353
+ArchitectsDaughter width=180.0 title=W seed=971 ink=[6,35) viewport=132
+ArchitectsDaughter width=180.0 title=W seed=42 ink=[6,39) viewport=132
+ArchitectsDaughter width=180.0 title=gj seed=971 ink=[1,19) viewport=132
+ArchitectsDaughter width=180.0 title=gj seed=42 ink=[0,20) viewport=132
+ArchitectsDaughter width=280.0 title=W seed=971 ink=[9,58) viewport=206
+ArchitectsDaughter width=280.0 title=W seed=42 ink=[11,61) viewport=206
+ArchitectsDaughter width=280.0 title=gj seed=971 ink=[2,32) viewport=206
+ArchitectsDaughter width=280.0 title=gj seed=42 ink=[0,34) viewport=206
+ArchitectsDaughter width=480.0 title=W seed=971 ink=[16,100) viewport=353
+ArchitectsDaughter width=480.0 title=W seed=42 ink=[18,103) viewport=353
+ArchitectsDaughter width=480.0 title=gj seed=971 ink=[4,54) viewport=353
+ArchitectsDaughter width=480.0 title=gj seed=42 ink=[0,59) viewport=353
+ShadowsIntoLight width=180.0 title=W seed=971 ink=[5,32) viewport=132
+ShadowsIntoLight width=180.0 title=W seed=42 ink=[6,35) viewport=132
+ShadowsIntoLight width=180.0 title=gj seed=971 ink=[0,16) viewport=132
+ShadowsIntoLight width=180.0 title=gj seed=42 ink=[0,16) viewport=132
+ShadowsIntoLight width=280.0 title=W seed=971 ink=[9,52) viewport=206
+ShadowsIntoLight width=280.0 title=W seed=42 ink=[10,54) viewport=206
+ShadowsIntoLight width=280.0 title=gj seed=971 ink=[1,25) viewport=206
+ShadowsIntoLight width=280.0 title=gj seed=42 ink=[0,28) viewport=206
+ShadowsIntoLight width=480.0 title=W seed=971 ink=[15,89) viewport=353
+ShadowsIntoLight width=480.0 title=W seed=42 ink=[17,91) viewport=353
+ShadowsIntoLight width=480.0 title=gj seed=971 ink=[2,44) viewport=353
+ShadowsIntoLight width=480.0 title=gj seed=42 ink=[0,48) viewport=353
+at org.junit.Assert.fail(Assert.java:89)
+at org.junit.Assert.assertTrue(Assert.java:42)
+at com.example.androidmixtape.ui.SpineTitleHorizontalPlacementTest.fittingInkCentersWithinReservedTitleViewport$lambda$2(SpineTitleHorizontalPlacementTest.kt:71)
+at com.example.androidmixtape.ui.SpineTitleHorizontalPlacementTest.$r8$lambda$nT1M7vDhrVWLg8ta4vaNO9dsjJw(SpineTitleHorizontalPlacementTest.kt)
+at com.example.androidmixtape.ui.SpineTitleHorizontalPlacementTest$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+at androidx.compose.ui.test.AndroidSynchronization_androidKt.runOnUiThread$lambda$0(AndroidSynchronization.android.kt:37)
+at androidx.compose.ui.test.AndroidSynchronization_androidKt.$r8$lambda$opyMdTZ52jorqLaIG4SKpPr_Zno(AndroidSynchronization.android.kt)
+at androidx.compose.ui.test.AndroidSynchronization_androidKt$$ExternalSyntheticLambda0.call(D8$$SyntheticClass:0)
+at java.util.concurrent.FutureTask.run(FutureTask.java:237)
+at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:428)
+at java.util.concurrent.FutureTask.run(FutureTask.java:237)
+at android.app.Instrumentation$SyncRunnable.run(Instrumentation.java:1950)
+at android.os.Handler.handleCallback(Handler.java:751)
+at android.os.Handler.dispatchMessage(Handler.java:95)
+at android.os.Looper.loop(Looper.java:154)
+at android.app.ActivityThread.main(ActivityThread.java:6077)
+at java.lang.reflect.Method.invoke(Native Method)
+at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:866)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:756)
+</failure>
+  </testcase>
+</testsuite>
