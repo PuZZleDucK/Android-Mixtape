@@ -18,7 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/** Card 4833: deliberately red until fitting ink is centered in the title-only viewport. */
+/** Fitting visible ink centers in the reserved title viewport, never against the badge. */
 @RunWith(AndroidJUnit4::class)
 class SpineTitleHorizontalPlacementTest {
     @get:Rule val compose = createComposeRule()
@@ -39,7 +39,7 @@ class SpineTitleHorizontalPlacementTest {
                         fontWeight = font.effectiveCassetteWeight(FontWeight.ExtraBold),
                         fontStyle = FontStyle.Italic,
                     )
-                    for (title in listOf("W", "gj")) {
+                    for (title in listOf("W", "gj", "Agjpqy", "ÉÅgj")) {
                         val tokens = title.map { it.toString() }.map {
                             it to measurer.measure(AnnotatedString(it), style, density = Density(1f))
                         }
@@ -68,7 +68,7 @@ class SpineTitleHorizontalPlacementTest {
                     }
                 }
             }
-            assertTrue("${failures.size}/96 placement cases failed:\n${failures.joinToString("\n")}", failures.isEmpty())
+            assertTrue("${failures.size}/192 placement cases failed:\n${failures.joinToString("\n")}", failures.isEmpty())
         }
     }
 }

@@ -1,0 +1,7 @@
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/intermediates/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+Performing Streamed Install
+Success
+    mResumedActivity: ActivityRecord{a348d63 u0 org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity t495}
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/intermediates/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+    mResumedActivity: ActivityRecord{a3e14f0 u0 org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity t496}
+Saved screenshot: docs/evidence/spine-font-centering/deployed-library.png

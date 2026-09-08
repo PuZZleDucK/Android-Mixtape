@@ -1,0 +1,2 @@
+Modern unit suite: tests=272 failures=0 errors=0 skipped=0
+Connected raster checks: 3 methods passed; 2160 vertical + 192 horizontal + 1342 padded-reference cases

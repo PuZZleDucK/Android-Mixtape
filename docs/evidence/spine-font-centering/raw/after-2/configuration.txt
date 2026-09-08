@@ -1,0 +1,1 @@
+{1.0 310mcc260mnc [en_US] ldltr sw411dp w683dp h387dp 420dpi nrml land finger -keyb/v/h -nav/h s.21}
