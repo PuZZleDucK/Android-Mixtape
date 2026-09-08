@@ -1,0 +1,6 @@
+
+com.example.androidmixtape.ui.SegmentedMeterUiTest:..
+
+Time: 55.152
+
+OK (2 tests)

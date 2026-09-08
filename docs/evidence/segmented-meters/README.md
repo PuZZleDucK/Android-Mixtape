@@ -1,20 +1,23 @@
 # Segmented meters, card 4836
 
-Implementation checkpoint, not complete acceptance evidence.
+Blackout Portable and Sunset Boombox draw ten bottom-up cells from the existing independent audio levels. Other skins retain continuous fills. The mapping clamps inputs, clears inactive/nonfinite/missing levels and uses 0.02 falling hysteresis. Bounds, controls and labels are unchanged.
 
-Blackout Portable and Sunset Boombox now draw ten bottom-up cells from the existing independent audio levels. Other skins retain the continuous fill. The count helper clamps inputs, clears inactive/nonfinite/missing levels and uses 0.02 falling hysteresis. Bounds, controls and labels are unchanged.
+The monitor now clears stale data after 500 ms without PCM publication. Each publication renews that deadline, including identical levels that StateFlow does not re-emit. The timeout only clears levels; it never generates a signal. Processor flush/reset already clears both channels. Paused/stopped UI ignores the last level immediately.
 
-## Checks on 2026-09-08
+## Verification on 2026-09-08
 
-- Focused mapping and stereo source-contract tests passed.
-- Full modern unit execution passed, 252 tests, zero failures/errors/skips.
-- `assembleModernDebug` produced the APK installed on Kunlun API 24, emulator-5554, using `./kunlun-sync.sh --apk app/build/outputs/apk/modern/debug/app-modern-debug.apk --all ...`. Install reported Success. The initial capture showed the launcher during boot; a second script launch showed the app.
-- `lintModernDebug` failed with seven errors outside the changed meter code: WrongConstant and UnstableApi opt-in errors in MixtapeMediaLibraryService and AndroidAutoDiagnostics. These were not changed by this card.
-- Captured actual existing audio playback in both selected skins, Silverface continuous comparison, Blackout paused with zero lights, and Sunset portrait. Ten separate cells, gaps and L/R labels are visible without clipping. Sunset unlit contrast is weaker than Blackout and deserves another look in dark mode.
-- Skin selection for these captures used the debug app's shared preference through run-as, with force-stop/relaunch between skins. No fake meter signal was injected. Existing emulator tracks were used, not a calibrated amplitude fixture.
+- All 252 modern unit tests passed with no failures, errors or skips. Focused tests cover opt-in skins, every rising threshold, falling hysteresis, clamping, nonfinite/missing/inactive inputs and independent stereo state.
+- Built modern debug and its instrumentation APK. Installed both through `kunlun-sync.sh` on Kunlun API 24, `emulator-5554`, x86_64. No physical device was accessed.
+- `SegmentedMeterUiTest` passed both tests in portrait and again in landscape. Logs are `compose-portrait.txt` and `compose-landscape.txt`.
+- The PCM/Compose test covers both skins under light and dark Material color schemes. It verifies 2/5, 9/2 and 2/9 cells, falling response, pause, resumed playback, silence, flush and missing PCM. Sustained identical PCM for more than 500 ms remains active; 700 ms without PCM clears both channels.
+- The playback test generates a stereo 48 kHz WAV and plays it through a real ExoPlayer with the production MeteringRenderersFactory and AudioLevelMonitor. Its three-second phases request scaled levels 0.25/0.55, 0.95/0.25, 0.25/0.95 and silence. These produce 2/5, 9/2, 2/9 and 0/0 cells. It pauses/resumes, seeks, replaces loud playback with the silent tail and stops during loud playback. The test uses Player.isPlaying callbacks, not a fabricated playback timer. This is an instrumented player fixture, not the application's library/navigation flow; the earlier existing-track captures cover that flow.
+- Reviewed both playback sequence sheets and `appearance-matrix.png`. Cells have visible gaps and distinct unlit states; L/R labels and deck controls fit in both orientations. Sunset has subtler unlit contrast than Blackout but the cells remain distinguishable. Deck colors are fixed skin palettes, so light/dark Material schemes intentionally do not recolor them. The app currently supplies a light Material scheme itself.
+- Full screenshots are in `frames/`, with `1-` for portrait and `2-` for landscape. Playback sheets crop only the deck from those originals. Phase labels 0, 1, 2 and 3 mean low/mid, high/low, low/high and silence. Pause, replacement and stop are separate captures. Screenshots wait 150 ms after Compose settles so the presented framebuffer matches the semantics assertions.
 
-## Remaining before Review
+## Known limits outside this card
 
-Add Compose wiring/reset coverage, audit monitor reset on track replacement and absent PCM, capture calibrated low/medium/high and independent-channel rising/falling playback, stop/resume and missing-data behavior. Complete both-skin portrait/landscape and light/dark review. Current stills prove drawing and pause, not the full response contract. Resolve or clearly disposition the unrelated lint findings without taking over unrelated working-tree changes.
+`lintModernDebug` still reports the same seven errors in MixtapeMediaLibraryService and AndroidAutoDiagnostics, plus 31 warnings. The errors concern SessionResult constants and Media3 opt-in annotations, not meter code. `lint.txt` preserves the report. This card does not change those files or suppress their findings.
 
-Disposable build/deploy logs are under `.work/card-4836/`. Durable screenshots in this directory use Git LFS.
+The repository had unrelated working-tree changes before this work, including the existing AudioMeterScale extraction and scaling adjustment. They were present in the tested APK and remain uncommitted by this card. Only this card's stale-data reset hunk was staged in AudioLevelMonitor.
+
+Earlier stills remain as actual existing-track playback and Silverface continuous-meter comparisons. All PNG evidence uses Git LFS. Disposable logs and intermediate captures were kept in `.work/card-4836/` and obsolete copies removed before handoff.

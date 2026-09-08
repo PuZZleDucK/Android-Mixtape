@@ -28,11 +28,26 @@ internal object AudioLevelMonitor {
     private val mutableLevels = MutableStateFlow(StereoAudioLevels())
     val levels: StateFlow<StereoAudioLevels> = mutableLevels.asStateFlow()
 
-    fun update(left: Float, right: Float) {
-        mutableLevels.value = StereoAudioLevels(left.coerceIn(0f, 1f), right.coerceIn(0f, 1f))
+    private val expiryHandler by lazy { android.os.Handler(android.os.Looper.getMainLooper()) }
+    private var lastUpdateMs = 0L
+    private val expire = Runnable {
+        synchronized(this) {
+            if (SystemClock.elapsedRealtime() - lastUpdateMs >= 500L) reset()
+        }
     }
 
+    @Synchronized
+    fun update(left: Float, right: Float) {
+        lastUpdateMs = SystemClock.elapsedRealtime()
+        expiryHandler.removeCallbacks(expire)
+        mutableLevels.value = StereoAudioLevels(left.coerceIn(0f, 1f), right.coerceIn(0f, 1f))
+        // Clear stalled/missing PCM. This timeout never generates or raises a level.
+        expiryHandler.postDelayed(expire, 500L)
+    }
+
+    @Synchronized
     fun reset() {
+        expiryHandler.removeCallbacks(expire)
         mutableLevels.value = StereoAudioLevels()
     }
 }

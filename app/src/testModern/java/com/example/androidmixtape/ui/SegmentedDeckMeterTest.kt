@@ -2,11 +2,8 @@ package com.example.androidmixtape.ui
 
 import com.example.androidmixtape.viewmodel.DeckTheme
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
-// Planning-first executable specification. Production helpers intentionally absent.
 class SegmentedDeckMeterTest {
     @Test fun onlyTwoSkinsOptIn() {
         DeckTheme.values().forEach { theme ->
