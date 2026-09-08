@@ -1,0 +1,20 @@
+09-09 01:26:19.177  4588  4603 I System.out: PASS Activity initial scan finished
+09-09 01:26:19.213  4588  4603 I System.out: PASS ready with two tracks
+09-09 01:26:19.347  4588  4603 I System.out: PASS live playback snapshot
+09-09 01:26:19.374  4588  4603 I System.out: PASS pause snapshot
+09-09 01:26:19.902  4588  4603 I System.out: PASS external seek 10000 marks discontinuity
+09-09 01:26:20.130  4588  4603 I System.out: PASS external seek 2000 marks discontinuity
+09-09 01:26:20.357  4588  4603 I System.out: PASS external seek 25000 marks discontinuity
+09-09 01:26:20.585  4588  4603 I System.out: PASS external seek 0 marks discontinuity
+09-09 01:26:20.814  4588  4603 I System.out: PASS track change settles at second track
+09-09 01:26:20.841  4588  4603 I System.out: PASS resume after seeks
+09-09 01:26:20.841  4588  4603 I System.out: PASS Activity ViewModel receives live service queue
+09-09 01:26:21.215  4588  4603 I System.out: PASS playback survives Activity rotation and recreation
+09-09 01:26:21.252  4588  4603 I System.out: PASS recreated Activity receives external reset
+09-09 01:26:21.900  4588  4603 I System.out: PASS recreated production deck settles on 000 with no stale digits
+09-09 01:26:21.940  4588  4603 I System.out: PASS local fast-forward reaches second track
+09-09 01:26:21.950  4588  4603 I System.out: PASS second track paused at start
+09-09 01:26:22.050  4588  4603 I System.out: PASS local rewind reaches first track
+09-09 01:26:22.190  4588  4603 I System.out: PASS local stop resets counter
+09-09 01:26:22.233  4588  4603 I System.out: PASS stop publishes not playing
+09-09 01:26:22.266  4588  4603 I System.out: PASS queue reset clears tracks

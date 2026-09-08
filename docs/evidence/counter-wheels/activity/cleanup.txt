@@ -1,0 +1,6 @@
+OK: killing emulator, bye bye
+OK
+1660913 bash -c /home/puzzleduck/Android/Sdk/platform-tools/adb -s emulator-5554 emu kill; sleep 3; pgrep -af "qemu-system.*api24-mixtape" || true
+Stopping Daemon(s)
+1 Daemon stopped
+    PID COMMAND
