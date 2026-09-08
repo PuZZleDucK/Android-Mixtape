@@ -61,3 +61,11 @@ Redeployed the unchanged APK through kunlun-sync.sh on Kunlun API 24. Added a te
 The playing-before, playing-theme-selected, playing-back-settings and playing-back-player screenshots show Silverface Hi Fi changing to Blackout Portable, nested Back to Settings and Back to the same tape and track-list mode. The three playing-roundtrip dumps retain PID 3841, queue size 56, active item 32 and Settings continuity 4834. State stays 3 with speed 1.0. Positions advance from 15046 to 21076 to 24079 ms while update timestamps advance from 445054 to 451085 to 454086 ms. This samples uninterrupted progress across the edit, supported by the existing engine-command regression tests; it is not continuous audio instrumentation. Saved production preferences record BlackoutPortable.
 
 No production or test bytes changed and no fresh build was needed. Stopped the owned emulator and removed the temporary local audio fixture. The emulator retains its test audio. Remaining before Review is the redundant Back accessibility label in the unrelated uncommitted Settings redesign. Preserve that redesign when fixing it.
+
+## Handoff audit
+
+The remaining label comes from `SettingsComponents.kt:64`, which builds `Back to $backLabel`, together with `MixtapeApp.kt:607`, which supplies `backLabel = "Back"`. `SettingsComponents.kt` is an untracked part of the existing settings redesign, not part of this card's committed implementation. Do not stage that entire redesign as a shortcut fix.
+
+There is also a connected-test portability gap. `NowPlayingSettingsGestureTest.kt:55` requires the exact description `Back to Back`. The committed Settings screen instead has a text button labeled `Mix Tapes`, wired to the origin-aware callback. The previous isolated-tree unit run does not prove that this connected test passes against the committed UI. Before Review, give the root Settings Back button a stable semantic target in both layouts, remove the redundant accessible wording without importing unrelated changes, and rerun the connected gesture test against the resulting committed UI. Retain the already recorded playback and theme evidence, but do not describe it as an isolated-commit runtime test.
+
+This audit changed documentation only. No fresh build, deployment or runtime verification was performed.
