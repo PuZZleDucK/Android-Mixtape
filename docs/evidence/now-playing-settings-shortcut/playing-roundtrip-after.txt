@@ -1,0 +1,73 @@
+MEDIA SESSION SERVICE (dumpsys media_session)
+
+1 sessions listeners.
+2 Sessions:
+HeadsetMediaButton com.android.server.telecom/HeadsetMediaButton
+  ownerPid=1643, ownerUid=1000, userId=0
+  package=com.android.server.telecom
+  launchIntent=null
+  mediaButtonReceiver=null
+  active=false
+  flags=65537
+  rating type=0
+  controllers: 0
+  state=null
+  audioAttrs=AudioAttributes: usage=2 content=1 flags=0x0 tags= bundle=null
+  volumeType=1, controlType=2, max=0, current=0
+  metadata:size=0, description=null
+  queueTitle=null, size=0
+
+androidx.media3.session.id. org.puzzleduck.mixtape/androidx.media3.session.id.
+  ownerPid=3841, ownerUid=10091, userId=0
+  package=org.puzzleduck.mixtape
+  launchIntent=null
+  mediaButtonReceiver=PendingIntent{3d80d77: PendingIntentRecord{8222de4 org.puzzleduck.mixtape startService}}
+  active=true
+  flags=7
+  rating type=0
+  controllers: 2
+  state=PlaybackState {state=3, position=24079, buffered position=262138, speed=1.0, updated=454086, actions=7340031, custom actions=[], active item id=32, error=null}
+  audioAttrs=AudioAttributes: usage=1 content=2 flags=0x0 tags= bundle=null
+  volumeType=1, controlType=2, max=0, current=0
+  metadata:size=20, description=Settings continuity 4834, <unknown>, null
+  queueTitle=null, size=56
+
+Global priority session is null
+Sessions Stack - have 2 sessions:
+  androidx.media3.session.id. org.puzzleduck.mixtape/androidx.media3.session.id.
+    ownerPid=3841, ownerUid=10091, userId=0
+    package=org.puzzleduck.mixtape
+    launchIntent=null
+    mediaButtonReceiver=PendingIntent{3d80d77: PendingIntentRecord{8222de4 org.puzzleduck.mixtape startService}}
+    active=true
+    flags=7
+    rating type=0
+    controllers: 2
+    state=PlaybackState {state=3, position=24079, buffered position=262138, speed=1.0, updated=454086, actions=7340031, custom actions=[], active item id=32, error=null}
+    audioAttrs=AudioAttributes: usage=1 content=2 flags=0x0 tags= bundle=null
+    volumeType=1, controlType=2, max=0, current=0
+    metadata:size=20, description=Settings continuity 4834, <unknown>, null
+    queueTitle=null, size=56
+
+  HeadsetMediaButton com.android.server.telecom/HeadsetMediaButton
+    ownerPid=1643, ownerUid=1000, userId=0
+    package=com.android.server.telecom
+    launchIntent=null
+    mediaButtonReceiver=null
+    active=false
+    flags=65537
+    rating type=0
+    controllers: 0
+    state=null
+    audioAttrs=AudioAttributes: usage=2 content=1 flags=0x0 tags= bundle=null
+    volumeType=1, controlType=2, max=0, current=0
+    metadata:size=0, description=null
+    queueTitle=null, size=0
+
+User Records:
+Record for user 0
+  MediaButtonReceiver:PendingIntent{3d80d77: PendingIntentRecord{8222de4 org.puzzleduck.mixtape startService}}
+  Restored ButtonReceiver:ComponentInfo{org.puzzleduck.mixtape/com.example.androidmixtape.playback.MixtapeMediaLibraryService}
+  2 Sessions:
+  com.android.server.telecom/HeadsetMediaButton
+  org.puzzleduck.mixtape/androidx.media3.session.id.

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <set name="enabled_sticker_themes">
+        <string>PrismC60</string>
+        <string>VintageSunset</string>
+        <string>LowerDeck</string>
+        <string>MinimalMono</string>
+        <string>StudioStock</string>
+        <string>None</string>
+        <string>HissTachiLoNoise</string>
+        <string>AquaOrbit</string>
+    </set>
+    <string name="deck_theme">BlackoutPortable</string>
+    <set name="enabled_case_themes">
+        <string>VioletClear</string>
+        <string>AcidGreenClear</string>
+        <string>AmberTint</string>
+        <string>ElectricBlueClear</string>
+        <string>HotPinkClear</string>
+        <string>CrystalClear</string>
+        <string>CloudyClear</string>
+        <string>SmokeTint</string>
+        <string>RubyClear</string>
+    </set>
+    <set name="enabled_cassette_themes">
+        <string>GhostClear</string>
+        <string>StudioFerric</string>
+        <string>TranslucentViolet</string>
+        <string>TranslucentLime</string>
+        <string>TranslucentRuby</string>
+        <string>BubblegumPop</string>
+        <string>TranslucentSmoke</string>
+        <string>TranslucentCobalt</string>
+        <string>MidnightChrome</string>
+    </set>
+    <set name="enabled_sleeve_themes">
+        <string>RuledNotebook</string>
+        <string>KraftBrown</string>
+        <string>CoralAlbum</string>
+        <string>BlueprintGrid</string>
+        <string>GraphPaper</string>
+        <string>MidnightGrid</string>
+        <string>BlankWhite</string>
+        <string>ForestFleck</string>
+        <string>AlbumPrint</string>
+    </set>
+    <set name="enabled_screw_themes">
+        <string>Dark</string>
+        <string>Light</string>
+    </set>
+</map>
