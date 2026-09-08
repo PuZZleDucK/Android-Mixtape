@@ -17,3 +17,11 @@ The run stopped its Kunlun emulator, SSH ADB tunnel and idle build daemons.
 The next run isolated the shortcut production changes from the existing settings redesign and other unrelated edits using a three-way merge against `.work/card-4834/baseline`. The scoped commit includes callback wiring, retained body mode, gear drawing, combined gestures and origin-aware navigation, plus the previously uncommitted plan, unit tests and final screenshot set. The unrelated working-tree files were not overwritten. PNG entries were verified with `git lfs ls-files`.
 
 No source or test bytes in the working tree changed during this isolation, so the recorded 272-test run and Kunlun deployment remain the working-tree evidence. The isolated committed tree has not been built separately and still contains the older Settings layout. The generic Back label in the uncommitted settings redesign is not included in the isolated commit. Theme/orientation coverage, nested edited-settings runtime evidence, stronger persistence and engine assertions, and the redundant accessible Back label remain open. Do not move to Review on the strength of this source-isolation step alone.
+
+## Engine command regression follow-up
+
+The playing and paused navigation tests now record every playlist load, track selection, seek and release call. Comparing only the previous fake's last index and seek value could miss a repeated command with the same argument. The command history stays unchanged through nested Settings, visual edits and Back. Existing play, pause and queue-replacement counters also remain unchanged.
+
+Both focused tests passed in a real `testModernDebugUnitTest --tests '*NowPlayingSettingsNavigationTest'` run, with zero failures or errors. The worker environment lacked Java and SDK configuration. The successful invocation supplied `JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS` and `ANDROID_HOME=$HOME/Android/Sdk`. Raw output is in `.work/card-4834/engine-command-tests.log`. Idle Gradle and Kotlin daemons were stopped afterward.
+
+This pass changed tests only. It did not build or deploy a new APK or capture new screenshots. Remaining acceptance work is the theme/orientation matrix, nested edited-settings runtime evidence, fresh-store persistence, accessible Back label cleanup, isolated-tree verification and the unrelated lint baseline comparison.

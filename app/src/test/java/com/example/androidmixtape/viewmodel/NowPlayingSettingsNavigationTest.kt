@@ -4,6 +4,7 @@ import com.example.androidmixtape.data.AudioRepository
 import com.example.androidmixtape.data.Track
 import com.example.androidmixtape.playback.FakePlayerEngine
 import com.example.androidmixtape.playback.MixtapeController
+import com.example.androidmixtape.playback.PlayerEngine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -20,10 +21,29 @@ class NowPlayingSettingsNavigationTest {
     private fun roundTrip(paused: Boolean) = runTest {
         val tracks = (1..4).map { Track(it.toLong(), "Track $it", "Artist", 180_000L, "content://track/$it") }
         val engine = FakePlayerEngine()
+        val commandLog = mutableListOf<String>()
+        val recordingEngine = object : PlayerEngine by engine {
+            override fun loadPlaylist(tracks: List<Track>) {
+                commandLog += "loadPlaylist"
+                engine.loadPlaylist(tracks)
+            }
+            override fun playIndex(index: Int) {
+                commandLog += "playIndex:$index"
+                engine.playIndex(index)
+            }
+            override fun seekTo(positionMs: Long) {
+                commandLog += "seekTo:$positionMs"
+                engine.seekTo(positionMs)
+            }
+            override fun release() {
+                commandLog += "release"
+                engine.release()
+            }
+        }
         val store = InMemoryMixtapeSettingsStore()
         val vm = MixtapeViewModel(
             repository = object : AudioRepository { override suspend fun loadTracks() = tracks },
-            controller = MixtapeController(engine),
+            controller = MixtapeController(recordingEngine),
             settingsStore = store,
         )
         vm.onPermissionResult(true)
@@ -33,6 +53,7 @@ class NowPlayingSettingsNavigationTest {
         if (paused) vm.togglePlayPause()
         val before = vm.uiState.value
         val commands = listOf(engine.playCount, engine.pauseCount, engine.playedIndex, engine.lastSeek, engine.replacePreservingCount)
+        val recordedCommands = commandLog.toList()
         vm.showSettings()
         vm.showDeckThemeSettings()
         vm.updateDeckTheme(DeckTheme.BlackoutPortable)
@@ -52,6 +73,7 @@ class NowPlayingSettingsNavigationTest {
         assertEquals(before.positionMs, after.positionMs)
         assertEquals(before.isPlaying, after.isPlaying)
         assertEquals(commands, listOf(engine.playCount, engine.pauseCount, engine.playedIndex, engine.lastSeek, engine.replacePreservingCount))
+        assertEquals("Settings must not reload, reselect, seek or release playback", recordedCommands, commandLog)
         assertEquals(messiness, store.settings().handwritingMessiness)
         assertEquals(DeckTheme.BlackoutPortable, after.mixtapeThemeSettings.deckTheme)
         vm.showMixTapes()
