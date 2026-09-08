@@ -11,6 +11,8 @@ data class PlayerUiState(
     val positionMs: Long = 0L,
     val durationMs: Long = 0L,
     val isReleased: Boolean = false,
+    /** Presentation identity for seeks, resets and queue/track changes. Never a timer. */
+    val counterRevision: Long = 0L,
 ) {
     val currentTrack: Track? = tracks.getOrNull(currentIndex)
     val canGoPrevious: Boolean = currentIndex > 0
@@ -34,7 +36,11 @@ class MixtapeController(
     }
 
     fun load(tracks: List<Track>) {
-        state = PlayerUiState(tracks = tracks, currentIndex = if (tracks.isEmpty()) -1 else 0)
+        state = PlayerUiState(
+            tracks = tracks,
+            currentIndex = if (tracks.isEmpty()) -1 else 0,
+            counterRevision = state.counterRevision + 1L,
+        )
         if (tracks.isNotEmpty()) {
             player.loadPlaylist(tracks)
         }
@@ -44,19 +50,21 @@ class MixtapeController(
         if (tracks.isEmpty()) {
             if (state.isPlaying) player.pause()
             player.replacePlaylistPreservingPlayback(emptyList(), -1)
-            state = PlayerUiState()
+            state = PlayerUiState(counterRevision = state.counterRevision + 1L)
             return
         }
 
         val clampedIndex = nextIndex.coerceIn(0, tracks.lastIndex)
         if (playNext) {
             player.loadPlaylist(tracks)
-            state = PlayerUiState(tracks = tracks, currentIndex = clampedIndex, durationMs = tracks[clampedIndex].durationMs)
+            state = PlayerUiState(tracks = tracks, currentIndex = clampedIndex, durationMs = tracks[clampedIndex].durationMs,
+                counterRevision = state.counterRevision + 1L)
             select(clampedIndex)
         } else {
             if (state.isPlaying) player.pause()
             player.replacePlaylistPreservingPlayback(tracks, clampedIndex)
-            state = PlayerUiState(tracks = tracks, currentIndex = clampedIndex, durationMs = tracks[clampedIndex].durationMs)
+            state = PlayerUiState(tracks = tracks, currentIndex = clampedIndex, durationMs = tracks[clampedIndex].durationMs,
+                counterRevision = state.counterRevision + 1L)
         }
     }
 
@@ -69,7 +77,7 @@ class MixtapeController(
         if (tracks.isEmpty()) {
             if (state.isPlaying) player.pause()
             player.replacePlaylistPreservingPlayback(emptyList(), -1)
-            state = PlayerUiState()
+            state = PlayerUiState(counterRevision = state.counterRevision + 1L)
             return
         }
 
@@ -79,6 +87,7 @@ class MixtapeController(
                 tracks = tracks,
                 currentIndex = preservedCurrentIndex,
                 durationMs = tracks[preservedCurrentIndex].durationMs,
+                counterRevision = state.counterRevision + 1L,
             )
             return
         }
@@ -90,6 +99,7 @@ class MixtapeController(
             tracks = tracks,
             currentIndex = nextIndex,
             durationMs = tracks[nextIndex].durationMs,
+            counterRevision = state.counterRevision + 1L,
         )
     }
 
@@ -98,6 +108,7 @@ class MixtapeController(
         val track = state.tracks[index]
         player.playIndex(index)
         state = state.copy(
+            counterRevision = state.counterRevision + 1L,
             currentIndex = index,
             isPlaying = true,
             positionMs = 0L,
@@ -128,19 +139,21 @@ class MixtapeController(
         val duration = state.currentTrack?.durationMs ?: return
         val clamped = min(max(positionMs, 0L), duration)
         player.seekTo(clamped)
-        state = state.copy(positionMs = clamped, durationMs = duration)
+        state = state.copy(positionMs = clamped, durationMs = duration, counterRevision = state.counterRevision + 1L)
     }
 
     fun stop() {
         val duration = state.currentTrack?.durationMs ?: return
         player.pause()
         player.seekTo(0L)
-        state = state.copy(isPlaying = false, positionMs = 0L, durationMs = duration)
+        state = state.copy(isPlaying = false, positionMs = 0L, durationMs = duration,
+            counterRevision = state.counterRevision + 1L)
     }
 
     private fun handleCurrentIndexChanged(index: Int) {
         val track = state.tracks.getOrNull(index) ?: return
         state = state.copy(
+            counterRevision = state.counterRevision + 1L,
             currentIndex = index,
             isPlaying = true,
             positionMs = 0L,
@@ -150,11 +163,16 @@ class MixtapeController(
     }
 
     private fun handleExternalPlaybackSnapshot(snapshot: ExternalPlaybackSnapshot) {
+        val revision = state.counterRevision + if (
+            snapshot.positionDiscontinuity || snapshot.tracks != state.tracks ||
+            snapshot.currentIndex != state.currentIndex
+        ) 1L else 0L
         if (snapshot.tracks.isEmpty()) {
             state = PlayerUiState(
                 isPlaying = snapshot.isPlaying,
                 positionMs = snapshot.positionMs,
                 durationMs = snapshot.durationMs,
+                counterRevision = revision,
             )
             playbackStateChangedListener?.invoke(state)
             return
@@ -172,6 +190,7 @@ class MixtapeController(
             isPlaying = snapshot.isPlaying,
             positionMs = snapshot.positionMs,
             durationMs = snapshot.durationMs,
+            counterRevision = revision,
         ).let { nextState ->
             if (snapshot.currentIndex == normalizedSnapshot.currentIndex) {
                 nextState

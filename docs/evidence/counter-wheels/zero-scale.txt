@@ -1,0 +1,24 @@
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.CounterWheelsTest:
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=platformZeroScaleSettlesWithoutWheelMotion
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=platformZeroScaleSettlesWithoutWheelMotion
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 1.681
+
+OK (1 test)
+
+
+INSTRUMENTATION_CODE: -1
+Deleted 1 rows

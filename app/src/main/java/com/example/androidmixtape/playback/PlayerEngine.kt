@@ -9,6 +9,8 @@ data class ExternalPlaybackSnapshot(
     val isPlaying: Boolean,
     val positionMs: Long,
     val durationMs: Long,
+    /** True only for an engine-reported position discontinuity, not a progress sample. */
+    val positionDiscontinuity: Boolean = false,
 )
 
 interface PlayerEngine {

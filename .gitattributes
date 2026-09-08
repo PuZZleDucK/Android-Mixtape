@@ -1,3 +1,5 @@
 docs/evidence/card3843-*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/cassette-spine-title/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/segmented-meters/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/counter-wheels/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/counter-wheels/*.png filter=lfs diff=lfs merge=lfs -text

@@ -49,9 +49,13 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
                                     events.contains(Player.EVENT_TIMELINE_CHANGED) ||
                                     events.contains(Player.EVENT_MEDIA_ITEM_TRANSITION) ||
                                     events.contains(Player.EVENT_IS_PLAYING_CHANGED) ||
-                                    events.contains(Player.EVENT_PLAYBACK_STATE_CHANGED)
+                                    events.contains(Player.EVENT_PLAYBACK_STATE_CHANGED) ||
+                                    events.contains(Player.EVENT_POSITION_DISCONTINUITY)
                                 ) {
-                                    publishExternalPlaybackSnapshot(player)
+                                    publishExternalPlaybackSnapshot(
+                                        player,
+                                        positionDiscontinuity = events.contains(Player.EVENT_POSITION_DISCONTINUITY),
+                                    )
                                 }
                             }
                         },
@@ -117,7 +121,7 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
 
     override fun setOnExternalPlaybackSnapshotChanged(listener: ((ExternalPlaybackSnapshot) -> Unit)?) {
         externalPlaybackSnapshotListener = listener
-        controller?.takeIf { it.isConnected }?.let(::publishExternalPlaybackSnapshot)
+        controller?.takeIf { it.isConnected }?.let { publishExternalPlaybackSnapshot(it) }
     }
 
     override fun release() {
@@ -149,7 +153,7 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
         action(connectedController)
     }
 
-    private fun publishExternalPlaybackSnapshot(player: Player) {
+    private fun publishExternalPlaybackSnapshot(player: Player, positionDiscontinuity: Boolean = false) {
         val tracks = (0 until player.mediaItemCount).map { index ->
             player.getMediaItemAt(index).toTrack(index)
         }
@@ -170,6 +174,7 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
                 isPlaying = player.isPlaying,
                 positionMs = player.currentPosition.coerceAtLeast(0L),
                 durationMs = duration,
+                positionDiscontinuity = positionDiscontinuity,
             ),
         )
     }

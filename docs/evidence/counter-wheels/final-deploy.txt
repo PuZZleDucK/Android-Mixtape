@@ -1,0 +1,6 @@
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+Performing Streamed Install
+Success
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/androidTest/modern/debug/app-modern-debug-androidTest.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/card-4835-tests/android-mixtape-modern-debug.apk
+Performing Streamed Install
+Success

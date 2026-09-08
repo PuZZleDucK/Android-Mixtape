@@ -2507,8 +2507,8 @@ private fun DeckViewToggle(
     val palette = deckTheme.deckPalette()
     Canvas(
         modifier = modifier
-            .size(64.dp)
-            .clip(RoundedCornerShape(14.dp))
+            .size(48.dp)
+            .clip(RoundedCornerShape(10.dp))
             .background(palette.body)
             .clickable(onClick = onClick)
             .semantics {
@@ -2518,9 +2518,9 @@ private fun DeckViewToggle(
                     "Show current track list"
                 }
             }
-            .padding(10.dp),
+            .padding(7.dp),
     ) {
-        val stroke = 4.dp.toPx()
+        val stroke = 3.dp.toPx()
         fun arrow(start: Offset, end: Offset, color: Color, reverseHead: Boolean) {
             drawLine(color, start, end, strokeWidth = stroke, cap = StrokeCap.Round)
             val head = if (reverseHead) start else end
@@ -2802,6 +2802,7 @@ private fun NowPlaying(
                         deckTheme = state.mixtapeThemeSettings.deckTheme,
                         decorativeId = state.currentMixtapeVisualProperties.decorativeId,
                         counterValue = mixtapeCounterValue(mixtapeProgress),
+                        counterRevision = state.counterRevision,
                         leftAudioLevel = audioLevels.left,
                         rightAudioLevel = audioLevels.right,
                         isPlaying = state.isPlaying,
@@ -2883,6 +2884,7 @@ private fun NowPlaying(
                     deckTheme = state.mixtapeThemeSettings.deckTheme,
                     decorativeId = state.currentMixtapeVisualProperties.decorativeId,
                     counterValue = mixtapeCounterValue(mixtapeProgress),
+                    counterRevision = state.counterRevision,
                     leftAudioLevel = audioLevels.left,
                     rightAudioLevel = audioLevels.right,
                     isPlaying = state.isPlaying,
@@ -3065,6 +3067,7 @@ private fun DeckCassetteBay(
     deckTheme: DeckTheme,
     decorativeId: String,
     counterValue: Int,
+    counterRevision: Long,
     leftAudioLevel: Float,
     rightAudioLevel: Float,
     isPlaying: Boolean,
@@ -3152,15 +3155,15 @@ private fun DeckCassetteBay(
                 modifier = Modifier
                     .offset(x = deckWidth * (446f / 560f), y = deckHeight * (333f / 400f))
                     .size(width = deckWidth * (84f / 560f), height = deckHeight * (30f / 400f))
-                    .background(palette.counterFace, RoundedCornerShape(4.dp)),
+                    .background(palette.counterFace, RoundedCornerShape(4.dp))
+                    .clipToBounds(),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
-                    text = counterValue.coerceIn(0, 999).toString().padStart(3, '0'),
+                CounterWheels(
+                    value = counterValue,
+                    playing = isPlaying,
+                    revision = counterRevision,
                     color = palette.counterInk,
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 14.sp,
-                    letterSpacing = 2.sp,
                 )
             }
         }

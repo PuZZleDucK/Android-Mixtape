@@ -1,0 +1,153 @@
+package com.example.androidmixtape.ui
+
+import android.graphics.Bitmap
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.unit.dp
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import java.io.File
+import kotlin.math.roundToInt
+import org.junit.Assert.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
+class CounterWheelsTest {
+    @get:Rule val compose = createComposeRule()
+    private val value = mutableStateOf(8)
+    private val playing = mutableStateOf(true)
+    private val revision = mutableStateOf(0L)
+    private val motion = mutableStateOf(true)
+
+    private fun show() {
+        compose.mainClock.autoAdvance = false
+        compose.setContent {
+            AndroidMixtapeTheme {
+                Box(Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(84.dp, 30.dp).testTag("window"), contentAlignment = Alignment.Center) {
+                        CounterWheels(value.value, playing.value, revision.value, Color.White,
+                            Modifier.testTag("digits"), motion.value)
+                    }
+                }
+            }
+        }
+        compose.mainClock.advanceTimeByFrame()
+        compose.waitForIdle()
+        // Activity window transitions are outside the frozen Compose clock.
+        android.os.SystemClock.sleep(500)
+    }
+
+    private fun update(next: Int, discontinuity: Boolean = false) {
+        compose.runOnIdle { value.value = next; if (discontinuity) revision.value++ }
+        // First frame recomposes, second frame establishes the animation's start time.
+        compose.mainClock.advanceTimeByFrame()
+        compose.mainClock.advanceTimeByFrame()
+        compose.waitForIdle()
+    }
+
+    private fun frame(name: String): Bitmap {
+        compose.waitForIdle()
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        // API 24 screenshots use SurfaceFlinger, not PixelCopy. Give the Android
+        // draw pass time to submit the frame without advancing the Compose clock.
+        instrumentation.waitForIdleSync()
+        android.os.SystemClock.sleep(100)
+        val screen = instrumentation.uiAutomation.takeScreenshot()
+        val dir = File(instrumentation.targetContext.getExternalFilesDir(null), "counter-wheels").apply { mkdirs() }
+        File(dir, "$name.png").outputStream().use { screen.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        val bounds = compose.onNodeWithTag("digits").fetchSemanticsNode().boundsInWindow
+        return Bitmap.createBitmap(screen, bounds.left.roundToInt(), bounds.top.roundToInt(),
+            bounds.width.roundToInt(), bounds.height.roundToInt())
+    }
+
+    private fun equalPixels(a: Bitmap, b: Bitmap, fromX: Int = 0, toX: Int = a.width): Boolean {
+        if (a.width != b.width || a.height != b.height) return false
+        return (fromX until toX).all { x -> (0 until a.height).all { y -> a.getPixel(x, y) == b.getPixel(x, y) } }
+    }
+
+    @Test fun singleIncrementAndCarriesKeepFixedCellsAndFinishCorrectly() {
+        show()
+        for ((from, to) in listOf(8 to 9, 9 to 10, 99 to 100)) {
+            update(from, discontinuity = true)
+            val before = frame("${from}-${to}-00-before")
+            update(to)
+            frame("${from}-${to}-01-start")
+            compose.mainClock.advanceTimeBy(32)
+            val early = frame("${from}-${to}-015-early")
+            if (from == 8) {
+                fun litRows(image: Bitmap) = (0 until image.height).filter { y ->
+                    (image.width * 2 / 3 until image.width).any { x ->
+                        android.graphics.Color.red(image.getPixel(x, y)) > 128
+                    }
+                }
+                assertTrue("Incoming digit enters above the old baseline", litRows(early).first() < litRows(before).first())
+                assertTrue("Outgoing digit exits below the old baseline", litRows(early).last() > litRows(before).last())
+            }
+            compose.mainClock.advanceTimeBy(32)
+            val middle = frame("${from}-${to}-02-middle")
+            assertEquals(before.width, middle.width)
+            assertEquals(before.height, middle.height)
+            assertFalse("Moving glyph pixels must differ", equalPixels(before, middle))
+            if (from == 8) assertTrue("Hundreds and tens must stay still", equalPixels(before, middle, 0, before.width * 2 / 3))
+            if (from == 9) assertTrue("Hundreds must stay still", equalPixels(before, middle, 0, before.width / 3))
+            compose.mainClock.advanceTimeBy(200)
+            val finished = frame("${from}-${to}-03-finished")
+            compose.onNodeWithContentDescription("Tape counter ${to.toString().padStart(3, '0')}").assertExists()
+            update(to, discontinuity = true)
+            assertTrue("Completed pixels must equal an immediate settled render", equalPixels(finished, frame("${from}-${to}-04-reference")))
+        }
+    }
+
+    @Test fun platformZeroScaleSettlesWithoutWheelMotion() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        org.junit.Assume.assumeTrue(android.provider.Settings.Global.getFloat(
+            context.contentResolver, android.provider.Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f)
+        show()
+        update(9)
+        // Scale zero still needs a frame to process animation completion, not 160ms.
+        compose.mainClock.advanceTimeByFrame()
+        val immediate = frame("platform-zero-009")
+        update(9, discontinuity = true)
+        assertTrue("Platform zero scale must match a settled render", equalPixels(immediate, frame("platform-zero-009-reference")))
+    }
+
+    @Test fun interruptionsAndRepeatedUpdatesNeverRestoreStaleDigits() {
+        show()
+        update(9)
+        compose.mainClock.advanceTimeBy(32)
+        update(10)
+        val cancelled = frame("cancelled-010")
+        compose.mainClock.advanceTimeBy(500)
+        assertTrue(equalPixels(cancelled, frame("cancelled-010-later")))
+        update(11)
+        compose.runOnIdle { playing.value = false }
+        compose.mainClock.advanceTimeByFrame()
+        val paused = frame("paused-011")
+        compose.mainClock.advanceTimeBy(500)
+        assertTrue(equalPixels(paused, frame("paused-011-later")))
+        compose.runOnIdle { playing.value = true; motion.value = false }
+        update(12)
+        val disabled = frame("disabled-012")
+        compose.mainClock.advanceTimeBy(500)
+        assertTrue(equalPixels(disabled, frame("disabled-012-later")))
+        compose.runOnIdle { motion.value = true }
+        update(13, discontinuity = true)
+        val seek = frame("seek-013")
+        compose.mainClock.advanceTimeBy(500)
+        assertTrue(equalPixels(seek, frame("seek-013-later")))
+        update(0)
+        compose.onNodeWithContentDescription("Tape counter 000").assertExists()
+    }
+}
