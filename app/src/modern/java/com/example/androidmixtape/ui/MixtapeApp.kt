@@ -591,7 +591,10 @@ private fun SettingsScreen(
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onBackToMixTapes, enabled = mixTapeCount > 0) { Text("Mix Tapes") }
+            TextButton(
+                onClick = onBackToMixTapes,
+                modifier = Modifier.semantics { contentDescription = "Back" },
+            ) { Text("Back") }
         }
         Text("Settings", style = MaterialTheme.typography.titleLarge)
         Card(modifier = Modifier.fillMaxWidth()) {

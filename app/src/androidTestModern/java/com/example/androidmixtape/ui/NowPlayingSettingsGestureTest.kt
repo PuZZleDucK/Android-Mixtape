@@ -52,7 +52,7 @@ class NowPlayingSettingsGestureTest {
             rule.onNodeWithContentDescription(label).assertIsDisplayed()
             rule.onNodeWithContentDescription(label).performSemanticsAction(SemanticsActions.OnLongClick) { action -> action() }
             rule.runOnIdle { assertEquals(MixtapeScreen.Settings, state.value.screen) }
-            rule.onNodeWithContentDescription("Back to Back").performClick()
+            rule.onNodeWithContentDescription("Back").performClick()
             rule.onNodeWithContentDescription(label).assertIsDisplayed().performTouchInput { click() }
         }
         rule.runOnIdle { assertEquals(4, settingsCalls) }
