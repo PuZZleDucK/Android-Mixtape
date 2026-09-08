@@ -3132,8 +3132,8 @@ private fun DeckCassetteBay(
                     .size(width = deckWidth * (34f / 560f), height = deckHeight * (205f / 400f)),
                 horizontalArrangement = Arrangement.spacedBy(deckWidth * (6f / 560f)),
             ) {
-                DeckLevelMeter("L", leftAudioLevel, isPlaying, palette, Modifier.weight(1f).fillMaxHeight())
-                DeckLevelMeter("R", rightAudioLevel, isPlaying, palette, Modifier.weight(1f).fillMaxHeight())
+                DeckLevelMeter("L", leftAudioLevel, isPlaying, palette, Modifier.weight(1f).fillMaxHeight(), deckTheme)
+                DeckLevelMeter("R", rightAudioLevel, isPlaying, palette, Modifier.weight(1f).fillMaxHeight(), deckTheme)
             }
             Row(
                 modifier = Modifier
@@ -3174,9 +3174,14 @@ private fun DeckLevelMeter(
     isPlaying: Boolean,
     palette: DeckPalette,
     modifier: Modifier = Modifier,
+    deckTheme: DeckTheme = DeckTheme.SilverfaceHiFi,
 ) {
+    val segmented = deckTheme.usesSegmentedMeter()
+    var previousCount by remember(deckTheme, isPlaying) { mutableStateOf(0) }
+    val litCount = litMeterSegments(audioLevel, isPlaying, previousCount)
+    androidx.compose.runtime.SideEffect { previousCount = litCount }
     val displayedLevel by animateFloatAsState(
-        targetValue = if (isPlaying) audioLevel.coerceIn(0f, 1f) else 0f,
+        targetValue = if (isPlaying && audioLevel.isFinite()) audioLevel.coerceIn(0f, 1f) else 0f,
         animationSpec = tween(durationMillis = 70, easing = LinearEasing),
         label = "$label audio level meter",
     )
@@ -3193,12 +3198,32 @@ private fun DeckLevelMeter(
                 .semantics { contentDescription = "$label audio level ${(displayedLevel * 100f).roundToInt()} percent" },
             contentAlignment = Alignment.BottomCenter,
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.58f)
-                    .fillMaxHeight(displayedLevel)
-                    .background(palette.accent, RoundedCornerShape(2.dp)),
-            )
+            if (segmented) {
+                Canvas(Modifier.fillMaxSize().semantics {
+                    contentDescription = "$label segmented meter $litCount of 10"
+                }) {
+                    val slot = size.height * 0.96f / 10f
+                    val cellWidth = size.width * 0.58f
+                    for (cell in 0 until 10) {
+                        drawRect(
+                            color = if (cell >= litCount) Color(0xFF67554A)
+                                else if (cell >= 8) Color(0xFFFFB35C) else palette.accent,
+                            topLeft = Offset(
+                                (size.width - cellWidth) / 2f,
+                                size.height * 0.02f + (9 - cell) * slot + slot * 0.1f,
+                            ),
+                            size = Size(cellWidth, slot * 0.8f),
+                        )
+                    }
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.58f)
+                        .fillMaxHeight(displayedLevel)
+                        .background(palette.accent, RoundedCornerShape(2.dp)),
+                )
+            }
         }
         Text(label, color = palette.text, fontSize = 7.sp, fontWeight = FontWeight.Bold)
     }
