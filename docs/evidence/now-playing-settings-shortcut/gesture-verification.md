@@ -41,3 +41,15 @@ Added `NowPlayingSettingsPersistenceTest`. Kunlun API 24 passed its single conne
 Built the working-tree modern app and instrumentation APK, deployed with `kunlun-sync.sh`, and reinstalled after connected testing removed the app. `persistence-pass-gear.png` shows the redeployed portrait light-theme toggle. The XML and Gradle output are saved alongside this note. No production source changed. The first connected attempt timed out because DDMLib also needed `ANDROID_ADB_SERVER_PORT=15037`; the retry passed in 30 seconds. The launch environment omitted Java and Android SDK paths, so these runs explicitly set JAVA_HOME to the installed Java 21 and ANDROID_HOME to the existing SDK.
 
 Stopped the owned Kunlun emulator, SSH tunnel and idle Gradle/Kotlin daemons. Still required before Review: theme/orientation matrix, nested edited-settings runtime evidence and accessible Back label cleanup. Existing playing/paused unit coverage and the new store test cover separate layers; neither substitutes for the remaining UI round trip.
+
+## Nested visual edit and theme matrix
+
+Deployed the previously built working-tree APK through `./kunlun-sync.sh --all` on Kunlun API 24. APK SHA-256: `46e9f12cdf7de394751a148b32a0122816fc5a9acbae9bf458e8450d79f8b142`. No source or test bytes changed and no build was repeated in this evidence-only pass.
+
+Paused playback, long-pressed the toggle, opened Appearance > Deck theme, and selected Blackout Portable. `nested-blackout-selected.png`, `nested-back-settings.png` and `nested-back-player.png` show the selected nested screen, first system Back to Settings and second Back to the originating track-list view with the new deck applied. The saved production preference XML records `BlackoutPortable`.
+
+Captured both list modes in portrait and landscape for Silverface Hi Fi and Blackout Portable. The `light-*` and `dark-*` PNGs show the gear in the bottom-right of the unchanged toggle, with both diagonal arrows visible. `nested-back-player.png` is the dark portrait track-list case. These are light and dark deck themes, not Android system night mode. `AndroidMixtapeTheme` currently always supplies `lightColorScheme()`.
+
+The two `paused-roundtrip-*.txt` media-session dumps are byte-identical across rotation, toggling, a second nested deck edit from Blackout Portable to Silverface Hi Fi, and Back. They retain owner PID 2811, paused state 2, position 749 ms, active queue item 13, track metadata and queue size 56. This supplies runtime paused-state evidence, not playing-state evidence. Re-entering settings retained the selected theme. A final edit back to Blackout Portable was written to the attached preference XML.
+
+Remaining before Review: clean up the redundant `Back to Back` accessible label in the uncommitted Settings redesign and obtain an edited-settings round trip while playing a sufficiently long track. Existing automated playing-state command-history coverage remains valid. The theme matrix is visual evidence; it does not replace the earlier automated gesture tests. Stopped the owned emulator. No tunnel, build daemon or service was started, and unrelated working-tree edits remain untouched.
