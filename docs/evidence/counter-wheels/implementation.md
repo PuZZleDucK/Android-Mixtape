@@ -62,6 +62,12 @@ Screenshots use the production composables with deterministic injected UI state.
 
 ## Remaining Running work
 
-The implementation and focused visual checks are committed, but the complete planned live transport smoke and recreation checks have not been performed. Before Review, check pause/resume, seek in both directions, stop, rewind/fast-forward, track/mixtape change and rotation during motion against the live service. Also verify changing platform animation scale to zero while a production wheel is already moving. Reducer tests cover these state rules; they do not replace live integration evidence. Investigate or clearly retain the API 24 multi-class activity-launch limitation when expanding instrumentation coverage.
+The implementation and focused visual checks are committed, but the complete planned live transport smoke and recreation checks have not been performed. Before Review, check pause/resume, seek in both directions, stop, rewind/fast-forward, track/mixtape change and rotation during motion against the live service. Changing platform animation scale to zero during motion now passes the additional test below. Reducer tests cover these state rules; they do not replace live integration evidence. Investigate or clearly retain the API 24 multi-class activity-launch limitation when expanding instrumentation coverage.
+
+## Platform scale change during carry
+
+`CounterWheelsTest#disablingPlatformMotionDuringCarrySettlesImmediately` passed on Kunlun API 24. It starts a production 099 to 100 carry at scale 1, captures the moving frame at 32ms, changes the actual global animator scale to zero through UiAutomation, and checks pixel equality against a settled 100 after one Compose frame. It advances another 500ms and checks that stale glyphs do not return. The test restores the original platform setting in `finally`.
+
+Both modern APKs rebuilt successfully and were installed through `kunlun-sync.sh`. Reproduce with the direct instrumentation command above, replacing the class filter with `com.example.androidmixtape.ui.CounterWheelsTest#disablingPlatformMotionDuringCarrySettlesImmediately`. Build, deploy and test output plus five full emulator frames are in `scale-change/`. This closes only the mid-roll scale check. Live transport and recreation checks remain open.
 
 Keep the pre-existing lint failures separate from this card. Preserve the unrelated dirty working tree. Do not push without the user's explicit request.

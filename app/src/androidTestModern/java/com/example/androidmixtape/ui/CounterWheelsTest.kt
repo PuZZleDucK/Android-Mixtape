@@ -123,6 +123,39 @@ class CounterWheelsTest {
         assertTrue("Platform zero scale must match a settled render", equalPixels(immediate, frame("platform-zero-009-reference")))
     }
 
+    @Test fun disablingPlatformMotionDuringCarrySettlesImmediately() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val resolver = instrumentation.targetContext.contentResolver
+        val key = android.provider.Settings.Global.ANIMATOR_DURATION_SCALE
+        val original = android.provider.Settings.Global.getString(resolver, key)
+        fun scale(value: String?) {
+            val command = if (value == null) "settings delete global $key" else "settings put global $key $value"
+            instrumentation.uiAutomation.executeShellCommand(command).use {
+                android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes()
+            }
+            instrumentation.waitForIdleSync()
+            android.os.SystemClock.sleep(200)
+        }
+        try {
+            scale("1")
+            show()
+            update(99, discontinuity = true)
+            val before = frame("scale-change-099")
+            update(100)
+            compose.mainClock.advanceTimeBy(32)
+            assertFalse(equalPixels(before, frame("scale-change-moving-100")))
+            scale("0")
+            compose.mainClock.advanceTimeByFrame()
+            val stopped = frame("scale-change-stopped-100")
+            update(100, discontinuity = true)
+            assertTrue("Scale change must settle without finishing the tween", equalPixels(stopped, frame("scale-change-reference-100")))
+            compose.mainClock.advanceTimeBy(500)
+            assertTrue("Cancelled carry must not return", equalPixels(stopped, frame("scale-change-later-100")))
+        } finally {
+            scale(original)
+        }
+    }
+
     @Test fun interruptionsAndRepeatedUpdatesNeverRestoreStaleDigits() {
         show()
         update(9)
