@@ -1,5 +1,11 @@
 package com.example.androidmixtape.ui
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -44,6 +50,7 @@ fun JitteredHandwritingText(
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Clip,
     lineHeightScale: Float = 1f,
+    fitSpineTitle: Boolean = false,
     tokenization: HandwritingJitterTokenization = HandwritingJitterTokenization.Character,
     strength: HandwritingJitterStrength = HandwritingJitterStrength(
         maxDxEm = 0.05f,
@@ -123,6 +130,29 @@ fun JitteredHandwritingText(
         } else {
             null
         }
+    }
+
+    if (fitSpineTitle) {
+        Box(modifier.fillMaxHeight().semantics { this.text = AnnotatedString(text) }.drawWithCache {
+            val raster = rasterizeSpineTitle(
+                measuredTokens, samples, fontSize.toPx(), size.width.toInt(), size.height.toInt(),
+                this, layoutDirection,
+            )
+            onDrawBehind {
+                raster?.let {
+                    val inkHeight = it.bottom - it.top
+                    drawImage(
+                        it.image,
+                        srcOffset = IntOffset(0, it.top),
+                        srcSize = IntSize(it.image.width, inkHeight),
+                        dstOffset = IntOffset(0, ((size.height - inkHeight) / 2f).toInt()),
+                        dstSize = IntSize(it.image.width, inkHeight),
+                        colorFilter = ColorFilter.tint(color),
+                    )
+                }
+            }
+        })
+        return
     }
 
     Canvas(

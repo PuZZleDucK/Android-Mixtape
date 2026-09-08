@@ -1,0 +1,60 @@
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleModernDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleModernDebugClassesToCompileJar UP-TO-DATE
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest UP-TO-DATE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:packageModernDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:generateModernDebugUnitTestConfig UP-TO-DATE
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:compileModernDebugUnitTestKotlin
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processModernDebugUnitTestJavaRes
+
+> Task :app:testModernDebugUnitTest
+
+CassetteSpineTitleSizingContractTest > labelInsetsMustNotConsumeFixed24DpAtEverySpineHeight FAILED
+    java.lang.AssertionError at CassetteSpineTitleSizingContractTest.kt:34
+
+CassetteSpineTitleSizingContractTest > titleMustNotUseUnconstrainedFontSizeInsideRatioSizedSpine FAILED
+    java.lang.AssertionError at CassetteSpineTitleSizingContractTest.kt:19
+
+CassetteSpineTitleSizingContractTest > titleMustNotUseFontSpecificDpOffsetInsteadOfMeasuredCenter FAILED
+    java.lang.AssertionError at CassetteSpineTitleSizingContractTest.kt:27
+
+3 tests completed, 3 failed
+
+> Task :app:testModernDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testModernDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/puzzleduck/x/android-mixtape/app/build/reports/tests/testModernDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 1m 1s
+26 actionable tasks: 3 executed, 23 up-to-date

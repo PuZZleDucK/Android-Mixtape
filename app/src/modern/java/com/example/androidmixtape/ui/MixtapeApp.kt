@@ -2056,7 +2056,11 @@ private fun CassetteSpineRow(
                 contentDescription = if (isCurrentMixtape) "Current mixtape case spine ${group.name}" else "Case spine ${group.name}"
             },
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+            val spineScale = maxHeight / 68.dp
+            val spineTitleSize = with(LocalDensity.current) {
+                (handwritingFont.cassetteSpineFontSize().value * spineScale).dp.toSp()
+            }
             Canvas(modifier = Modifier.matchParentSize()) {
                 val insetX = size.width * (8f / 280f)
                 val insetY = size.height * (8f / 68f)
@@ -2100,13 +2104,13 @@ private fun CassetteSpineRow(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 18.dp, vertical = 12.dp),
+                    .padding(horizontal = 18.dp * spineScale, vertical = maxHeight * (12f / 68f)),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp * spineScale),
             ) {
                 Box(
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(28.dp * spineScale)
                         .border(BorderStroke(1.5.dp, paper.accent), RoundedCornerShape(4.dp)),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -2114,15 +2118,14 @@ private fun CassetteSpineRow(
                 }
                 JitteredHandwritingText(
                     text = group.name,
-                    modifier = Modifier
-                        .weight(1f)
-                        .offset(y = handwritingFont.cassetteSpineVerticalOffset()),
+                    modifier = Modifier.weight(1f),
                     startIndex = jitterStartIndex,
                     color = paper.ink,
                     fontFamily = fontFamily,
                     fontStyle = FontStyle.Italic,
                     fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
-                    fontSize = handwritingFont.cassetteSpineFontSize(),
+                    fontSize = spineTitleSize,
+                    fitSpineTitle = true,
                     maxLines = 2,
                     overflow = TextOverflow.Clip,
                     tokenization = HandwritingJitterTokenization.Character,
