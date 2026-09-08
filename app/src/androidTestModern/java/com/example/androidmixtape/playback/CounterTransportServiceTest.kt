@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.hasContentDescription
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.core.app.ActivityScenario
 import com.example.androidmixtape.MainActivity
@@ -155,6 +156,45 @@ class CounterTransportServiceTest {
             compose.onNodeWithContentDescription("Stop").performClick()
             await("local stop resets counter") { !viewModel!!.uiState.value.isPlaying && viewModel!!.uiState.value.positionMs == 0L }
             compose.onNodeWithContentDescription("Tape counter 000").assertExists()
+            compose.onNodeWithContentDescription("Eject").performClick()
+            await("eject returns to scanned library without playback") {
+                viewModel!!.uiState.value.screen == com.example.androidmixtape.viewmodel.MixtapeScreen.MixTapes &&
+                    !viewModel!!.uiState.value.isPlaying && viewModel!!.uiState.value.mixTapeGroups.isNotEmpty()
+            }
+            repeat(2) { selection ->
+                // Select an actual scanned library group through its visible spine.
+                compose.onAllNodes(hasContentDescription("spine ", substring = true))[0].performClick()
+                await("library selection $selection starts live playback") {
+                    viewModel!!.uiState.value.screen == com.example.androidmixtape.viewmodel.MixtapeScreen.NowPlaying &&
+                        viewModel!!.uiState.value.isPlaying && controller!!.isPlaying
+                }
+                compose.onNodeWithContentDescription("Stop").performClick()
+                await("library selection $selection stop settles at track start") {
+                    !viewModel!!.uiState.value.isPlaying && viewModel!!.uiState.value.positionMs == 0L
+                }
+                var expectedCounter = ""
+                main {
+                    val state = viewModel!!.uiState.value
+                    expectedCounter = "Tape counter " + mixtapeCounterValue(mixtapePlaybackProgress(
+                        state.queueTracks, state.currentIndex, state.positionMs
+                    )).toString().padStart(3, '0')
+                }
+                compose.onNodeWithContentDescription(expectedCounter).assertExists()
+                SystemClock.sleep(500)
+                compose.onNodeWithContentDescription(expectedCounter).assertExists()
+                println("PASS library selection $selection stable $expectedCounter")
+                instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
+                    File(evidence, "library-selection-$selection.png").outputStream().use {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                    }
+                    bitmap.recycle()
+                }
+                compose.onNodeWithContentDescription("Eject").performClick()
+                await("library selection $selection eject stops playback") {
+                    viewModel!!.uiState.value.screen == com.example.androidmixtape.viewmodel.MixtapeScreen.MixTapes &&
+                        !viewModel!!.uiState.value.isPlaying
+                }
+            }
             main { controller!!.stop() }
             await("stop publishes not playing") { snapshots.lastOrNull()?.isPlaying == false && controller!!.playbackState == Player.STATE_IDLE }
             main { controller!!.clearMediaItems() }

@@ -1,0 +1,31 @@
+--------- beginning of main
+--------- beginning of system
+09-09 01:42:16.471  4506  4521 I System.out: PASS Activity initial scan finished
+09-09 01:42:16.502  4506  4521 I System.out: PASS ready with two tracks
+09-09 01:42:16.633  4506  4521 I System.out: PASS live playback snapshot
+09-09 01:42:16.661  4506  4521 I System.out: PASS pause snapshot
+09-09 01:42:17.189  4506  4521 I System.out: PASS external seek 10000 marks discontinuity
+09-09 01:42:17.417  4506  4521 I System.out: PASS external seek 2000 marks discontinuity
+09-09 01:42:17.645  4506  4521 I System.out: PASS external seek 25000 marks discontinuity
+09-09 01:42:17.872  4506  4521 I System.out: PASS external seek 0 marks discontinuity
+09-09 01:42:18.101  4506  4521 I System.out: PASS track change settles at second track
+09-09 01:42:18.128  4506  4521 I System.out: PASS resume after seeks
+09-09 01:42:18.128  4506  4521 I System.out: PASS Activity ViewModel receives live service queue
+09-09 01:42:18.473  4506  4521 I System.out: PASS playback survives Activity rotation and recreation
+09-09 01:42:18.504  4506  4521 I System.out: PASS recreated Activity receives external reset
+09-09 01:42:19.163  4506  4521 I System.out: PASS recreated production deck settles on 000 with no stale digits
+09-09 01:42:19.201  4506  4521 I System.out: PASS local fast-forward reaches second track
+09-09 01:42:19.214  4506  4521 I System.out: PASS second track paused at start
+09-09 01:42:19.306  4506  4521 I System.out: PASS local rewind reaches first track
+09-09 01:42:19.445  4506  4521 I System.out: PASS local stop resets counter
+09-09 01:42:19.501  4506  4521 I System.out: PASS eject returns to scanned library without playback
+09-09 01:42:19.728  4506  4521 I System.out: PASS library selection 0 starts live playback
+09-09 01:42:21.147  4506  4521 I System.out: PASS library selection 0 stop settles at track start
+09-09 01:42:21.732  4506  4521 I System.out: PASS library selection 0 stable Tape counter 020
+09-09 01:42:21.889  4506  4521 I System.out: PASS library selection 0 eject stops playback
+09-09 01:42:22.074  4506  4521 I System.out: PASS library selection 1 starts live playback
+09-09 01:42:23.467  4506  4521 I System.out: PASS library selection 1 stop settles at track start
+09-09 01:42:24.046  4506  4521 I System.out: PASS library selection 1 stable Tape counter 020
+09-09 01:42:24.202  4506  4521 I System.out: PASS library selection 1 eject stops playback
+09-09 01:42:24.207  4506  4521 I System.out: PASS stop publishes not playing
+09-09 01:42:24.275  4506  4521 I System.out: PASS queue reset clears tracks

@@ -32,12 +32,12 @@ class CounterWheelsTest {
     private val motion = mutableStateOf(true)
     private val counterVisible = mutableStateOf(true)
 
-    private fun show() {
+    private fun show(windowHeight: androidx.compose.ui.unit.Dp = 30.dp) {
         compose.mainClock.autoAdvance = false
         compose.setContent {
             AndroidMixtapeTheme {
                 Box(Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
-                    Box(Modifier.size(84.dp, 30.dp).testTag("window"), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(84.dp, windowHeight).testTag("window"), contentAlignment = Alignment.Center) {
                         if (counterVisible.value) {
                             CounterWheels(value.value, playing.value, revision.value, Color.White,
                                 Modifier.testTag("digits"), motion.value)
@@ -78,6 +78,18 @@ class CounterWheelsTest {
     private fun equalPixels(a: Bitmap, b: Bitmap, fromX: Int = 0, toX: Int = a.width): Boolean {
         if (a.width != b.width || a.height != b.height) return false
         return (fromX until toX).all { x -> (0 until a.height).all { y -> a.getPixel(x, y) == b.getPixel(x, y) } }
+    }
+
+    @Test fun compactWindowKeepsSettledNumeralsInsideBothEdges() {
+        value.value = 20
+        show(windowHeight = 16.dp)
+        val image = frame("compact-window-020")
+        val litRows = (0 until image.height).filter { y ->
+            (0 until image.width).any { x -> android.graphics.Color.red(image.getPixel(x, y)) > 128 }
+        }
+        assertTrue("Digits must be visible", litRows.isNotEmpty())
+        assertTrue("Top of numeral must not touch clip", litRows.first() > 0)
+        assertTrue("Bottom of numeral must not touch clip", litRows.last() < image.height - 1)
     }
 
     @Test fun singleIncrementAndCarriesKeepFixedCellsAndFinishCorrectly() {

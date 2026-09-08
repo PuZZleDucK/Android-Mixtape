@@ -76,7 +76,10 @@ internal fun CounterWheels(
             clipRect(left = cell.index * cellWidth, right = (cell.index + 1) * cellWidth) {
                 cell.glyphs.forEach { glyph ->
                     val layout = if (glyph.digit == target[cell.index]) incoming else outgoing
-                    drawText(layout, topLeft = Offset(0f, glyph.offsetInCellHeights * size.height))
+                    // Compact decks can constrain the canvas below the inherited line height.
+                    // Center the measured line inside that window, rather than clipping its bottom.
+                    val centeredY = (size.height - layout.size.height) / 2f
+                    drawText(layout, topLeft = Offset(0f, centeredY + glyph.offsetInCellHeights * size.height))
                 }
             }
         }

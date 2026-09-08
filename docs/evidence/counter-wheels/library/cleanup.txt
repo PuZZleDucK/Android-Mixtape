@@ -1,0 +1,15 @@
+Error while accessing provider:media
+android.database.sqlite.SQLiteException: unrecognized token: "\" (code 1): , while compiling: SELECT media_type, _data, _id FROM files WHERE media_type=2 AND (_data=\x27/storage/emulated/0/Music/counter-library.wav\x27)
+	at android.database.DatabaseUtils.readExceptionFromParcel(DatabaseUtils.java:179)
+	at android.database.DatabaseUtils.readExceptionFromParcel(DatabaseUtils.java:135)
+	at android.content.ContentProviderProxy.delete(ContentProviderNative.java:544)
+	at com.android.commands.content.Content$DeleteCommand.onExecute(Content.java:473)
+	at com.android.commands.content.Content$Command.execute(Content.java:418)
+	at com.android.commands.content.Content.main(Content.java:623)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:262)
+OK: killing emulator, bye bye
+OK
+Stopping Daemon(s)
+1 Daemon stopped
+    PID COMMAND
