@@ -1,0 +1,52 @@
+Final unit task
+> Task :app:processModernDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:testModernDebugUnitTest
+
+BUILD SUCCESSFUL in 9s
+26 actionable tasks: 2 executed, 24 up-to-date
+
+Final APK build tasks
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleModernDebug
+
+BUILD SUCCESSFUL in 35s
+69 actionable tasks: 11 executed, 58 up-to-date
+
+Final deployment
+::::::::::::::
+.work/card-4832/after-deploy.log
+::::::::::::::
+Synced APK: /home/puzzleduck/x/android-mixtape/.work/card-4832/after.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+Performing Streamed Install
+Success
+    mResumedActivity: ActivityRecord{f6e57d2 u0 org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity t533}
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/androidTest/modern/debug/app-modern-debug-androidTest.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+Performing Streamed Install
+Success
+
+Kunlun production-material bitmap tests
+::::::::::::::
+.work/card-4832/compositing.log
+::::::::::::::
+
+com.example.androidmixtape.ui.CasePlasticCompositingTest:...
+
+Time: 0.115
+
+OK (3 tests)
+
+
+
+Kunlun UI tests
+::::::::::::::
+.work/card-4832/ui-tests.log
+::::::::::::::
+
+com.example.androidmixtape.ui.MixtapeAppTest:......
+
+Time: 3.22
+
+OK (6 tests)
+
+

@@ -163,7 +163,6 @@ private const val CASSETTE_SPINE_LABEL_ASPECT_RATIO = 4f / 0.5f
 private const val CASSETTE_CASE_SPINE_ASPECT_RATIO = 70f / 17f
 private const val CASSETTE_J_CARD_BACK_ASPECT_RATIO = 4f / 1.0625f
 private const val DEMO_DECK_PLAYER_ASPECT_RATIO = 560f / 400f
-private const val CASE_PLASTIC_TINT_STRENGTH = 0.62f
 
 private enum class NowPlayingBodyMode {
     Tracks,
@@ -884,7 +883,6 @@ private fun CaseComponentPreview(
 ) {
     val plastic = caseTheme.plasticPalette()
     Canvas(modifier = modifier.semantics { contentDescription = "${caseTheme.readableName()} case preview" }) {
-        drawRoundRect(Color(0xFF171A20), size = size, cornerRadius = CornerRadius(7.dp.toPx(), 7.dp.toPx()))
         drawRoundRect(
             Color(0xFFF1E8C8),
             topLeft = Offset(size.width * 0.08f, size.height * 0.14f),
@@ -892,10 +890,7 @@ private fun CaseComponentPreview(
             cornerRadius = CornerRadius(3.dp.toPx(), 3.dp.toPx()),
         )
         drawLine(Color(0xFFB8422F), Offset(size.width * 0.19f, size.height * 0.18f), Offset(size.width * 0.19f, size.height * 0.82f), 1.dp.toPx())
-        drawRoundRect(plastic.tint, size = size, cornerRadius = CornerRadius(7.dp.toPx(), 7.dp.toPx()))
-        if (plastic.haze != Color.Transparent) drawRoundRect(plastic.haze, size = size, cornerRadius = CornerRadius(7.dp.toPx(), 7.dp.toPx()))
-        drawRoundRect(plastic.edge, size = size, cornerRadius = CornerRadius(7.dp.toPx(), 7.dp.toPx()), style = Stroke(width = 2.dp.toPx()))
-        drawLine(Color.White.copy(alpha = 0.35f), Offset(size.width * 0.12f, size.height * 0.12f), Offset(size.width * 0.78f, size.height * 0.12f), 1.5.dp.toPx())
+        drawCasePlastic(plastic)
     }
 }
 
@@ -1394,7 +1389,6 @@ private fun HandwritingFontContextPreview(
         Card(
             colors = CardDefaults.cardColors(containerColor = sleevePaper.base),
             shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(2.dp, casePlastic.edge),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Column(
@@ -1410,17 +1404,7 @@ private fun HandwritingFontContextPreview(
                     }
                     .drawWithContent {
                         drawContent()
-                        drawRoundRect(
-                            casePlastic.tint.copy(alpha = casePlastic.tint.alpha * CASE_PLASTIC_TINT_STRENGTH),
-                            size = size,
-                            cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()),
-                        )
-                        drawRoundRect(
-                            casePlastic.edge.copy(alpha = 0.7f),
-                            size = size,
-                            cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()),
-                            style = Stroke(width = 1.5.dp.toPx()),
-                        )
+                        drawCasePlastic(casePlastic)
                     }
                     .padding(horizontal = 18.dp, vertical = 14.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp),
@@ -2021,25 +2005,6 @@ private fun SleeveTheme.paperPalette(): SleevePaperPalette = when (this) {
     SleeveTheme.GraphPaper -> SleevePaperPalette(SleevePaperPattern.Grid, Color(0xFFF7F6EE), Color(0xFFD7D6CA), Color(0xFFB7C9D8), null, Color(0xFF27313B), Color(0xFF3D72A4), null)
 }
 
-private data class CasePlasticPalette(
-    val tint: Color,
-    val haze: Color,
-    val edge: Color,
-    val hinge: Color,
-)
-
-private fun CaseTheme.plasticPalette(): CasePlasticPalette = when (this) {
-    CaseTheme.CrystalClear -> CasePlasticPalette(Color(0x1AEBF0FF), Color.Transparent, Color(0xA6FFFFFF), Color(0x4714141E))
-    CaseTheme.CloudyClear -> CasePlasticPalette(Color(0x1FE0E8EE), Color(0x29F4F8FA), Color(0xB8FFFFFF), Color(0x4D2D343C))
-    CaseTheme.SmokeTint -> CasePlasticPalette(Color(0x7312141A), Color.Transparent, Color(0x4DFFFFFF), Color(0x80000000))
-    CaseTheme.AmberTint -> CasePlasticPalette(Color(0x42FF9628), Color.Transparent, Color(0x8CFFDCA0), Color(0x66783C00))
-    CaseTheme.RubyClear -> CasePlasticPalette(Color(0x52EB1C2A), Color.Transparent, Color(0xC2FF808A), Color(0x75120812))
-    CaseTheme.HotPinkClear -> CasePlasticPalette(Color(0x4DFF2296), Color.Transparent, Color(0xC7FF8ECC), Color(0x7019084E))
-    CaseTheme.ElectricBlueClear -> CasePlasticPalette(Color(0x4A187EFF), Color.Transparent, Color(0xC787C4FF), Color(0x75053482))
-    CaseTheme.AcidGreenClear -> CasePlasticPalette(Color(0x4A67F523), Color.Transparent, Color(0xC7BCFF8B), Color(0x70387805))
-    CaseTheme.VioletClear -> CasePlasticPalette(Color(0x4A8943FF), Color.Transparent, Color(0xC7CA9EFF), Color(0x73411287))
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CassetteSpineRow(
@@ -2080,7 +2045,6 @@ private fun CassetteSpineRow(
                 val paperTop = insetY
                 val paperRight = size.width - insetX
                 val paperBottom = size.height - insetY
-                drawRoundRect(Color(0xFF15191F), size = size, cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()))
                 drawRect(paper.base, Offset(paperLeft, paperTop), Size(paperRight - paperLeft, paperBottom - paperTop))
                 when (paper.pattern) {
                     SleevePaperPattern.Lined -> {
@@ -2145,20 +2109,7 @@ private fun CassetteSpineRow(
                 )
             }
             Canvas(modifier = Modifier.matchParentSize()) {
-                drawRoundRect(plastic.tint.copy(alpha = plastic.tint.alpha * CASE_PLASTIC_TINT_STRENGTH), size = size, cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()))
-                if (plastic.haze != Color.Transparent) drawRoundRect(plastic.haze.copy(alpha = plastic.haze.alpha * CASE_PLASTIC_TINT_STRENGTH), size = size, cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()))
-                drawRect(Color.White.copy(alpha = 0.20f), Offset(3.dp.toPx(), 3.dp.toPx()), Size(size.width - 6.dp.toPx(), 2.dp.toPx()))
-                drawRect(Color.Black.copy(alpha = 0.28f), Offset(3.dp.toPx(), size.height - 5.dp.toPx()), Size(size.width - 6.dp.toPx(), 2.dp.toPx()))
-                drawRoundRect(plastic.edge, topLeft = Offset(1.5.dp.toPx(), 1.5.dp.toPx()), size = Size(size.width - 3.dp.toPx(), size.height - 3.dp.toPx()), cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()), style = Stroke(width = 1.8.dp.toPx()))
-                drawRoundRect(Color(0xDD06080C), topLeft = Offset(0.6.dp.toPx(), 0.6.dp.toPx()), size = Size(size.width - 1.2.dp.toPx(), size.height - 1.2.dp.toPx()), cornerRadius = CornerRadius(3.dp.toPx(), 3.dp.toPx()), style = Stroke(width = 1.2.dp.toPx()))
-                listOf(Offset(size.width * (14f / 280f), size.height / 2f), Offset(size.width * (266f / 280f), size.height / 2f)).forEach { hinge ->
-                    drawCircle(plastic.hinge, 4.5.dp.toPx(), hinge)
-                    drawCircle(plastic.edge.copy(alpha = 0.42f), 4.5.dp.toPx(), hinge, style = Stroke(width = 0.8.dp.toPx()))
-                }
-                val gloss = Path().apply {
-                    moveTo(size.width * 0.25f, 0f); lineTo(size.width * 0.42f, 0f); lineTo(size.width * 0.34f, size.height); lineTo(size.width * 0.19f, size.height); close()
-                }
-                drawPath(gloss, Color.White.copy(alpha = 0.10f))
+                drawCasePlastic(plastic, spine = true)
             }
         }
     }
@@ -2639,7 +2590,6 @@ private fun CurrentTrackPreview(
         Card(
             colors = CardDefaults.cardColors(containerColor = sleevePaper.base),
             shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(3.dp, casePlastic.edge),
             modifier = Modifier
                 .wrapContentSize(Alignment.TopStart, unbounded = true)
                 .requiredWidth(sourceWidth)
@@ -2675,8 +2625,7 @@ private fun CurrentTrackPreview(
                     }
                     .drawWithContent {
                         drawContent()
-                        drawRoundRect(casePlastic.tint.copy(alpha = casePlastic.tint.alpha * CASE_PLASTIC_TINT_STRENGTH), size = size, cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()))
-                        if (casePlastic.haze != Color.Transparent) drawRoundRect(casePlastic.haze.copy(alpha = casePlastic.haze.alpha * CASE_PLASTIC_TINT_STRENGTH), size = size, cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()))
+                        drawCasePlastic(casePlastic, spine = true, displayScale = previewScale)
                     },
             ) {
                 previewRows.forEach { (index, rowText) ->
@@ -4491,7 +4440,6 @@ private fun CassetteCoverTrackList(
     Card(
         colors = CardDefaults.cardColors(containerColor = sleevePaper.base),
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(3.dp, casePlastic.edge),
         modifier = modifier
             // TrackListScrollablePaperRatioException: Now Playing uses this as
             // scrollable J-card back paper that fills the remaining pane; any
@@ -4651,9 +4599,7 @@ private fun CassetteCoverTrackList(
                 }
                 .drawWithContent {
                     drawContent()
-                    drawRoundRect(casePlastic.tint.copy(alpha = casePlastic.tint.alpha * CASE_PLASTIC_TINT_STRENGTH), size = size, cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()))
-                    if (casePlastic.haze != Color.Transparent) drawRoundRect(casePlastic.haze.copy(alpha = casePlastic.haze.alpha * CASE_PLASTIC_TINT_STRENGTH), size = size, cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()))
-                    drawRoundRect(casePlastic.edge.copy(alpha = 0.7f), size = size, cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()), style = Stroke(width = 1.5.dp.toPx()))
+                    drawCasePlastic(casePlastic)
                 }
                 .padding(horizontal = 18.dp, vertical = 14.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
