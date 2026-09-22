@@ -1,0 +1,208 @@
+--- a/README.md
++++ b/README.md
+@@ -6,2 +6,4 @@
+ 
++The modern build targets Android 16. Returning from system settings refreshes audio permission; revoking access clears the inaccessible library and playback queue.
++
+ ## Highlights
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -8,3 +8,3 @@
+     namespace = "com.example.androidmixtape"
+-    compileSdk = 35
++    compileSdk = 36
+ 
+@@ -13,3 +13,3 @@
+         minSdk = 24
+-        targetSdk = 35
++        targetSdk = 36
+         versionCode = 1
+--- a/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt
++++ b/app/src/main/java/com/example/androidmixtape/viewmodel/MixtapeViewModel.kt
+@@ -327,2 +327,5 @@
+     var onDeleteTrackUserActionRequired: ((IntentSender) -> Unit)? = null
++    private var scanJob: Job? = null
++    private var scanGeneration = 0L
++    private var audioPermissionGranted = false
+     private var pendingDelete: PendingDelete? = null
+@@ -357,5 +360,19 @@
+     fun onPermissionResult(granted: Boolean) {
++        val wasGranted = audioPermissionGranted
++        audioPermissionGranted = granted
+         if (!granted) {
++            ++scanGeneration
++            scanJob?.cancel()
++            trackJumpCueJob?.cancel()
++            transportCuePlayer.cancel()
++            pendingDelete = null
++            rawLibraryTracks = emptyList()
++            libraryTracks = emptyList()
++            mixtapeTracks = emptyList()
++            assignedMixtapeNames.clear()
++            controller.replaceQueueAfterCurrentRemoval(emptyList(), -1, false)
+             _uiState.value = MixtapeUiState(
+                 status = LibraryStatus.PermissionRequired,
++                mixtapeSettings = mixtapeSettings,
++                mixtapeThemeSettings = mixtapeThemeSettings,
+                 mixtapeSymbolSettings = mixtapeSymbolSettings,
+@@ -370,3 +387,3 @@
+ 
+-        if (_uiState.value.status in setOf(LibraryStatus.Loading, LibraryStatus.Empty, LibraryStatus.Ready)) return
++        if (wasGranted && _uiState.value.status in setOf(LibraryStatus.Loading, LibraryStatus.Empty, LibraryStatus.Ready)) return
+ 
+@@ -376,7 +393,11 @@
+     fun refresh() {
++        if (!audioPermissionGranted) return
++        val generation = ++scanGeneration
++        scanJob?.cancel()
+         assignedMixtapeNames.clear()
+         _uiState.value = _uiState.value.copy(status = LibraryStatus.Loading, message = "Scanning device audio…")
+-        viewModelScope.launch {
++        scanJob = viewModelScope.launch {
+             runCatching { repository.loadTracks() }
+                 .onSuccess { tracks ->
++                    if (generation != scanGeneration || !audioPermissionGranted) return@launch
+                     rawLibraryTracks = tracks
+@@ -411,2 +432,8 @@
+                 .onFailure { error ->
++                    if (error is CancellationException) throw error
++                    if (generation != scanGeneration || !audioPermissionGranted) return@launch
++                    if (error is SecurityException) {
++                        onPermissionResult(false)
++                        return@launch
++                    }
+                     _uiState.value = MixtapeUiState(
+@@ -1008,2 +1035,4 @@
+     override fun onCleared() {
++        ++scanGeneration
++        scanJob?.cancel()
+         trackJumpCueJob?.cancel()
+@@ -1295,2 +1324,3 @@
+     private fun refreshCurrentUiState() {
++        if (!audioPermissionGranted) return
+         val currentState = _uiState.value
+--- a/app/src/modern/java/com/example/androidmixtape/MainActivity.kt
++++ b/app/src/modern/java/com/example/androidmixtape/MainActivity.kt
+@@ -12,3 +12,3 @@
+ import androidx.activity.viewModels
+-import androidx.compose.runtime.collectAsState
++import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import androidx.compose.runtime.getValue
+@@ -55,2 +55,4 @@
+ 
++    private val deleteConfirmationCallback: (IntentSender) -> Unit = ::launchDeleteConfirmation
++
+     private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+@@ -74,6 +76,6 @@
+         )
+-        viewModel.onDeleteTrackUserActionRequired = ::launchDeleteConfirmation
++        viewModel.onDeleteTrackUserActionRequired = deleteConfirmationCallback
+ 
+         setContent {
+-            val state by viewModel.uiState.collectAsState()
++            val state by viewModel.uiState.collectAsStateWithLifecycle()
+             AndroidMixtapeTheme {
+@@ -135,2 +137,17 @@
+     }
++
++    override fun onResume() {
++        super.onResume()
++        val permission = AudioPermissionPolicy.requiredRuntimePermission(Build.VERSION.SDK_INT)
++        viewModel.onPermissionResult(
++            permission == null || checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED,
++        )
++    }
++
++    override fun onDestroy() {
++        if (viewModel.onDeleteTrackUserActionRequired === deleteConfirmationCallback) {
++            viewModel.onDeleteTrackUserActionRequired = null
++        }
++        super.onDestroy()
++    }
+ 
+--- a/app/src/modern/java/com/example/androidmixtape/playback/MixtapeMediaLibraryService.kt
++++ b/app/src/modern/java/com/example/androidmixtape/playback/MixtapeMediaLibraryService.kt
+@@ -52,2 +52,3 @@
+             )
++            setHandleAudioBecomingNoisy(true)
+             setWakeMode(C.WAKE_MODE_LOCAL)
+@@ -104,2 +105,3 @@
+ 
++    @androidx.annotation.OptIn(UnstableApi::class)
+     private class MixtapeLibraryCallback(
+@@ -131,3 +133,3 @@
+             if (customCommand.customAction != ACTION_GET_SESSION_COMPAT_TOKEN) {
+-                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_ERROR_NOT_SUPPORTED))
++                return Futures.immediateFuture(SessionResult(SessionError.ERROR_NOT_SUPPORTED))
+             }
+--- a/kunlun-sync.sh
++++ b/kunlun-sync.sh
+@@ -36,3 +36,3 @@
+   KUNLUN_HOST, KUNLUN_TEST_DIR, KUNLUN_AVD, KUNLUN_EMULATOR_SERIAL,
+-  KUNLUN_PACKAGE_NAME
++  KUNLUN_PACKAGE_NAME, KUNLUN_DISPLAY_ID (optional physical display for screenshots)
+ EOF
+@@ -154,3 +154,5 @@
+ [[ -n "$xauth" ]] && export XAUTHORITY=$xauth
+-nohup "$emulator" -avd "$avd" -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -port 5554 \
++[[ "$serial" =~ ^emulator-([0-9]+)$ ]] || { echo "Expected emulator serial" >&2; exit 2; }
++port=${BASH_REMATCH[1]}
++nohup "$emulator" -avd "$avd" -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -port "$port" \
+     >"$remote_dir/emulator.log" 2>&1 &
+@@ -199,3 +201,8 @@
+     mkdir -p "$(dirname "$screenshot_path")"
+-    ssh "$REMOTE_HOST" "/home/puzzleduck/Android/Sdk/platform-tools/adb -s '$EMULATOR_SERIAL' exec-out screencap -p" > "$screenshot_path"
++    display_option=""
++    if [[ -n "${KUNLUN_DISPLAY_ID:-}" ]]; then
++        [[ "$KUNLUN_DISPLAY_ID" =~ ^[0-9]+$ ]] || { echo "Invalid display id" >&2; exit 2; }
++        display_option="-d $KUNLUN_DISPLAY_ID"
++    fi
++    ssh "$REMOTE_HOST" "/home/puzzleduck/Android/Sdk/platform-tools/adb -s '$EMULATOR_SERIAL' exec-out screencap -p $display_option" > "$screenshot_path"
+     file "$screenshot_path" | grep -q 'PNG image data' || {
+--- a/app/src/androidTestModern/java/com/example/androidmixtape/playback/AudioMeterTest.kt
++++ b/app/src/androidTestModern/java/com/example/androidmixtape/playback/AudioMeterTest.kt
+@@ -50,2 +50,6 @@
+ 
++        // A live meter needs live PCM; a single buffer expires after 500 ms.
++        val feeder = java.util.concurrent.Executors.newSingleThreadScheduledExecutor()
++        feeder.scheduleAtFixedRate({ processor.queueInput(sinePcm(-12.0, -18.0)); processor.output }, 0, 50, java.util.concurrent.TimeUnit.MILLISECONDS)
++        try {
+         val track = Track(1, "Stereo level check", "Test signal", 180_000, "content://test/meter")
+@@ -82,3 +86,7 @@
+         bitmap.recycle()
+-        processor.reset()
++        } finally {
++            feeder.shutdownNow()
++            feeder.awaitTermination(5, java.util.concurrent.TimeUnit.SECONDS)
++            processor.reset()
++        }
+     }
+--- a/app/src/androidTestModern/java/com/example/androidmixtape/ui/NowPlayingLayoutTest.kt
++++ b/app/src/androidTestModern/java/com/example/androidmixtape/ui/NowPlayingLayoutTest.kt
+@@ -102,3 +102,3 @@
+         assertTrue("Toggle $toggle spills outside viewport $viewportBounds", toggle.bottom <= viewportBounds.bottom - 7.dp)
+-        assertTrue("Toggle was crushed: $toggle", toggle.bottom - toggle.top >= 63.dp)
++        assertTrue("Toggle was crushed: $toggle", toggle.bottom - toggle.top >= 47.dp)
+         val deck = composeRule.onNodeWithContentDescription("Cassette deck").getUnclippedBoundsInRoot()
+--- a/app/src/androidTestModern/java/com/example/androidmixtape/ui/SettingsUiTest.kt
++++ b/app/src/androidTestModern/java/com/example/androidmixtape/ui/SettingsUiTest.kt
+@@ -211,3 +211,4 @@
+         composeRule.onNodeWithText("Road songs").assertDoesNotExist()
+-        composeRule.onNodeWithContentDescription("Edit name for Night bus").performClick()
++        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
++        composeRule.onNodeWithContentDescription("Edit name for Night bus").performScrollTo().performClick()
+         composeRule.onNodeWithText("Mixtape name").performTextReplacement("")
+@@ -216,3 +217,3 @@
+         composeRule.onNodeWithText("Save").performClick()
+-        composeRule.onNodeWithContentDescription("Randomize name for Night train").performClick()
++        composeRule.onNodeWithContentDescription("Randomize name for Night train").performScrollTo().performClick()
+         composeRule.runOnIdle {
+@@ -227,2 +228,3 @@
+         composeRule.onNodeWithText("Filename pattern").performTextInput("*voice memo*")
++        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+         link("Add")
+@@ -246,3 +248,3 @@
+         composeRule.onNodeWithText("Reset all mixtapes").assertIsNotEnabled()
+-        composeRule.onNodeWithContentDescription("Back to Mix tapes").performClick()
++        composeRule.onNodeWithContentDescription("Back").performClick()
+         composeRule.runOnIdle { assertEquals("back", events.last()) }

@@ -7,3 +7,5 @@ docs/evidence/spine-font-centering/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/spine-font-centering/**/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/case-plastic/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/prototype-case-plastic/*.png filter=lfs diff=lfs merge=lfs -text
+artifacts/card-4900/*.apk filter=lfs diff=lfs merge=lfs -text
+docs/card-4900/*.png filter=lfs diff=lfs merge=lfs -text

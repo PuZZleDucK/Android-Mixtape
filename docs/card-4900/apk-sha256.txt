@@ -1,0 +1,2 @@
+f9723febac4442b4f3a4c0a079b8cd5889da8aef3a5c6523b2dba56ee5f145f0  artifacts/card-4900/modern-debug-androidTest.apk
+cba58e27d0b4df7be9dab4244dde729a67f2ad69e97f37781ce698cc48638afb  artifacts/card-4900/modern-debug.apk

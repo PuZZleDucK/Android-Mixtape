@@ -1,0 +1,110 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.13/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:processModernDebugNavigationResources UP-TO-DATE
+> Task :app:compileModernDebugNavigationResources UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest UP-TO-DATE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:packageModernDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:processModernDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateModernDebugUnitTestConfig UP-TO-DATE
+> Task :app:preModernDebugAndroidTestBuild SKIPPED
+> Task :app:generateModernDebugAndroidTestResValues UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeModernDebugNativeDebugMetadata NO-SOURCE
+> Task :app:compressModernDebugAssets UP-TO-DATE
+> Task :app:checkModernDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarModernDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexModernDebug UP-TO-DATE
+> Task :app:mergeLibDexModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeModernDebugNativeLibs UP-TO-DATE
+> Task :app:stripModernDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningModernDebug UP-TO-DATE
+> Task :app:writeModernDebugAppMetadata UP-TO-DATE
+> Task :app:writeModernDebugSigningConfigVersions UP-TO-DATE
+> Task :app:checkModernDebugAndroidTestAarMetadata UP-TO-DATE
+> Task :app:processModernDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:compileModernDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:mapModernDebugAndroidTestSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugAndroidTestResources UP-TO-DATE
+> Task :app:mergeModernDebugAndroidTestResources UP-TO-DATE
+> Task :app:processModernDebugAndroidTestManifest UP-TO-DATE
+> Task :app:processModernDebugAndroidTestResources UP-TO-DATE
+> Task :app:javaPreCompileModernDebugAndroidTest UP-TO-DATE
+> Task :app:mergeModernDebugAndroidTestShaders UP-TO-DATE
+> Task :app:compileModernDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateModernDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeModernDebugAndroidTestAssets UP-TO-DATE
+> Task :app:compressModernDebugAndroidTestAssets UP-TO-DATE
+> Task :app:checkModernDebugAndroidTestDuplicateClasses UP-TO-DATE
+> Task :app:desugarModernDebugAndroidTestFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexModernDebugAndroidTest UP-TO-DATE
+> Task :app:mergeLibDexModernDebugAndroidTest UP-TO-DATE
+> Task :app:mergeModernDebugAndroidTestJniLibFolders UP-TO-DATE
+> Task :app:mergeModernDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripModernDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningModernDebugAndroidTest UP-TO-DATE
+> Task :app:writeModernDebugAndroidTestSigningConfigVersions UP-TO-DATE
+
+> Task :app:compileModernDebugKotlin
+e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
+    1. Kotlin compile daemon is ready
+w: file:///home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/playback/MixtapeMediaLibraryService.kt:137:67 'val sessionCompatToken: MediaSessionCompat.Token' is deprecated. Deprecated in Java.
+
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleModernDebugClassesToRuntimeJar
+> Task :app:bundleModernDebugClassesToCompileJar
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:generateModernDebugAndroidTestLintModel
+> Task :app:generateModernDebugLintReportModel
+> Task :app:generateModernDebugUnitTestLintModel
+> Task :app:compileModernDebugUnitTestKotlin
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processModernDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:lintAnalyzeModernDebug
+> Task :app:testModernDebugUnitTest
+> Task :app:lintAnalyzeModernDebugAndroidTest
+> Task :app:lintAnalyzeModernDebugUnitTest
+> Task :app:dexBuilderModernDebug
+> Task :app:mergeModernDebugGlobalSynthetics UP-TO-DATE
+> Task :app:mergeModernDebugJavaResource UP-TO-DATE
+> Task :app:mergeProjectDexModernDebug
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleModernDebug
+> Task :app:compileModernDebugAndroidTestKotlin
+> Task :app:compileModernDebugAndroidTestJavaWithJavac NO-SOURCE
+> Task :app:dexBuilderModernDebugAndroidTest
+> Task :app:lintReportModernDebug UP-TO-DATE
+> Task :app:lintModernDebug
+> Task :app:mergeModernDebugAndroidTestGlobalSynthetics UP-TO-DATE
+> Task :app:processModernDebugAndroidTestJavaRes UP-TO-DATE
+> Task :app:mergeModernDebugAndroidTestJavaResource UP-TO-DATE
+> Task :app:mergeProjectDexModernDebugAndroidTest
+> Task :app:packageModernDebugAndroidTest
+> Task :app:createModernDebugAndroidTestApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleModernDebugAndroidTest
+
+BUILD SUCCESSFUL in 4m 37s
+83 actionable tasks: 19 executed, 64 up-to-date

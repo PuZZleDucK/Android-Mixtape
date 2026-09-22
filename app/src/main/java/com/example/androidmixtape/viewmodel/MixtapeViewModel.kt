@@ -310,6 +310,9 @@ class MixtapeViewModel(
     private val _uiState = MutableStateFlow(MixtapeUiState())
     val uiState: StateFlow<MixtapeUiState> = _uiState.asStateFlow()
     var onDeleteTrackUserActionRequired: ((IntentSender) -> Unit)? = null
+    private var scanJob: Job? = null
+    private var scanGeneration = 0L
+    private var audioPermissionGranted = false
     private var pendingDelete: PendingDelete? = null
     private var rawLibraryTracks: List<Track> = emptyList()
     private var libraryTracks: List<Track> = emptyList()
@@ -341,9 +344,23 @@ class MixtapeViewModel(
     }
 
     fun onPermissionResult(granted: Boolean) {
+        val wasGranted = audioPermissionGranted
+        audioPermissionGranted = granted
         if (!granted) {
+            ++scanGeneration
+            scanJob?.cancel()
+            trackJumpCueJob?.cancel()
+            transportCuePlayer.cancel()
+            pendingDelete = null
+            rawLibraryTracks = emptyList()
+            libraryTracks = emptyList()
+            mixtapeTracks = emptyList()
+            assignedMixtapeNames.clear()
+            controller.replaceQueueAfterCurrentRemoval(emptyList(), -1, false)
             _uiState.value = MixtapeUiState(
                 status = LibraryStatus.PermissionRequired,
+                mixtapeSettings = mixtapeSettings,
+                mixtapeThemeSettings = mixtapeThemeSettings,
                 mixtapeSymbolSettings = mixtapeSymbolSettings,
                 mixtapeSpineSkinSettings = mixtapeSpineSkinSettings,
                 mixtapeTapeSkinSettings = mixtapeTapeSkinSettings,
@@ -354,17 +371,21 @@ class MixtapeViewModel(
             return
         }
 
-        if (_uiState.value.status in setOf(LibraryStatus.Loading, LibraryStatus.Empty, LibraryStatus.Ready)) return
+        if (wasGranted && _uiState.value.status in setOf(LibraryStatus.Loading, LibraryStatus.Empty, LibraryStatus.Ready)) return
 
         refresh()
     }
 
     fun refresh() {
+        if (!audioPermissionGranted) return
+        val generation = ++scanGeneration
+        scanJob?.cancel()
         assignedMixtapeNames.clear()
         _uiState.value = _uiState.value.copy(status = LibraryStatus.Loading, message = "Scanning device audio…")
-        viewModelScope.launch {
+        scanJob = viewModelScope.launch {
             runCatching { repository.loadTracks() }
                 .onSuccess { tracks ->
+                    if (generation != scanGeneration || !audioPermissionGranted) return@launch
                     rawLibraryTracks = tracks
                     explicitMixtapeGroups = null
                     rebuildFilteredTracks(preserveMixtapeOrder = false)
@@ -396,6 +417,12 @@ class MixtapeViewModel(
                     }
                 }
                 .onFailure { error ->
+                    if (error is CancellationException) throw error
+                    if (generation != scanGeneration || !audioPermissionGranted) return@launch
+                    if (error is SecurityException) {
+                        onPermissionResult(false)
+                        return@launch
+                    }
                     _uiState.value = MixtapeUiState(
                         status = LibraryStatus.Error,
                         mixtapeSymbolSettings = mixtapeSymbolSettings,
@@ -1006,6 +1033,8 @@ class MixtapeViewModel(
     }
 
     override fun onCleared() {
+        ++scanGeneration
+        scanJob?.cancel()
         trackJumpCueJob?.cancel()
         transportCuePlayer.cancel()
         transportCuePlayer.release()
@@ -1368,6 +1397,7 @@ class MixtapeViewModel(
     }
     
     private fun refreshCurrentUiState() {
+        if (!audioPermissionGranted) return
         val currentState = _uiState.value
         matchingMixtapeStableKeyFor(controller.state.tracks)?.let { currentMixtapeStableKey = it }
         _uiState.value = controller.toUiState(

@@ -10,7 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import com.example.androidmixtape.data.MediaStoreAudioRepository
 import com.example.androidmixtape.diagnostics.AndroidAutoDiagnostics
@@ -51,6 +51,8 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    private val deleteConfirmationCallback: (IntentSender) -> Unit = ::launchDeleteConfirmation
+
     private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         viewModel.onPermissionResult(granted)
     }
@@ -70,10 +72,10 @@ class MainActivity : ComponentActivity() {
         viewModel.onPermissionResult(
             permission == null || checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED,
         )
-        viewModel.onDeleteTrackUserActionRequired = ::launchDeleteConfirmation
+        viewModel.onDeleteTrackUserActionRequired = deleteConfirmationCallback
 
         setContent {
-            val state by viewModel.uiState.collectAsState()
+            val state by viewModel.uiState.collectAsStateWithLifecycle()
             AndroidMixtapeTheme {
                 MixtapeApp(
                     state = state,
@@ -129,6 +131,21 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val permission = AudioPermissionPolicy.requiredRuntimePermission(Build.VERSION.SDK_INT)
+        viewModel.onPermissionResult(
+            permission == null || checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED,
+        )
+    }
+
+    override fun onDestroy() {
+        if (viewModel.onDeleteTrackUserActionRequired === deleteConfirmationCallback) {
+            viewModel.onDeleteTrackUserActionRequired = null
+        }
+        super.onDestroy()
     }
 
     private fun launchDeleteConfirmation(intentSender: IntentSender) {

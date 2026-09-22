@@ -1,0 +1,847 @@
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ModernizationLifecycleTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ModernizationLifecycleTest:
+INSTRUMENTATION_STATUS: test=settingsGrantRefreshesSameActivityAndRecreationRebindsCallback
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ModernizationLifecycleTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=settingsGrantRefreshesSameActivityAndRecreationRebindsCallback
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.AudioMeterTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.playback.AudioMeterTest:
+INSTRUMENTATION_STATUS: test=monoIsMirroredAndFlushAndSilenceClearBothChannels
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.AudioMeterTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=monoIsMirroredAndFlushAndSilenceClearBothChannels
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.AudioMeterTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=stereoPcmPassesThroughUnchangedAndDeckShowsSixtyAndFortyPercent
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.AudioMeterTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=stereoPcmPassesThroughUnchangedAndDeckShowsSixtyAndFortyPercent
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.CounterTransportServiceTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.playback.CounterTransportServiceTest:
+INSTRUMENTATION_STATUS: test=externalTransportPublishesDiscontinuitiesAndStablePause
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.CounterTransportServiceTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=externalTransportPublishesDiscontinuitiesAndStablePause
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.DeckTransportCueUiTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.playback.DeckTransportCueUiTest:
+INSTRUMENTATION_STATUS: test=bothDeckButtonsProduceAudioBeforeChangingTracks
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.DeckTransportCueUiTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=bothDeckButtonsProduceAudioBeforeChangingTracks
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.playback.MediaAudioFocusTest:
+INSTRUMENTATION_STATUS: test=transientInterruptionResumesButPermanentFocusLossStaysPaused
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=transientInterruptionResumesButPermanentFocusLossStaysPaused
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=controllerCanStartPlaybackWhilePhoneActivityIsInBackground
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=controllerCanStartPlaybackWhilePhoneActivityIsInBackground
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=8
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=8
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CasePlasticCompositingTest
+INSTRUMENTATION_STATUS: current=9
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.CasePlasticCompositingTest:
+INSTRUMENTATION_STATUS: test=tinyTallAndWideGeometryDoesNotThrow
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CasePlasticCompositingTest
+INSTRUMENTATION_STATUS: current=9
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=tinyTallAndWideGeometryDoesNotThrow
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CasePlasticCompositingTest
+INSTRUMENTATION_STATUS: current=10
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=everyThemeTransmitsPaperAndParentWithIdenticalCaseAndSpineOptics
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CasePlasticCompositingTest
+INSTRUMENTATION_STATUS: current=10
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=everyThemeTransmitsPaperAndParentWithIdenticalCaseAndSpineOptics
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CasePlasticCompositingTest
+INSTRUMENTATION_STATUS: current=11
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=moldedRimsRemainVisibleOnLightAndDarkParents
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CasePlasticCompositingTest
+INSTRUMENTATION_STATUS: current=11
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=moldedRimsRemainVisibleOnLightAndDarkParents
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterDeckSkinsTest
+INSTRUMENTATION_STATUS: current=12
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.CounterDeckSkinsTest:
+INSTRUMENTATION_STATUS: test=allDeckSkinsContainCounterAndRetainAccessibleSmallerToggle
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterDeckSkinsTest
+INSTRUMENTATION_STATUS: current=12
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=allDeckSkinsContainCounterAndRetainAccessibleSmallerToggle
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=13
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.CounterWheelsTest:
+INSTRUMENTATION_STATUS: test=disablingPlatformMotionDuringCarrySettlesImmediately
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=13
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=disablingPlatformMotionDuringCarrySettlesImmediately
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=14
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=remountDuringCarryStartsAtLatestValueWithoutStaleCompletion
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=14
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=remountDuringCarryStartsAtLatestValueWithoutStaleCompletion
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=15
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=compactWindowKeepsSettledNumeralsInsideBothEdges
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=15
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=compactWindowKeepsSettledNumeralsInsideBothEdges
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=16
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=platformZeroScaleSettlesWithoutWheelMotion
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=16
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stack=org.junit.AssumptionViolatedException: got: <false>, expected: is <true>
+	at org.junit.Assume.assumeThat(Assume.java:106)
+	at org.junit.Assume.assumeTrue(Assume.java:50)
+	at com.example.androidmixtape.ui.CounterWheelsTest.platformZeroScaleSettlesWithoutWheelMotion(CounterWheelsTest.kt:130)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:505)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:333)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:385)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:332)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:359)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:331)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:372)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:330)
+	at androidx.compose.ui.test.EspressoLink.withStrategy(EspressoLink.android.kt:66)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:329)
+	at androidx.compose.ui.test.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:155)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:328)
+	at androidx.compose.ui.test.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at androidx.test.ext.junit.runners.AndroidJUnit4.run(AndroidJUnit4.java:162)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:68)
+	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:59)
+	at androidx.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:463)
+	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:2597)
+
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=platformZeroScaleSettlesWithoutWheelMotion
+INSTRUMENTATION_STATUS_CODE: -4
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=17
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=interruptionsAndRepeatedUpdatesNeverRestoreStaleDigits
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=17
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=interruptionsAndRepeatedUpdatesNeverRestoreStaleDigits
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=18
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=singleIncrementAndCarriesKeepFixedCellsAndFinishCorrectly
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.CounterWheelsTest
+INSTRUMENTATION_STATUS: current=18
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=singleIncrementAndCarriesKeepFixedCellsAndFinishCorrectly
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.HandwritingFontSizeUiTest
+INSTRUMENTATION_STATUS: current=19
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.HandwritingFontSizeUiTest:
+INSTRUMENTATION_STATUS: test=preferencesDefaultToLargeAndRoundTripEverySize
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.HandwritingFontSizeUiTest
+INSTRUMENTATION_STATUS: current=19
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=preferencesDefaultToLargeAndRoundTripEverySize
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.HandwritingFontSizeUiTest
+INSTRUMENTATION_STATUS: current=20
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=bothSettingsPagesChangeSizeAndNowPlayingRowsShrink
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.HandwritingFontSizeUiTest
+INSTRUMENTATION_STATUS: current=20
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=bothSettingsPagesChangeSizeAndNowPlayingRowsShrink
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=21
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.MixtapeAppTest:
+INSTRUMENTATION_STATUS: test=settingsScreenShowsResetSectionAndCallsResetAllMixtapes
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=21
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=settingsScreenShowsResetSectionAndCallsResetAllMixtapes
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=22
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=mixTapesScreenOffersSettingsEntryPoint
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=22
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=mixTapesScreenOffersSettingsEntryPoint
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=23
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=nowPlayingScreenDoesNotOfferHeaderNavigationOrTitle
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=23
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=nowPlayingScreenDoesNotOfferHeaderNavigationOrTitle
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=24
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=readyStateDefaultsToMixTapesWithoutLibraryNavigation
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=24
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=readyStateDefaultsToMixTapesWithoutLibraryNavigation
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=25
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=permissionPromptExplainsAudioAccessAndRequestsPermission
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=25
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=permissionPromptExplainsAudioAccessAndRequestsPermission
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=26
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=mixTapesScreenDoesNotOfferLibraryNavigation
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeAppTest
+INSTRUMENTATION_STATUS: current=26
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=mixTapesScreenDoesNotOfferLibraryNavigation
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeRemovalUiTest
+INSTRUMENTATION_STATUS: current=27
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.MixtapeRemovalUiTest:
+INSTRUMENTATION_STATUS: test=removeMenuOnlyEditsCurrentTapeAndSavedStateSurvivesRecreation
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.MixtapeRemovalUiTest
+INSTRUMENTATION_STATUS: current=27
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=removeMenuOnlyEditsCurrentTapeAndSavedStateSurvivesRecreation
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingLayoutTest
+INSTRUMENTATION_STATUS: current=28
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.NowPlayingLayoutTest:
+INSTRUMENTATION_STATUS: test=resizingBetweenPortraitAndLandscapeKeepsFooterInsidePlayer
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingLayoutTest
+INSTRUMENTATION_STATUS: current=28
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=resizingBetweenPortraitAndLandscapeKeepsFooterInsidePlayer
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingLayoutTest
+INSTRUMENTATION_STATUS: current=29
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=shortLandscapeKeepsTrackPreviewInsidePlayer
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingLayoutTest
+INSTRUMENTATION_STATUS: current=29
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=shortLandscapeKeepsTrackPreviewInsidePlayer
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingLayoutTest
+INSTRUMENTATION_STATUS: current=30
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=shortLandscapeKeepsSpineInsidePlayer
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingLayoutTest
+INSTRUMENTATION_STATUS: current=30
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=shortLandscapeKeepsSpineInsidePlayer
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingSettingsGestureTest
+INSTRUMENTATION_STATUS: current=31
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.NowPlayingSettingsGestureTest:
+INSTRUMENTATION_STATUS: test=tapsLongPressCancellationAndAccessibleSettingsKeepMode
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingSettingsGestureTest
+INSTRUMENTATION_STATUS: current=31
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=tapsLongPressCancellationAndAccessibleSettingsKeepMode
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingSettingsPersistenceTest
+INSTRUMENTATION_STATUS: current=32
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.NowPlayingSettingsPersistenceTest:
+INSTRUMENTATION_STATUS: test=visualEditsReloadFromFreshStores
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingSettingsPersistenceTest
+INSTRUMENTATION_STATUS: current=32
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=visualEditsReloadFromFreshStores
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SegmentedMeterUiTest
+INSTRUMENTATION_STATUS: current=33
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SegmentedMeterUiTest:
+INSTRUMENTATION_STATUS: test=bothSkinsFollowStereoPcmAndClearOnPauseAndFlush
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SegmentedMeterUiTest
+INSTRUMENTATION_STATUS: current=33
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=bothSkinsFollowStereoPcmAndClearOnPauseAndFlush
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SegmentedMeterUiTest
+INSTRUMENTATION_STATUS: current=34
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=actualPlaybackRisesFallsPausesAndStops
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SegmentedMeterUiTest
+INSTRUMENTATION_STATUS: current=34
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=actualPlaybackRisesFallsPausesAndStops
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=35
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SettingsUiTest:
+INSTRUMENTATION_STATUS: test=resetRequiresConfirmationCanBeCancelledAndEmptyLibraryCanGoBack
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=35
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=resetRequiresConfirmationCanBeCancelledAndEmptyLibraryCanGoBack
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=36
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=filenamePatternsStillSupportAddRemoveAndBlankInputGuard
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=36
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=filenamePatternsStillSupportAddRemoveAndBlankInputGuard
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=37
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=portraitLandscapeAndLargeTextKeepNavigationAndControlsReachable
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=37
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=portraitLandscapeAndLargeTextKeepNavigationAndControlsReachable
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=38
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=everyExistingSettingsDestinationRemainsReachableAndCategorySurvivesBack
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=38
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=everyExistingSettingsDestinationRemainsReachableAndCategorySurvivesBack
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=39
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=namesCanBeSearchedEditedAndRandomizedWithoutLosingTheirKeys
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=39
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=namesCanBeSearchedEditedAndRandomizedWithoutLosingTheirKeys
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=40
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=tapeLengthArtistGroupingAndMessinessKeepAllChoices
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=40
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=tapeLengthArtistGroupingAndMessinessKeepAllChoices
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=41
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=lastEnabledComponentSymbolAndFontCannotBeTurnedOff
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=41
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=lastEnabledComponentSymbolAndFontCannotBeTurnedOff
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=42
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=androidBackReturnsThroughSettingsWithoutExitingTheApp
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=42
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=androidBackReturnsThroughSettingsWithoutExitingTheApp
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=43
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=componentCardsKeepPreviewsAndEachToggleFiresOnce
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SettingsUiTest
+INSTRUMENTATION_STATUS: current=43
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=componentCardsKeepPreviewsAndEachToggleFiresOnce
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SleeveInkUiTest
+INSTRUMENTATION_STATUS: current=44
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SleeveInkUiTest:
+INSTRUMENTATION_STATUS: test=editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SleeveInkUiTest
+INSTRUMENTATION_STATUS: current=44
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SleeveInkUiTest
+INSTRUMENTATION_STATUS: current=45
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=inkPreferencesPersistAndOldTapesKeepTheirOriginalColor
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SleeveInkUiTest
+INSTRUMENTATION_STATUS: current=45
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=inkPreferencesPersistAndOldTapesKeepTheirOriginalColor
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SpineFontVisualAuditTest
+INSTRUMENTATION_STATUS: current=46
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SpineFontVisualAuditTest:
+INSTRUMENTATION_STATUS: test=captureSupportedFontsInProductionContexts
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SpineFontVisualAuditTest
+INSTRUMENTATION_STATUS: current=46
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stack=org.junit.AssumptionViolatedException: Pass spineAuditPhase to write visual audit captures
+	at org.junit.Assume.assumeTrue(Assume.java:68)
+	at com.example.androidmixtape.ui.SpineFontVisualAuditTest.captureSupportedFontsInProductionContexts(SpineFontVisualAuditTest.kt:27)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:272)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt:271)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt:505)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt:333)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withComposeIdlingResource(ComposeUiTest.android.kt:385)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withComposeIdlingResource(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1.invoke(ComposeUiTest.android.kt:332)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withWindowRecomposer(ComposeUiTest.android.kt:359)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withWindowRecomposer(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1.invoke(ComposeUiTest.android.kt:331)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.withTestCoroutines(ComposeUiTest.android.kt:372)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.access$withTestCoroutines(ComposeUiTest.android.kt:219)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1.invoke(ComposeUiTest.android.kt:330)
+	at androidx.compose.ui.test.EspressoLink.withStrategy(EspressoLink.android.kt:66)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1.invoke(ComposeUiTest.android.kt:329)
+	at androidx.compose.ui.test.IdlingResourceRegistry.withRegistry(IdlingResourceRegistry.jvm.kt:155)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1.invoke(ComposeUiTest.android.kt:328)
+	at androidx.compose.ui.test.ComposeRootRegistry.withRegistry(ComposeRootRegistry.android.kt:146)
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment.runTest(ComposeUiTest.android.kt:327)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1.evaluate(AndroidComposeTestRule.android.kt:271)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:68)
+	at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:59)
+	at androidx.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:463)
+	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:2597)
+
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SpineFontVisualAuditTest:
+INSTRUMENTATION_STATUS: test=captureSupportedFontsInProductionContexts
+INSTRUMENTATION_STATUS_CODE: -4
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SpineTitleHorizontalPlacementTest
+INSTRUMENTATION_STATUS: current=47
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SpineTitleHorizontalPlacementTest:
+INSTRUMENTATION_STATUS: test=fittingInkCentersWithinReservedTitleViewport
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SpineTitleHorizontalPlacementTest
+INSTRUMENTATION_STATUS: current=47
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=fittingInkCentersWithinReservedTitleViewport
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SpineTitleOverhangTest
+INSTRUMENTATION_STATUS: current=48
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SpineTitleOverhangTest:
+INSTRUMENTATION_STATUS: test=paddedReferencePreservesInkAndOverflowAtFitThreshold
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SpineTitleOverhangTest
+INSTRUMENTATION_STATUS: current=48
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=paddedReferencePreservesInkAndOverflowAtFitThreshold
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SpineTitleRasterTest
+INSTRUMENTATION_STATUS: current=49
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SpineTitleRasterTest:
+INSTRUMENTATION_STATUS: test=visibleInkFitsAllFontsSizesJitterAndLongTitles
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SpineTitleRasterTest
+INSTRUMENTATION_STATUS: current=49
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=visibleInkFitsAllFontsSizesJitterAndLongTitles
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.TrackHighlightAlignmentTest
+INSTRUMENTATION_STATUS: current=50
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.TrackHighlightAlignmentTest:
+INSTRUMENTATION_STATUS: test=trackInkFitsAndCentersWithinItsHighlightForEveryFont
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.TrackHighlightAlignmentTest
+INSTRUMENTATION_STATUS: current=50
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=50
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=trackInkFitsAndCentersWithinItsHighlightForEveryFont
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 201.337
+
+OK (50 tests)
+
+
+INSTRUMENTATION_CODE: -1

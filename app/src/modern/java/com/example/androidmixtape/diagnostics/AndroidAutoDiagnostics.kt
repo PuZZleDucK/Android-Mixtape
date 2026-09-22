@@ -119,6 +119,7 @@ object AndroidAutoDiagnostics {
         }
     }
 
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     fun controller(controller: MediaSession.ControllerInfo): String =
         "package=${controller.packageName} uid=${controller.uid} trusted=${controller.isTrusted} " +
             "controllerVersion=${controller.controllerVersion} interfaceVersion=${controller.interfaceVersion} " +

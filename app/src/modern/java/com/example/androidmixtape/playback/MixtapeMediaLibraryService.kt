@@ -38,6 +38,7 @@ class MixtapeMediaLibraryService : MediaLibraryService() {
             this,
             MeteringRenderersFactory(this, meteringAudioProcessor),
         ).build().apply {
+            setHandleAudioBecomingNoisy(true)
             setWakeMode(C.WAKE_MODE_LOCAL)
         }
         val mediaTree = AndroidAutoMediaTree(MediaStoreAudioRepository(applicationContext))
@@ -64,6 +65,7 @@ class MixtapeMediaLibraryService : MediaLibraryService() {
         super.onDestroy()
     }
 
+    @androidx.annotation.OptIn(UnstableApi::class)
     private class MixtapeLibraryCallback(
         private val context: Context,
         private val mediaTree: AndroidAutoMediaTree,
@@ -91,7 +93,7 @@ class MixtapeMediaLibraryService : MediaLibraryService() {
                 "media_library_onCustomCommand action=${customCommand.customAction} ${AndroidAutoDiagnostics.controller(controller)}",
             )
             if (customCommand.customAction != ACTION_GET_SESSION_COMPAT_TOKEN) {
-                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_ERROR_NOT_SUPPORTED))
+                return Futures.immediateFuture(SessionResult(SessionError.ERROR_NOT_SUPPORTED))
             }
             val extras = Bundle().apply {
                 putParcelable(EXTRA_SESSION_COMPAT_TOKEN, session.sessionCompatToken)

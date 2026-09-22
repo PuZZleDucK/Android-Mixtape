@@ -4,6 +4,8 @@ Android Mixtape turns the music stored on your device into a case full of virtua
 
 Everything runs locally. The app reads audio through Android's media library and does not upload your music or require an online account.
 
+The modern build targets Android 16. Returning from system settings refreshes audio permission; revoking access clears the inaccessible library and playback queue.
+
 ## Highlights
 
 - Automatically groups local music into mixtapes.

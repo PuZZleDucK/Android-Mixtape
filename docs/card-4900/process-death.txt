@@ -1,0 +1,7 @@
+Starting: Intent { cmp=org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity }
+BEFORE
+5012
+AFTER
+Starting: Intent { cmp=org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity }
+RESTORED
+5075

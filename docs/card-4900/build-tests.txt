@@ -1,0 +1,112 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.13/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:processModernDebugNavigationResources UP-TO-DATE
+> Task :app:compileModernDebugNavigationResources UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest UP-TO-DATE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:packageModernDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:processModernDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateModernDebugUnitTestConfig UP-TO-DATE
+> Task :app:preModernDebugAndroidTestBuild SKIPPED
+> Task :app:generateModernDebugAndroidTestResValues UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeModernDebugNativeDebugMetadata NO-SOURCE
+> Task :app:compressModernDebugAssets
+> Task :app:checkModernDebugDuplicateClasses
+> Task :app:desugarModernDebugFileDependencies
+> Task :app:compileModernDebugKotlin
+> Task :app:mergeExtDexModernDebug
+
+> Task :app:compileModernDebugKotlin
+w: file:///home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/playback/MixtapeMediaLibraryService.kt:136:67 'val sessionCompatToken: MediaSessionCompat.Token' is deprecated. Deprecated in Java.
+
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleModernDebugClassesToRuntimeJar
+> Task :app:bundleModernDebugClassesToCompileJar
+> Task :app:processModernDebugJavaRes UP-TO-DATE
+> Task :app:generateModernDebugAndroidTestLintModel
+> Task :app:generateModernDebugLintReportModel
+> Task :app:generateModernDebugUnitTestLintModel
+> Task :app:compileModernDebugUnitTestKotlin
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processModernDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:lintAnalyzeModernDebug
+> Task :app:testModernDebugUnitTest
+> Task :app:lintAnalyzeModernDebugAndroidTest
+> Task :app:lintAnalyzeModernDebugUnitTest
+> Task :app:mergeLibDexModernDebug
+> Task :app:dexBuilderModernDebug
+> Task :app:mergeModernDebugGlobalSynthetics
+> Task :app:mergeModernDebugJavaResource
+
+> Task :app:lintReportModernDebug
+Wrote HTML report to file:///home/puzzleduck/x/android-mixtape/app/build/reports/lint-results-modernDebug.html
+
+> Task :app:lintModernDebug
+> Task :app:mergeModernDebugJniLibFolders
+> Task :app:mergeProjectDexModernDebug
+> Task :app:mergeModernDebugNativeLibs
+> Task :app:validateSigningModernDebug
+> Task :app:writeModernDebugAppMetadata
+> Task :app:writeModernDebugSigningConfigVersions
+> Task :app:stripModernDebugDebugSymbols
+> Task :app:checkModernDebugAndroidTestAarMetadata
+> Task :app:processModernDebugAndroidTestNavigationResources
+> Task :app:compileModernDebugAndroidTestNavigationResources
+> Task :app:mapModernDebugAndroidTestSourceSetPaths
+> Task :app:generateModernDebugAndroidTestResources
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect
+> Task :app:assembleModernDebug
+> Task :app:mergeModernDebugAndroidTestResources
+> Task :app:processModernDebugAndroidTestManifest
+> Task :app:javaPreCompileModernDebugAndroidTest
+> Task :app:mergeModernDebugAndroidTestShaders
+> Task :app:compileModernDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateModernDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeModernDebugAndroidTestAssets
+> Task :app:compressModernDebugAndroidTestAssets
+> Task :app:processModernDebugAndroidTestResources
+> Task :app:checkModernDebugAndroidTestDuplicateClasses
+> Task :app:desugarModernDebugAndroidTestFileDependencies
+> Task :app:compileModernDebugAndroidTestKotlin
+> Task :app:mergeExtDexModernDebugAndroidTest
+> Task :app:compileModernDebugAndroidTestJavaWithJavac NO-SOURCE
+> Task :app:mergeLibDexModernDebugAndroidTest
+> Task :app:dexBuilderModernDebugAndroidTest
+> Task :app:mergeModernDebugAndroidTestGlobalSynthetics
+> Task :app:processModernDebugAndroidTestJavaRes
+> Task :app:mergeModernDebugAndroidTestJavaResource
+> Task :app:mergeModernDebugAndroidTestJniLibFolders
+> Task :app:mergeModernDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:mergeProjectDexModernDebugAndroidTest
+> Task :app:stripModernDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningModernDebugAndroidTest
+> Task :app:writeModernDebugAndroidTestSigningConfigVersions
+> Task :app:packageModernDebugAndroidTest
+> Task :app:createModernDebugAndroidTestApkListingFileRedirect
+> Task :app:assembleModernDebugAndroidTest
+
+BUILD SUCCESSFUL in 8m 23s
+83 actionable tasks: 57 executed, 26 up-to-date

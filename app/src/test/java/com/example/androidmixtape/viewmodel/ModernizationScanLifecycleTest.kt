@@ -6,6 +6,8 @@ import com.example.androidmixtape.playback.FakePlayerEngine
 import com.example.androidmixtape.playback.MixtapeController
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -21,7 +23,8 @@ class ModernizationScanLifecycleTest {
         override suspend fun loadTracks(): List<Track> {
             val request = CompletableDeferred<List<Track>>()
             requests += request
-            return request.await()
+            // Model a provider which finishes even after its caller is cancelled.
+            return withContext(NonCancellable) { request.await() }
         }
     }
 
@@ -51,6 +54,29 @@ class ModernizationScanLifecycleTest {
         repository.requests[1].complete(listOf(track(2)))
         repository.requests[0].complete(listOf(track(1)))
         assertEquals(listOf(2L), vm.uiState.value.tracks.map { it.id })
+    }
+
+    @Test fun repeatedGrantedResumeDoesNotRescanAndGrantAgainDoes() = runTest {
+        val repository = DeferredRepository()
+        val vm = model(repository)
+        vm.onPermissionResult(true)
+        repository.requests[0].complete(listOf(track(1)))
+        repeat(10) { vm.onPermissionResult(true) }
+        assertEquals(1, repository.requests.size)
+        vm.onPermissionResult(false)
+        assertEquals(emptyList<Track>(), vm.uiState.value.tracks)
+        vm.onPermissionResult(true)
+        repository.requests[1].complete(listOf(track(2)))
+        assertEquals(listOf(2L), vm.uiState.value.tracks.map { it.id })
+    }
+
+    @Test fun providerPermissionFailureRequiresPermissionRatherThanReportingReady() = runTest {
+        val vm = model(object : AudioRepository {
+            override suspend fun loadTracks(): List<Track> = throw SecurityException("revoked")
+        })
+        vm.onPermissionResult(true)
+        assertEquals(LibraryStatus.PermissionRequired, vm.uiState.value.status)
+        assertEquals(emptyList<Track>(), vm.uiState.value.tracks)
     }
 
     @Test fun refreshWithoutPermissionDoesNotQueryTheMediaProvider() = runTest {

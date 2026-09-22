@@ -1,0 +1,6 @@
+DENIED_PID
+6318
+Starting: Intent { cmp=org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity }
+GRANTED_PID
+6318
+Night mode: yes

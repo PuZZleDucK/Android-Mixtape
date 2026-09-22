@@ -48,7 +48,10 @@ class SpineTitleOverhangTest {
                         }
                         for (seed in listOf(971, 42)) {
                             val samples = handwritingJitterSamples(seed, tokens.size,
-                                HandwritingJitterStrength(.162f, .315f, 9f, .069f))
+                                HandwritingJitterStrength(.162f, .315f, 9f, .069f)).mapIndexed { index, sample ->
+                                // Exercise negative bearing explicitly, independent of device fonts.
+                                if (seed == 42 && index == 0) sample.copy(dxEm = -1f) else sample
+                            }
                             // Independent roomy reference. No calls to the production bounds or placement code.
                             val reference = ImageBitmap(4096, 256)
                             CanvasDrawScope().draw(density, LayoutDirection.Ltr, Canvas(reference), Size(4096f, 256f)) {
@@ -84,8 +87,16 @@ class SpineTitleOverhangTest {
                                 if (inkWidth <= 0) {
                                     assertNull(label, raster)
                                 } else {
-                                    val actual = checkNotNull(raster).image.asAndroidBitmap()
                                     val sourceX = if (inkWidth <= width - 2) left - (width - inkWidth) / 2 else 256
+                                    val visibleInk = pixels.indices.any { index ->
+                                        index % 4096 in sourceX until sourceX + width && pixels[index] ushr 24 != 0
+                                    }
+                                    if (!visibleInk) {
+                                        assertNull("$label has no ink inside its clipped viewport", raster)
+                                        cases++
+                                        continue
+                                    }
+                                    val actual = checkNotNull(raster) { label }.image.asAndroidBitmap()
                                     // All pixels match, so overhang, weight, jitter, blank margins and the
                                     // original size survive. Just-overflow runs remain left anchored.
                                     val actualPixels = IntArray(width * actual.height)

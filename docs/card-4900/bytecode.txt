@@ -1,0 +1,16 @@
+Classfile /home/puzzleduck/x/android-mixtape/app/build/tmp/kotlin-classes/modernDebug/com/example/androidmixtape/MainActivity.class
+  Last modified 22 Sept 2026; size 14019 bytes
+  SHA-256 checksum 75d08254eb002230c568a95cc40244e95c47363f68618a11f1f001b9f108da63
+  Compiled from "MainActivity.kt"
+public final class com.example.androidmixtape.MainActivity extends androidx.activity.ComponentActivity
+  minor version: 0
+  major version: 61
+  flags: (0x0031) ACC_PUBLIC, ACC_FINAL, ACC_SUPER
+  this_class: #2                          // com/example/androidmixtape/MainActivity
+  super_class: #4                         // androidx/activity/ComponentActivity
+  interfaces: 0, fields: 5, methods: 13, attributes: 6
+Constant pool:
+    #1 = Utf8               com/example/androidmixtape/MainActivity
+    #2 = Class              #1            // com/example/androidmixtape/MainActivity
+    #3 = Utf8               androidx/activity/ComponentActivity
+    #4 = Class              #3            // androidx/activity/ComponentActivity

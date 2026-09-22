@@ -33,7 +33,7 @@ Options:
 
 Environment overrides:
   KUNLUN_HOST, KUNLUN_TEST_DIR, KUNLUN_AVD, KUNLUN_EMULATOR_SERIAL,
-  KUNLUN_PACKAGE_NAME
+  KUNLUN_PACKAGE_NAME, KUNLUN_DISPLAY_ID (optional physical display for screenshots)
 EOF
 }
 
@@ -151,7 +151,9 @@ xauth=$(ps -ef | awk '/Xwayland :0/ {for (i=1;i<=NF;i++) if ($i=="-auth") print 
 export DISPLAY=:0
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
 [[ -n "$xauth" ]] && export XAUTHORITY=$xauth
-nohup "$emulator" -avd "$avd" -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -port 5554 \
+[[ "$serial" =~ ^emulator-([0-9]+)$ ]] || { echo "Expected emulator serial" >&2; exit 2; }
+port=${BASH_REMATCH[1]}
+nohup "$emulator" -avd "$avd" -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -port "$port" \
     >"$remote_dir/emulator.log" 2>&1 &
 
 for _ in $(seq 1 120); do
@@ -196,7 +198,12 @@ fi
 
 if [[ -n "$screenshot_path" ]]; then
     mkdir -p "$(dirname "$screenshot_path")"
-    ssh "$REMOTE_HOST" "/home/puzzleduck/Android/Sdk/platform-tools/adb -s '$EMULATOR_SERIAL' exec-out screencap -p" > "$screenshot_path"
+    display_option=""
+    if [[ -n "${KUNLUN_DISPLAY_ID:-}" ]]; then
+        [[ "$KUNLUN_DISPLAY_ID" =~ ^[0-9]+$ ]] || { echo "Invalid display id" >&2; exit 2; }
+        display_option="-d $KUNLUN_DISPLAY_ID"
+    fi
+    ssh "$REMOTE_HOST" "/home/puzzleduck/Android/Sdk/platform-tools/adb -s '$EMULATOR_SERIAL' exec-out screencap -p $display_option" > "$screenshot_path"
     file "$screenshot_path" | grep -q 'PNG image data' || {
         rm -f "$screenshot_path"
         echo "Screenshot capture did not produce a PNG" >&2

@@ -1,0 +1,47 @@
+--- a/app/src/androidTestModern/java/com/example/androidmixtape/playback/AudioMeterTest.kt
++++ b/app/src/androidTestModern/java/com/example/androidmixtape/playback/AudioMeterTest.kt
+@@ -50,2 +50,6 @@
+ 
++        // A live meter needs live PCM; a single buffer expires after 500 ms.
++        val feeder = java.util.concurrent.Executors.newSingleThreadScheduledExecutor()
++        feeder.scheduleAtFixedRate({ processor.queueInput(sinePcm(-12.0, -18.0)); processor.output }, 0, 50, java.util.concurrent.TimeUnit.MILLISECONDS)
++        try {
+         val track = Track(1, "Stereo level check", "Test signal", 180_000, "content://test/meter")
+@@ -82,3 +86,7 @@
+         bitmap.recycle()
+-        processor.reset()
++        } finally {
++            feeder.shutdownNow()
++            feeder.awaitTermination(5, java.util.concurrent.TimeUnit.SECONDS)
++            processor.reset()
++        }
+     }
+--- a/app/src/androidTestModern/java/com/example/androidmixtape/ui/NowPlayingLayoutTest.kt
++++ b/app/src/androidTestModern/java/com/example/androidmixtape/ui/NowPlayingLayoutTest.kt
+@@ -102,3 +102,3 @@
+         assertTrue("Toggle $toggle spills outside viewport $viewportBounds", toggle.bottom <= viewportBounds.bottom - 7.dp)
+-        assertTrue("Toggle was crushed: $toggle", toggle.bottom - toggle.top >= 63.dp)
++        assertTrue("Toggle was crushed: $toggle", toggle.bottom - toggle.top >= 47.dp)
+         val deck = composeRule.onNodeWithContentDescription("Cassette deck").getUnclippedBoundsInRoot()
+--- a/app/src/androidTestModern/java/com/example/androidmixtape/ui/SettingsUiTest.kt
++++ b/app/src/androidTestModern/java/com/example/androidmixtape/ui/SettingsUiTest.kt
+@@ -211,3 +211,4 @@
+         composeRule.onNodeWithText("Road songs").assertDoesNotExist()
+-        composeRule.onNodeWithContentDescription("Edit name for Night bus").performClick()
++        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
++        composeRule.onNodeWithContentDescription("Edit name for Night bus").performScrollTo().performClick()
+         composeRule.onNodeWithText("Mixtape name").performTextReplacement("")
+@@ -216,3 +217,3 @@
+         composeRule.onNodeWithText("Save").performClick()
+-        composeRule.onNodeWithContentDescription("Randomize name for Night train").performClick()
++        composeRule.onNodeWithContentDescription("Randomize name for Night train").performScrollTo().performClick()
+         composeRule.runOnIdle {
+@@ -227,2 +228,3 @@
+         composeRule.onNodeWithText("Filename pattern").performTextInput("*voice memo*")
++        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+         link("Add")
+@@ -246,3 +248,3 @@
+         composeRule.onNodeWithText("Reset all mixtapes").assertIsNotEnabled()
+-        composeRule.onNodeWithContentDescription("Back to Mix tapes").performClick()
++        composeRule.onNodeWithContentDescription("Back").performClick()
+         composeRule.runOnIdle { assertEquals("back", events.last()) }

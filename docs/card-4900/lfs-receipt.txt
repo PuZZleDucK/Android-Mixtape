@@ -1,0 +1,11 @@
+f9723febac * artifacts/card-4900/modern-debug-androidTest.apk
+cba58e27d0 * artifacts/card-4900/modern-debug.apk
+3296f74cdb * docs/card-4900/car-host.png
+82fe665cca * docs/card-4900/landscape-api36.png
+b6bd6c38e6 * docs/card-4900/library-api36.png
+031e0fa821 * docs/card-4900/playing-api24.png
+0b9cab6887 * docs/card-4900/playing-api36.png
+5f68e9b927 * docs/card-4900/restored-library.png
+5b0db6f305 * docs/card-4900/revoked-api36.png
+38d3464130 * docs/card-4900/settings-large-font.png
+7c4e8bf795 * docs/card-4900/small-dark-large-font.png

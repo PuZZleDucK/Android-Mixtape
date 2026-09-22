@@ -1,0 +1,9 @@
+OK: killing emulator, bye bye
+OK
+
+AVD 'card4900-api36' deleted.
+
+AVD 'card4900-api24' deleted.
+
+AVD 'card4900-auto35' deleted.
+1121424 bash -c A=~/Android/Sdk/platform-tools/adb; $A -s emulator-5580 emu kill; sleep 3; export JAVA_HOME=/home/puzzleduck/.asdf/installs/java/temurin-21.0.10+7.0.LTS; export PATH="$JAVA_HOME/bin:$PATH"; for name in card4900-api36 card4900-api24 card4900-auto35; do ~/Android/Sdk/cmdline-tools/latest/bin/avdmanager delete avd -n "$name"; done; rm -rf ~/x/remote-mixtape-testing/card4900; pgrep -af "qemu-system.*card4900" || true
