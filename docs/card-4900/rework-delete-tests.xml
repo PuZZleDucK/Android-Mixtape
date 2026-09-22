@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.androidmixtape.viewmodel.ModernizationDeleteConfirmationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-09-22T15:09:24.450Z" hostname="artigas" time="0.81">
+  <properties/>
+  <testcase name="retryFailureDoesNotHideTrack" classname="com.example.androidmixtape.viewmodel.ModernizationDeleteConfirmationTest" time="0.772"/>
+  <testcase name="approvedApi29ConsentMustActuallyDeleteBeforeReportingSuccess" classname="com.example.androidmixtape.viewmodel.ModernizationDeleteConfirmationTest" time="0.009"/>
+  <testcase name="api30ApprovalDoesNotRepeatProviderDelete" classname="com.example.androidmixtape.viewmodel.ModernizationDeleteConfirmationTest" time="0.005"/>
+  <testcase name="cancelledApi29ConsentDoesNotDelete" classname="com.example.androidmixtape.viewmodel.ModernizationDeleteConfirmationTest" time="0.006"/>
+  <testcase name="repeatedConsentDoesNotLoopOrHideTrack" classname="com.example.androidmixtape.viewmodel.ModernizationDeleteConfirmationTest" time="0.006"/>
+  <testcase name="cancelledApi30ConsentDoesNotDelete" classname="com.example.androidmixtape.viewmodel.ModernizationDeleteConfirmationTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

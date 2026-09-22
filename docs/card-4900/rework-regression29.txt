@@ -1,0 +1,59 @@
+/home/puzzleduck/x/remote-mixtape-testing/.work/card4900-rework/Card4900Delete.wav: 1 file pushed, 0 skipped. 4090.5 MB/s (2646078 bytes in 0.001s)
+Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///sdcard/Music/Card4900Delete.wav flg=0x400000 }
+Broadcast completed: result=0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ModernizationLifecycleTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ModernizationLifecycleTest:
+INSTRUMENTATION_STATUS: test=settingsGrantRefreshesSameActivityAndRecreationRebindsCallback
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ModernizationLifecycleTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=settingsGrantRefreshesSameActivityAndRecreationRebindsCallback
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.CounterTransportServiceTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.playback.CounterTransportServiceTest:
+INSTRUMENTATION_STATUS: test=externalTransportPublishesDiscontinuitiesAndStablePause
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.CounterTransportServiceTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: library selection 0 starts live playback
+	at org.junit.Assert.fail(Assert.java:89)
+	at com.example.androidmixtape.playback.CounterTransportServiceTest.externalTransportPublishesDiscontinuitiesAndStablePause$await(CounterTransportServiceTest.kt:61)
+	at com.example.androidmixtape.playback.CounterTransportServiceTest.externalTransportPublishesDiscontinuitiesAndStablePause(CounterTransportServiceTest.kt:167)
+
+INSTRUMENTATION_STATUS: stream=
+Error in externalTransportPublishesDiscontinuitiesAndStablePause(com.example.androidmixtape.playback.CounterTransportServiceTest):
+java.lang.AssertionError: library selection 0 starts live playback
+	at org.junit.Assert.fail(Assert.java:89)
+	at com.example.androidmixtape.playback.CounterTransportServiceTest.externalTransportPublishesDiscontinuitiesAndStablePause$await(CounterTransportServiceTest.kt:61)
+	at com.example.androidmixtape.playback.CounterTransportServiceTest.externalTransportPublishesDiscontinuitiesAndStablePause(CounterTransportServiceTest.kt:167)
+
+INSTRUMENTATION_STATUS: test=externalTransportPublishesDiscontinuitiesAndStablePause
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 29.371
+There was 1 failure:
+1) externalTransportPublishesDiscontinuitiesAndStablePause(com.example.androidmixtape.playback.CounterTransportServiceTest)
+java.lang.AssertionError: library selection 0 starts live playback
+	at org.junit.Assert.fail(Assert.java:89)
+	at com.example.androidmixtape.playback.CounterTransportServiceTest.externalTransportPublishesDiscontinuitiesAndStablePause$await(CounterTransportServiceTest.kt:61)
+	at com.example.androidmixtape.playback.CounterTransportServiceTest.externalTransportPublishesDiscontinuitiesAndStablePause(CounterTransportServiceTest.kt:167)
+
+FAILURES!!!
+Tests run: 2,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1

@@ -1,0 +1,9 @@
+OK: killing emulator, bye bye
+OK
+
+AVD 'card4900-rework29' deleted.
+
+AVD 'card4900-rework36' deleted.
+List of devices attached
+
+1181577 bash -c ~/Android/Sdk/platform-tools/adb -s emulator-5580 emu kill; sleep 3; export JAVA_HOME=$HOME/.asdf/installs/java/temurin-21.0.10+7.0.LTS; export PATH=$JAVA_HOME/bin:$PATH; ~/Android/Sdk/cmdline-tools/latest/bin/avdmanager delete avd -n card4900-rework29; ~/Android/Sdk/cmdline-tools/latest/bin/avdmanager delete avd -n card4900-rework36; rm -rf ~/x/remote-mixtape-testing/.work/card4900-rework; ~/Android/Sdk/platform-tools/adb devices; pgrep -af "qemu-system.*card4900" || true

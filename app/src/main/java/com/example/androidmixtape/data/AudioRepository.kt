@@ -12,7 +12,10 @@ import kotlinx.coroutines.withContext
 
 sealed class DeleteTrackResult {
     data object Success : DeleteTrackResult()
-    data class RequiresUserAction(val intentSender: IntentSender) : DeleteTrackResult()
+    data class RequiresUserAction(
+        val intentSender: IntentSender,
+        val retryAfterApproval: Boolean = false,
+    ) : DeleteTrackResult()
     data class Failure(val message: String) : DeleteTrackResult()
 }
 
@@ -101,7 +104,10 @@ class MediaStoreAudioRepository(
             }
         } catch (error: SecurityException) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && error is RecoverableSecurityException) {
-                DeleteTrackResult.RequiresUserAction(error.userAction.actionIntent.intentSender)
+                DeleteTrackResult.RequiresUserAction(
+                    error.userAction.actionIntent.intentSender,
+                    retryAfterApproval = true,
+                )
             } else {
                 DeleteTrackResult.Failure(error.message ?: "Device permission is required to delete this track")
             }

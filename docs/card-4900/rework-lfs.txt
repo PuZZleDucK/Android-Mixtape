@@ -1,0 +1,11 @@
+4c8e151d01 * artifacts/card-4900/rework-modern-debug-androidTest.apk
+46b2da560a * artifacts/card-4900/rework-modern-debug.apk
+abe16b92c3 * docs/card-4900/rework-api29/delete-after-recreation.png
+a7fe4a52c4 * docs/card-4900/rework-api29/delete-before-recreation.png
+3b3623b581 * docs/card-4900/rework-api29/delete-completed.png
+08afcd5f0a * docs/card-4900/rework-api29/final-ui.png
+6ae9f6a8c2 * docs/card-4900/rework-api29/playing.png
+d856017e06 * docs/card-4900/rework-api36/delete-after-recreation.png
+62fd3543d7 * docs/card-4900/rework-api36/delete-before-recreation.png
+746855d2b9 * docs/card-4900/rework-api36/delete-completed.png
+b4b9aa3a17 * docs/card-4900/rework-api36/final-ui.png

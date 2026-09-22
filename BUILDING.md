@@ -17,9 +17,11 @@ Libraries remain Compose BOM 2024.12.01, Activity 1.9.3, Lifecycle 2.8.7,
 coroutines 1.9.0, Media3 1.5.1, Car App 1.8.0-beta01 and media compat 1.6.0.
 No dependency upgrade was needed for the verified migration.
 
-The tested APK is `artifacts/card-4900/modern-debug.apk`. SHA256 receipts, real
+The current tested APK is `artifacts/card-4900/rework-modern-debug.apk`.
+The API 29 delete-consent repair and API 29/36 recreation checks are documented
+in `docs/card-4900/rework-results.md`. SHA256 receipts, real
 build/test logs and emulator evidence are in `docs/card-4900/`. Use
-`kunlun-sync.sh --apk artifacts/card-4900/modern-debug.apk --install-app`
+`kunlun-sync.sh --apk artifacts/card-4900/rework-modern-debug.apk --install-app`
 with an explicit owned emulator serial. The script now honors that serial's
 port when launching and accepts `KUNLUN_DISPLAY_ID` for Automotive captures.
 See AGENTS.md for deployment rules. Do not use a phone for this workflow.

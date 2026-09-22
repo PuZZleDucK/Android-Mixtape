@@ -289,6 +289,7 @@ data class MixtapeUiState(
 private data class PendingDelete(
     val track: Track,
     val intentSender: IntentSender,
+    val retryAfterApproval: Boolean,
 )
 
 class MixtapeViewModel(
@@ -861,7 +862,7 @@ class MixtapeViewModel(
                     removeDeletedTrackFromAppState(track, "Deleted ${track.title} from device")
                 }
                 is DeleteTrackResult.RequiresUserAction -> {
-                    pendingDelete = PendingDelete(track, result.intentSender)
+                    pendingDelete = PendingDelete(track, result.intentSender, result.retryAfterApproval)
                     _uiState.value = controller.toUiState(
                         status = LibraryStatus.Ready,
                         screen = _uiState.value.screen,
@@ -886,6 +887,19 @@ class MixtapeViewModel(
         val confirmedDelete = pendingDelete ?: return
         pendingDelete = null
         viewModelScope.launch {
+            if (confirmedDelete.retryAfterApproval) {
+                val result = repository.deleteTrack(confirmedDelete.track)
+                if (result != DeleteTrackResult.Success) {
+                    val reason = (result as? DeleteTrackResult.Failure)?.message
+                        ?: "Device permission is still required"
+                    _uiState.value = controller.toUiState(
+                        status = LibraryStatus.Ready,
+                        screen = _uiState.value.screen,
+                        message = "Could not delete ${confirmedDelete.track.title}: $reason",
+                    )
+                    return@launch
+                }
+            }
             runCatching { repository.loadTracks() }
                 .onSuccess { refreshedTracks ->
                     rawLibraryTracks = refreshedTracks.filterNot { it.matchesDeleteTarget(confirmedDelete.track) }

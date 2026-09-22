@@ -1,0 +1,12 @@
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/.work/card4900-rework/android-mixtape-modern-debug.apk
+Emulator boot completed: emulator-5580
+Performing Streamed Install
+Success
+    mResumedActivity: ActivityRecord{b1539ac u0 org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity t6}
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/.work/card4900-rework/android-mixtape-modern-debug.apk
+    mResumedActivity: ActivityRecord{1f29863 u0 org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity t9}
+Saved screenshot: docs/card-4900/rework-api29/final-ui.png
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/.work/card4900-rework/android-mixtape-modern-debug.apk
+    mResumedActivity: ActivityRecord{829bf91 u0 org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity t40}
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/.work/card4900-rework/android-mixtape-modern-debug.apk
+Saved screenshot: docs/card-4900/rework-api29/playing.png
