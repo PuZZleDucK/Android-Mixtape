@@ -31,10 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalDensity
 import com.example.androidmixtape.viewmodel.HandwritingMessiness
+import com.example.androidmixtape.viewmodel.HandwritingFontSize
 import kotlin.math.max
 import kotlin.math.min
 
 val LocalHandwritingMessiness = compositionLocalOf { HandwritingMessiness.Low }
+val LocalHandwritingFontSize = compositionLocalOf { HandwritingFontSize.Large }
 
 @Composable
 fun JitteredHandwritingText(
@@ -44,12 +46,15 @@ fun JitteredHandwritingText(
     color: Color = Color.Unspecified,
     fontSize: TextUnit = 14.sp,
     fontFamily: FontFamily? = null,
+    fontOpticalScale: Float = 1f,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null,
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Clip,
     lineHeightScale: Float = 1f,
+    verticalInkBounds: HandwritingInkBounds? = null,
+    fixedRowHeight: androidx.compose.ui.unit.Dp? = null,
     fitSpineTitle: Boolean = false,
     tokenization: HandwritingJitterTokenization = HandwritingJitterTokenization.Character,
     strength: HandwritingJitterStrength = HandwritingJitterStrength(
@@ -62,10 +67,12 @@ fun JitteredHandwritingText(
     val textMeasurer = rememberTextMeasurer()
     val density = LocalDensity.current
     val messiness = LocalHandwritingMessiness.current
+    val effectiveFontSize = fontSize * (LocalHandwritingFontSize.current.scale * fontOpticalScale)
     val lineHeightDp = with(density) {
-        max(fontSize.toPx(), 12.sp.toPx())
-            .times(1.45f * lineHeightScale.coerceAtLeast(0.1f))
-            .toDp()
+        max(
+            max(effectiveFontSize.toPx(), 12.sp.toPx()) * 1.45f * lineHeightScale.coerceAtLeast(0.1f),
+            verticalInkBounds?.paddedHeight(effectiveFontSize.toPx()) ?: 0f,
+        ).toDp()
     }
     val tokens = remember(text, tokenization) { text.jitterTokens(tokenization) }
     val effectiveStrength = remember(strength, messiness) {
@@ -89,7 +96,7 @@ fun JitteredHandwritingText(
     val measuredTokens = remember(
         tokens,
         textMeasurer,
-        fontSize,
+        effectiveFontSize,
         fontFamily,
         fontStyle,
         fontWeight,
@@ -97,7 +104,7 @@ fun JitteredHandwritingText(
         density.fontScale,
     ) {
         val measurementStyle = TextStyle(
-            fontSize = fontSize,
+            fontSize = effectiveFontSize,
             fontFamily = fontFamily,
             fontStyle = fontStyle,
             fontWeight = fontWeight,
@@ -109,7 +116,7 @@ fun JitteredHandwritingText(
     val ellipsisLayout = remember(
         overflow,
         textMeasurer,
-        fontSize,
+        effectiveFontSize,
         fontFamily,
         fontStyle,
         fontWeight,
@@ -120,7 +127,7 @@ fun JitteredHandwritingText(
             textMeasurer.measure(
                 AnnotatedString("…"),
                 style = TextStyle(
-                    fontSize = fontSize,
+                    fontSize = effectiveFontSize,
                     fontFamily = fontFamily,
                     fontStyle = fontStyle,
                     fontWeight = fontWeight,
@@ -135,7 +142,7 @@ fun JitteredHandwritingText(
     if (fitSpineTitle) {
         Box(modifier.fillMaxHeight().semantics { this.text = AnnotatedString(text) }.drawWithCache {
             val raster = rasterizeSpineTitle(
-                measuredTokens, samples, fontSize.toPx(), size.width.toInt(), size.height.toInt(),
+                measuredTokens, samples, effectiveFontSize.toPx(), size.width.toInt(), size.height.toInt(),
                 this, layoutDirection,
             )
             onDrawBehind {
@@ -157,13 +164,13 @@ fun JitteredHandwritingText(
 
     Canvas(
         modifier = modifier
-            .height(lineHeightDp)
+            .height(fixedRowHeight ?: lineHeightDp)
             .semantics { this.text = AnnotatedString(text) },
     ) {
         val minimumDrawableWidth = 1f
         if (text.isEmpty() || maxLines <= 0 || size.width < minimumDrawableWidth) return@Canvas
 
-        val emPx = max(fontSize.toPx(), 1f)
+        val emPx = max(effectiveFontSize.toPx(), 1f)
         var measuredWidth = 0f
         val visibleTokens = mutableListOf<Pair<String, androidx.compose.ui.text.TextLayoutResult>>()
         for ((token, layout) in measuredTokens) {
@@ -186,8 +193,9 @@ fun JitteredHandwritingText(
             TextAlign.End, TextAlign.Right -> (size.width - measuredWidth).coerceAtLeast(0f)
             else -> 0f
         }
-        val baseY = ((size.height - visibleTokens.maxOfOrNull { it.second.size.height }?.toFloat().orZero()) / 2f)
-            .coerceAtLeast(0f)
+        val baseY = verticalInkBounds?.let { size.height / 2f - it.centerY }
+            ?: ((size.height - visibleTokens.maxOfOrNull { it.second.size.height }?.toFloat().orZero()) / 2f)
+                .coerceAtLeast(0f)
 
         visibleTokens.forEachIndexed { index, (token, layout) ->
             val sample = samples.getOrNull(index)

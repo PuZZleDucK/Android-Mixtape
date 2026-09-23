@@ -21,6 +21,19 @@ fun MixtapeHandwritingFont.cassetteHandwritingFontFamily(): FontFamily = when (t
     MixtapeHandwritingFont.ShadowsIntoLight -> FontFamily(Font(R.font.shadows_into_light))
 }
 
+// Optical correction against Kalam's mixed-case alphabet at the same nominal size.
+// The setting's Small/Medium/Large multiplier is applied separately by the renderer.
+fun MixtapeHandwritingFont.opticalScale(): Float = when (this) {
+    MixtapeHandwritingFont.Kalam -> 1f
+    MixtapeHandwritingFont.PatrickHand -> 1f
+    MixtapeHandwritingFont.Caveat -> 1f
+    MixtapeHandwritingFont.NanumPenScript -> 1.22f
+    MixtapeHandwritingFont.IndieFlower -> 0.83f
+    MixtapeHandwritingFont.GloriaHallelujah -> 0.625f
+    MixtapeHandwritingFont.ArchitectsDaughter -> 0.84f
+    MixtapeHandwritingFont.ShadowsIntoLight -> 0.79f
+}
+
 fun MixtapeHandwritingFont.cassetteSpineFontSize(): TextUnit = when (this) {
     MixtapeHandwritingFont.Kalam,
     MixtapeHandwritingFont.PatrickHand,

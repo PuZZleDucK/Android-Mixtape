@@ -1415,10 +1415,11 @@ private fun HandwritingFontContextPreview(
                         text = rowText,
                         startIndex = handwritingTrackStartIndex(previewGroup.visualProperties.jitterStartIndex, index),
                         color = sleevePaper.ink,
-                        fontFamily = fontFamily,
+                        fontFamily = fontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                         fontSize = 40.sp,
                         fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.Bold),
                         lineHeightScale = 0.8f,
+                        fixedRowHeight = with(LocalDensity.current) { (40.sp.toPx() * LocalHandwritingFontSize.current.scale * 1.55f).toDp() },
                         maxLines = 1,
                         overflow = TextOverflow.Clip,
                         tokenization = HandwritingJitterTokenization.Character,
@@ -2097,7 +2098,7 @@ private fun CassetteSpineRow(
                     modifier = Modifier.weight(1f),
                     startIndex = jitterStartIndex,
                     color = paper.ink,
-                    fontFamily = fontFamily,
+                    fontFamily = fontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                     fontStyle = FontStyle.Italic,
                     fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
                     fontSize = spineTitleSize,
@@ -2362,7 +2363,7 @@ private fun LegacyCassetteSpineRow(
                         .offset(y = handwritingFont.cassetteSpineVerticalOffset()),
                     startIndex = jitterStartIndex,
                     color = nameInk,
-                    fontFamily = cassetteHandwritingFontFamily,
+                    fontFamily = cassetteHandwritingFontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                     fontStyle = FontStyle.Italic,
                     fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
                     fontSize = 36.sp,
@@ -2635,7 +2636,7 @@ private fun CurrentTrackPreview(
                             text = rowText,
                             startIndex = handwritingTrackStartIndex(mixtapeJitterStartIndex, index.coerceAtLeast(0)),
                             color = if (isCurrent) sleevePaper.accent else sleevePaper.ink,
-                            fontFamily = cassetteHandwritingFontFamily,
+                            fontFamily = cassetteHandwritingFontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                             fontSize = 40.sp,
                             fontWeight = handwritingFont.effectiveCassetteWeight(if (isCurrent) FontWeight.ExtraBold else FontWeight.Bold),
                             lineHeightScale = 0.8f,
@@ -3472,7 +3473,7 @@ private fun CassetteTape(
                         text = tapeName,
                         startIndex = mixtapeJitterStartIndex,
                         color = nameInk,
-                        fontFamily = cassetteHandwritingFontFamily,
+                        fontFamily = cassetteHandwritingFontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                         fontStyle = FontStyle.Italic,
                         fontSize = 13.sp,
                         fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
@@ -4368,6 +4369,23 @@ private fun CassetteCoverTrackList(
         contentScrollState.dispatchRawDelta(-dragDelta.y)
     }
     val textMeasurer = rememberTextMeasurer()
+    val handwritingSizeScale = LocalHandwritingFontSize.current.scale
+    val opticalScale = handwritingFont.opticalScale()
+    val rowTextStyle = TextStyle(
+        fontFamily = cassetteHandwritingFontFamily,
+        fontSize = 40.sp * (handwritingSizeScale * opticalScale),
+        fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
+    )
+    val selectedInkBounds = rememberHandwritingInkBounds(textMeasurer, rowTextStyle)
+    val normalInkBounds = rememberHandwritingInkBounds(
+        textMeasurer,
+        rowTextStyle.copy(fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.Bold)),
+    )
+    // Text, touch indication and scroll measurements share the same row geometry.
+    val rowInkBounds = HandwritingInkBounds(
+        minOf(selectedInkBounds.top, normalInkBounds.top),
+        maxOf(selectedInkBounds.bottom, normalInkBounds.bottom),
+    )
     val trackRowTexts = remember(tracks) {
         tracks.map { track ->
             "${track.title} — ${track.artist}  ${formatDuration(track.durationMs)}"
@@ -4380,8 +4398,13 @@ private fun CassetteCoverTrackList(
     var expandedTrackId by remember { mutableStateOf<Long?>(null) }
     val currentTrackId = tracks.getOrNull(currentIndex)?.id
     val density = LocalDensity.current
-    val estimatedTrackRowPitchPx = with(density) { 53.dp.toPx() }
-    val estimatedHeaderPitchPx = with(density) { if (showHeader) 66.dp.toPx() else 0f }
+    // A common row height at each size keeps hit targets, highlights and scroll
+    // estimates independent of the selected font's ascent and descent.
+    val trackRowHeight = with(density) { (40.sp.toPx() * handwritingSizeScale * 1.55f).toDp() }
+    val estimatedTrackRowPitchPx = with(density) { trackRowHeight.toPx() + 6.dp.toPx() }
+    val estimatedHeaderPitchPx = with(density) {
+        if (showHeader) 48.sp.toPx() * handwritingSizeScale * opticalScale * 1.45f + 6.dp.toPx() else 0f
+    }
     val contentVerticalPaddingPx = with(density) { 14.dp.toPx() }
 
     LaunchedEffect(tracks) {
@@ -4497,14 +4520,9 @@ private fun CassetteCoverTrackList(
         ) {
             val horizontalPaperPadding = 18.dp
             val jitterSafetyPadding = 8.dp
-            val rowTextStyle = TextStyle(
-                fontFamily = cassetteHandwritingFontFamily,
-                fontSize = 40.sp,
-                fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
-            )
             val headerTextStyle = TextStyle(
                 fontFamily = cassetteHandwritingFontFamily,
-                fontSize = 48.sp,
+                fontSize = 48.sp * (handwritingSizeScale * opticalScale),
                 fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
             )
             val widestRowWidthPx = remember(
@@ -4610,7 +4628,7 @@ private fun CassetteCoverTrackList(
                     modifier = Modifier.width(trackListTextWidth),
                     startIndex = mixtapeJitterStartIndex,
                     color = sleevePaper.ink,
-                    fontFamily = cassetteHandwritingFontFamily,
+                    fontFamily = cassetteHandwritingFontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                     fontSize = 48.sp,
                     fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
                     maxLines = 1,
@@ -4645,10 +4663,12 @@ private fun CassetteCoverTrackList(
                         text = rowText,
                         startIndex = handwritingTrackStartIndex(mixtapeJitterStartIndex, index),
                         color = if (selected) sleevePaper.accent else sleevePaper.ink,
-                        fontFamily = cassetteHandwritingFontFamily,
+                        fontFamily = cassetteHandwritingFontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                         fontSize = 40.sp,
                         fontWeight = handwritingFont.effectiveCassetteWeight(if (selected) FontWeight.ExtraBold else FontWeight.Bold),
                         lineHeightScale = 0.8f,
+                        verticalInkBounds = rowInkBounds,
+                        fixedRowHeight = trackRowHeight,
                         maxLines = 1,
                         overflow = TextOverflow.Clip,
                         tokenization = HandwritingJitterTokenization.Character,
@@ -4688,9 +4708,11 @@ private fun CassetteCoverTrackList(
                     if (tracks.isEmpty()) {
                         JitteredHandwritingText(
                             text = "No tracks queued",
+                            verticalInkBounds = rowInkBounds,
+                            fixedRowHeight = trackRowHeight,
                             startIndex = handwritingTrackStartIndex(mixtapeJitterStartIndex, 0),
                             color = sleevePaper.ink,
-                            fontFamily = cassetteHandwritingFontFamily,
+                            fontFamily = cassetteHandwritingFontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                             fontSize = 40.sp,
                             fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.Bold),
                             lineHeightScale = 0.8f,

@@ -33,7 +33,7 @@ class HandwritingFontNormalizationTest {
             val measurer = rememberTextMeasurer()
             val style = TextStyle(
                 fontFamily = font.value.cassetteHandwritingFontFamily(),
-                fontSize = 40.sp * size.value.scale,
+                fontSize = 40.sp * (size.value.scale * font.value.opticalScale()),
                 fontWeight = font.value.effectiveCassetteWeight(FontWeight.Bold),
             )
             val bounds = rememberHandwritingInkBounds(measurer, style)
