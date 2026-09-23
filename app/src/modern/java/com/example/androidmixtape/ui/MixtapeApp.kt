@@ -1416,10 +1416,10 @@ private fun HandwritingFontContextPreview(
                         startIndex = handwritingTrackStartIndex(previewGroup.visualProperties.jitterStartIndex, index),
                         color = sleevePaper.ink,
                         fontFamily = fontFamily, fontOpticalScale = handwritingFont.opticalScale(),
-                        fontSize = 40.sp,
+                        fontSize = 35.sp,
                         fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.Bold),
                         lineHeightScale = 0.8f,
-                        fixedRowHeight = with(LocalDensity.current) { (40.sp.toPx() * LocalHandwritingFontSize.current.scale * 1.55f).toDp() },
+                        fixedRowHeight = with(LocalDensity.current) { (42.sp.toPx() * LocalHandwritingFontSize.current.scale).toDp() },
                         maxLines = 1,
                         overflow = TextOverflow.Clip,
                         tokenization = HandwritingJitterTokenization.Character,
@@ -4373,7 +4373,7 @@ private fun CassetteCoverTrackList(
     val opticalScale = handwritingFont.opticalScale()
     val rowTextStyle = TextStyle(
         fontFamily = cassetteHandwritingFontFamily,
-        fontSize = 40.sp * (handwritingSizeScale * opticalScale),
+        fontSize = 35.sp * (handwritingSizeScale * opticalScale),
         fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),
     )
     val selectedInkBounds = rememberHandwritingInkBounds(textMeasurer, rowTextStyle)
@@ -4400,7 +4400,7 @@ private fun CassetteCoverTrackList(
     val density = LocalDensity.current
     // A common row height at each size keeps hit targets, highlights and scroll
     // estimates independent of the selected font's ascent and descent.
-    val trackRowHeight = with(density) { (40.sp.toPx() * handwritingSizeScale * 1.55f).toDp() }
+    val trackRowHeight = with(density) { (42.sp.toPx() * handwritingSizeScale).toDp() }
     val estimatedTrackRowPitchPx = with(density) { trackRowHeight.toPx() + 6.dp.toPx() }
     val estimatedHeaderPitchPx = with(density) {
         if (showHeader) 48.sp.toPx() * handwritingSizeScale * opticalScale * 1.45f + 6.dp.toPx() else 0f
@@ -4664,7 +4664,7 @@ private fun CassetteCoverTrackList(
                         startIndex = handwritingTrackStartIndex(mixtapeJitterStartIndex, index),
                         color = if (selected) sleevePaper.accent else sleevePaper.ink,
                         fontFamily = cassetteHandwritingFontFamily, fontOpticalScale = handwritingFont.opticalScale(),
-                        fontSize = 40.sp,
+                        fontSize = 35.sp,
                         fontWeight = handwritingFont.effectiveCassetteWeight(if (selected) FontWeight.ExtraBold else FontWeight.Bold),
                         lineHeightScale = 0.8f,
                         verticalInkBounds = rowInkBounds,
@@ -4713,7 +4713,7 @@ private fun CassetteCoverTrackList(
                             startIndex = handwritingTrackStartIndex(mixtapeJitterStartIndex, 0),
                             color = sleevePaper.ink,
                             fontFamily = cassetteHandwritingFontFamily, fontOpticalScale = handwritingFont.opticalScale(),
-                            fontSize = 40.sp,
+                            fontSize = 35.sp,
                             fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.Bold),
                             lineHeightScale = 0.8f,
                             maxLines = 1,
