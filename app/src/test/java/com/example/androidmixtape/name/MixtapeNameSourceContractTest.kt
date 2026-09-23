@@ -28,8 +28,8 @@ class MixtapeNameSourceContractTest {
             names.none { it in throwawayTitles })
         assertTrue("Replace titles made of emoji or punctuation: ${names.filterNot { allowedCharacters.matches(it) }.take(12)}",
             names.all { allowedCharacters.matches(it) })
-        assertTrue("Every title needs at least two words: ${names.filter { it.trim().split(Regex("\\s+")).size < 2 }.take(12)}",
-            names.all { it.trim().split(Regex("\\s+")).size >= 2 })
+        assertTrue("Keep titles within one to four words: ${names.filter { it.trim().split(Regex("\\s+")).size !in 1..4 }.take(12)}",
+            names.all { it.trim().split(Regex("\\s+")).size in 1..4 })
         assertTrue("Remove filler suffixes: ${names.filter { Regex("(?i)\\b(?:etc|maybe|online|offline|v2)\\.?$|(?:[!?./_+~;*]){2,}$").containsMatchIn(it) }.take(12)}",
             names.none { Regex("(?i)\\b(?:etc|maybe|online|offline|v2)\\.?$|(?:[!?./_+~;*]){2,}$").containsMatchIn(it) })
     }
