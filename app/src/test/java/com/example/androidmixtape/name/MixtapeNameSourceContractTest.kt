@@ -17,4 +17,26 @@ class MixtapeNameSourceContractTest {
         assertTrue(names.all { it.isNotBlank() })
         assertEquals(names.size, names.distinct().size)
     }
+
+    @Test
+    fun bundledNamesReadLikeTitlesRatherThanGeneratorFragments() {
+        val names = namesFile.readLines()
+        val allowedCharacters = Regex("[\\p{L}\\p{N}][\\p{L}\\p{N} '&,!?:/.-]*")
+        val throwawayTitles = setOf("DIY", "RE:", "11AM ++", "~~~", "etc.", "maybe", "7AM")
+
+        assertTrue("Replace generator fragments: ${names.filter { it in throwawayTitles }.take(12)}",
+            names.none { it in throwawayTitles })
+        assertTrue("Replace titles made of emoji or punctuation: ${names.filterNot { allowedCharacters.matches(it) }.take(12)}",
+            names.all { allowedCharacters.matches(it) })
+        assertTrue("Every title needs at least two words: ${names.filter { it.trim().split(Regex("\\s+")).size < 2 }.take(12)}",
+            names.all { it.trim().split(Regex("\\s+")).size >= 2 })
+        assertTrue("Remove filler suffixes: ${names.filter { Regex("(?i)\\b(?:etc|maybe|online|offline|v2)\\.?$|(?:[!?./_+~;*]){2,}$").containsMatchIn(it) }.take(12)}",
+            names.none { Regex("(?i)\\b(?:etc|maybe|online|offline|v2)\\.?$|(?:[!?./_+~;*]){2,}$").containsMatchIn(it) })
+    }
+
+    @Test
+    fun bundledNamesHaveNoCaseOnlyDuplicates() {
+        val names = namesFile.readLines()
+        assertEquals(names.size, names.map { it.lowercase() }.distinct().size)
+    }
 }
