@@ -89,6 +89,14 @@ class HandwritingFontNormalizationTest {
         }
         val failures = mutableListOf<String>()
         val pitchesBySize = mutableMapOf<HandwritingFontSize, MutableList<Float>>()
+        // Compact enough to read consecutive songs as a list, with room for the
+        // normalized alphabet ink and High-messiness vertical jitter.
+        val maximumPitchDp = mapOf(
+            HandwritingFontSize.Small to 36f,
+            HandwritingFontSize.Medium to 42f,
+            HandwritingFontSize.Large to 48f,
+        )
+        val displayDensity = InstrumentationRegistry.getInstrumentation().targetContext.resources.displayMetrics.density
         val screenshots = File(
             InstrumentationRegistry.getInstrumentation().targetContext.getExternalFilesDir(null),
             "font-normalization",
@@ -114,6 +122,9 @@ class HandwritingFontNormalizationTest {
             }
             val pitches = pitchesBySize.getValue(selectedSize)
             if (pitches.max() - pitches.min() > 2f) failures += "$selectedSize: row pitches across fonts $pitches"
+            if (pitches.max() / displayDensity > maximumPitchDp.getValue(selectedSize) + 1f) {
+                failures += "$selectedSize: pitch ${pitches.max() / displayDensity}dp exceeds ${maximumPitchDp.getValue(selectedSize)}dp"
+            }
         }
         assertTrue(failures.joinToString("\n"), failures.isEmpty())
     }
