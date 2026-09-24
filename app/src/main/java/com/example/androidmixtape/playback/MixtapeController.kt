@@ -25,6 +25,8 @@ class MixtapeController(
     var state: PlayerUiState = PlayerUiState()
         private set
     private var playbackStateChangedListener: ((PlayerUiState) -> Unit)? = null
+    var hasReceivedSessionSnapshot: Boolean = false
+        private set
 
     init {
         player.setOnCurrentIndexChanged(::handleCurrentIndexChanged)
@@ -44,6 +46,13 @@ class MixtapeController(
         if (tracks.isNotEmpty()) {
             player.loadPlaylist(tracks)
         }
+    }
+
+    fun initializeLibraryIfEmpty(tracks: List<Track>) {
+        if (state.tracks.isNotEmpty() || tracks.isEmpty()) return
+        state = PlayerUiState(tracks = tracks, currentIndex = 0,
+            counterRevision = state.counterRevision + 1L)
+        player.initializePlaylistIfEmpty(tracks)
     }
 
     fun replaceQueueAfterCurrentRemoval(tracks: List<Track>, nextIndex: Int, playNext: Boolean) {
@@ -163,6 +172,7 @@ class MixtapeController(
     }
 
     private fun handleExternalPlaybackSnapshot(snapshot: ExternalPlaybackSnapshot) {
+        hasReceivedSessionSnapshot = true
         val revision = state.counterRevision + if (
             snapshot.positionDiscontinuity || snapshot.tracks != state.tracks ||
             snapshot.currentIndex != state.currentIndex

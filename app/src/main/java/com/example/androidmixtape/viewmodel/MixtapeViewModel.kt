@@ -327,6 +327,7 @@ class MixtapeViewModel(
     private var mixtapeThemeSettings: MixtapeThemeSettings = themeSettingsStore.settings()
     private var mixtapeExclusionSettings: MixtapeExclusionSettings = exclusionSettingsStore.settings()
     private var currentMixtapeStableKey: String? = null
+    private var startupSessionPending = true
     private var currentMixtapeVisualProperties: MixtapeVisualProperties = MixtapeVisualProperties()
     private var trackJumpCueJob: Job? = null
     private val assignedMixtapeNames = mutableMapOf<String, String>()
@@ -341,7 +342,13 @@ class MixtapeViewModel(
             mixtapeThemeSettings = mixtapeThemeSettings,
             mixtapeExclusionSettings = mixtapeExclusionSettings,
         )
-        controller.setOnPlaybackStateChanged { refreshCurrentUiState() }
+        controller.setOnPlaybackStateChanged {
+            if (startupSessionPending && _uiState.value.status == LibraryStatus.Ready) {
+                restoreStartupSessionIfPresent()
+            } else {
+                refreshCurrentUiState()
+            }
+        }
     }
 
     fun onPermissionResult(granted: Boolean) {
@@ -390,7 +397,10 @@ class MixtapeViewModel(
                     rawLibraryTracks = tracks
                     explicitMixtapeGroups = null
                     rebuildFilteredTracks(preserveMixtapeOrder = false)
-                    controller.load(libraryTracks)
+                    if (controller.hasReceivedSessionSnapshot && controller.state.tracks.isEmpty()) {
+                        startupSessionPending = false
+                    }
+                    controller.initializeLibraryIfEmpty(libraryTracks)
                     if (tracks.isEmpty()) {
                         _uiState.value = MixtapeUiState(
                             status = LibraryStatus.Empty,
@@ -415,6 +425,9 @@ class MixtapeViewModel(
                             message = "$mixTapeCount mix tapes ready",
                         )
                         assignNamesForCurrentGroups()
+                        if (startupSessionPending && controller.hasReceivedSessionSnapshot) {
+                            restoreStartupSessionIfPresent()
+                        }
                     }
                 }
                 .onFailure { error ->
@@ -769,6 +782,7 @@ class MixtapeViewModel(
 
     fun selectMixTapeGroup(index: Int) {
         val group = buildAssignedMixTapeGroups().getOrNull(index) ?: return
+        startupSessionPending = false
         currentMixtapeStableKey = group.stableMixtapeKey()
         currentMixtapeVisualProperties = group.visualProperties
         controller.load(group.tracks)
@@ -1410,6 +1424,25 @@ class MixtapeViewModel(
         refreshCurrentUiState()
     }
     
+    private fun restoreStartupSessionIfPresent() {
+        startupSessionPending = false
+        val group = buildAssignedMixTapeGroups().firstOrNull { group ->
+            group.tracks.sameOrderedTracksAs(controller.state.tracks) &&
+                controller.state.currentIndex in group.tracks.indices &&
+                (controller.state.isPlaying || controller.state.positionMs > 0L)
+        }
+        if (group != null) {
+            currentMixtapeStableKey = group.stableMixtapeKey()
+            _uiState.value = controller.toUiState(
+                status = LibraryStatus.Ready,
+                screen = MixtapeScreen.NowPlaying,
+                message = "Playing ${group.name}",
+            )
+        } else {
+            refreshCurrentUiState()
+        }
+    }
+
     private fun refreshCurrentUiState() {
         if (!audioPermissionGranted) return
         val currentState = _uiState.value

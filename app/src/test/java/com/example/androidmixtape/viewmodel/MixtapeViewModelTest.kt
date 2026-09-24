@@ -231,6 +231,39 @@ class MixtapeViewModelTest {
     }
 
     @Test
+    fun lateSessionConnectionAfterScanRestoresPausedTapeWithoutStartingFirstTrack() = runTest {
+        val tracks = numberedTracks(60)
+        val activeTape = tracks.drop(LP_SONGS_PER_MIXTAPE)
+        val player = FakePlayerEngine()
+        val viewModel = viewModelWith(FakeRepository(tracks), MixtapeController(player))
+        viewModel.onPermissionResult(true)
+        assertEquals(MixtapeScreen.MixTapes, viewModel.uiState.value.screen)
+
+        // MediaController connects after MediaStore returns. Its existing session wins over
+        // the queued startup initialization, even when playback is paused.
+        player.simulateExternalPlaybackSnapshot(activeTape, 2, false, 1_234L, activeTape[2].durationMs)
+        val state = viewModel.uiState.value
+        assertEquals(MixtapeScreen.NowPlaying, state.screen)
+        assertEquals(activeTape, state.queueTracks)
+        assertEquals(activeTape[2], state.currentTrack)
+        assertEquals(1, state.currentMixtapeIndex)
+        assertEquals(1_234L, state.positionMs)
+        assertFalse(state.isPlaying)
+        assertEquals(null, player.playedIndex)
+    }
+
+    @Test
+    fun stoppedSessionAtStartDoesNotReopenTape() = runTest {
+        val tracks = numberedTracks(60)
+        val player = FakePlayerEngine()
+        val viewModel = viewModelWith(FakeRepository(tracks), MixtapeController(player))
+        player.simulateExternalPlaybackSnapshot(tracks.drop(LP_SONGS_PER_MIXTAPE), 0, false, 0L, 1_000L)
+        viewModel.onPermissionResult(true)
+        assertEquals(MixtapeScreen.MixTapes, viewModel.uiState.value.screen)
+        assertFalse(viewModel.uiState.value.isPlaying)
+    }
+
+    @Test
     fun coldLauncherReturnWithNoSessionStillShowsLibraryWithoutAutoplay() = runTest {
         val player = FakePlayerEngine()
         val viewModel = viewModelWith(FakeRepository(numberedTracks(3)), MixtapeController(player))

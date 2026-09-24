@@ -101,6 +101,16 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
         }
     }
 
+    override fun initializePlaylistIfEmpty(tracks: List<Track>) {
+        val mediaItems = tracks.map(::trackMediaItem)
+        runWhenConnected(queueSensitive = true) { mediaController ->
+            if (mediaController.mediaItemCount == 0) {
+                mediaController.setMediaItems(mediaItems)
+                mediaController.prepare()
+            }
+        }
+    }
+
     override fun replacePlaylistPreservingPlayback(tracks: List<Track>, currentIndex: Int) {
         val mediaItems = tracks.map(::trackMediaItem)
         runWhenConnected(queueSensitive = true, replaceQueuedPlaylistActions = true) { mediaController ->

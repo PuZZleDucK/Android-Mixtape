@@ -15,6 +15,8 @@ data class ExternalPlaybackSnapshot(
 
 interface PlayerEngine {
     fun loadPlaylist(tracks: List<Track>)
+    /** Startup only: never replace a queue restored by a late media-session connection. */
+    fun initializePlaylistIfEmpty(tracks: List<Track>) = loadPlaylist(tracks)
     fun replacePlaylistPreservingPlayback(tracks: List<Track>, currentIndex: Int)
     fun playIndex(index: Int)
     fun play()
