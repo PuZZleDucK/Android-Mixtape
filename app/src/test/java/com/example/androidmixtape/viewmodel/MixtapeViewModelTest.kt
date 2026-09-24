@@ -208,6 +208,41 @@ class MixtapeViewModelTest {
     }
 
     @Test
+    fun coldLauncherReturnToActiveSessionOpensCurrentTapeWithoutReplacingQueue() = runTest {
+        val tracks = numberedTracks(60)
+        val activeTape = tracks.drop(LP_SONGS_PER_MIXTAPE)
+        val player = FakePlayerEngine()
+        val viewModel = viewModelWith(FakeRepository(tracks), MixtapeController(player))
+        // A fresh Activity/ViewModel connects to a media session that kept playing while the UI was gone.
+        player.simulateExternalPlaybackSnapshot(activeTape, 2, true, 1_234L, activeTape[2].durationMs)
+
+        viewModel.onPermissionResult(true)
+
+        val state = viewModel.uiState.value
+        assertEquals(LibraryStatus.Ready, state.status)
+        assertEquals(MixtapeScreen.NowPlaying, state.screen)
+        assertEquals(activeTape, state.queueTracks)
+        assertEquals(activeTape[2], state.currentTrack)
+        assertEquals(1, state.currentMixtapeIndex)
+        assertEquals(1_234L, state.positionMs)
+        assertTrue(state.isPlaying)
+        assertTrue("Startup must not send a replacement playlist to the already-playing session", player.loaded.isEmpty())
+        assertEquals(null, player.playedIndex)
+    }
+
+    @Test
+    fun coldLauncherReturnWithNoSessionStillShowsLibraryWithoutAutoplay() = runTest {
+        val player = FakePlayerEngine()
+        val viewModel = viewModelWith(FakeRepository(numberedTracks(3)), MixtapeController(player))
+
+        viewModel.onPermissionResult(true)
+
+        assertEquals(MixtapeScreen.MixTapes, viewModel.uiState.value.screen)
+        assertFalse(viewModel.uiState.value.isPlaying)
+        assertEquals(null, player.playedIndex)
+    }
+
+    @Test
     fun repeatedGrantedPermissionDoesNotReloadOrInterruptActivePlayback() = runTest {
         val tracks = numberedTracks(3)
         val repository = FakeRepository(tracks)
