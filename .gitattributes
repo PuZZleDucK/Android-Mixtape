@@ -88,3 +88,4 @@ docs/screenshots/player-portrait.png filter=lfs diff=lfs merge=lfs -text
 docs/screenshots/tape-list.png filter=lfs diff=lfs merge=lfs -text
 gradle/wrapper/gradle-wrapper.jar filter=lfs diff=lfs merge=lfs -text
 docs/evidence/live-counter/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/card-4919/*.png filter=lfs diff=lfs merge=lfs -text
