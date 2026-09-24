@@ -790,7 +790,8 @@ private fun DeckComponentPreview(
     modifier: Modifier = Modifier,
 ) {
     val palette = deckTheme.deckPalette()
-    Canvas(modifier = modifier.semantics { contentDescription = "${deckTheme.readableName()} deck preview" }) {
+    BoxWithConstraints(modifier = modifier.semantics { contentDescription = "${deckTheme.readableName()} deck preview" }) {
+    Canvas(modifier = Modifier.matchParentSize()) {
         val radius = CornerRadius(8.dp.toPx(), 8.dp.toPx())
         drawRoundRect(palette.body, size = size, cornerRadius = radius)
         drawRoundRect(
@@ -833,6 +834,12 @@ private fun DeckComponentPreview(
                 size = Size(size.width * 0.035f, size.height * (0.16f + index * 0.08f)),
             )
         }
+    }
+    Box(Modifier.offset(x = maxWidth * .73f, y = maxHeight * .23f)
+        .size(maxWidth * .17f, maxHeight * .22f), contentAlignment = Alignment.Center) {
+        CounterWheels(10, false, 0L, palette.counterInk,
+            modifier = Modifier.graphicsLayer { scaleX = .4f; scaleY = .4f }, deckTheme = deckTheme)
+    }
     }
 }
 
@@ -3150,6 +3157,7 @@ private fun DeckCassetteBay(
                     playing = isPlaying,
                     revision = counterRevision,
                     color = palette.counterInk,
+                    deckTheme = deckTheme,
                 )
             }
         }

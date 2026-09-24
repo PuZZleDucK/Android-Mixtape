@@ -15,6 +15,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.androidmixtape.viewmodel.DeckTheme
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.File
 import kotlin.math.roundToInt
@@ -31,6 +32,7 @@ class CounterWheelsTest {
     private val revision = mutableStateOf(0L)
     private val motion = mutableStateOf(true)
     private val counterVisible = mutableStateOf(true)
+    private val deckTheme = mutableStateOf(DeckTheme.SilverfaceHiFi)
 
     private fun show(windowHeight: androidx.compose.ui.unit.Dp = 30.dp) {
         compose.mainClock.autoAdvance = false
@@ -40,7 +42,7 @@ class CounterWheelsTest {
                     Box(Modifier.size(84.dp, windowHeight).testTag("window"), contentAlignment = Alignment.Center) {
                         if (counterVisible.value) {
                             CounterWheels(value.value, playing.value, revision.value, Color.White,
-                                Modifier.testTag("digits"), motion.value)
+                                Modifier.testTag("digits"), motion.value, deckTheme.value)
                         }
                     }
                 }
@@ -78,6 +80,31 @@ class CounterWheelsTest {
     private fun equalPixels(a: Bitmap, b: Bitmap, fromX: Int = 0, toX: Int = a.width): Boolean {
         if (a.width != b.width || a.height != b.height) return false
         return (fromX until toX).all { x -> (0 until a.height).all { y -> a.getPixel(x, y) == b.getPixel(x, y) } }
+    }
+
+    @Test fun digitalCarryIsImmediateAndThemeSwitchSettlesMechanicalRoll() {
+        deckTheme.value = DeckTheme.BlackoutPortable
+        value.value = 9
+        show()
+        val nine = frame("digital-009")
+        update(10)
+        val ten = frame("digital-010")
+        assertFalse(equalPixels(nine, ten))
+        compose.mainClock.advanceTimeBy(250)
+        assertTrue(equalPixels(ten, frame("digital-010-still")))
+        compose.onNodeWithContentDescription("Tape counter 010").assertExists()
+        compose.runOnIdle { deckTheme.value = DeckTheme.SilverfaceHiFi }
+        compose.mainClock.advanceTimeByFrame()
+        val mechanical = frame("mechanical-010")
+        assertFalse("Both themes must use different digit shapes", equalPixels(mechanical, ten))
+        compose.runOnIdle { deckTheme.value = DeckTheme.BlackoutPortable }
+        compose.mainClock.advanceTimeByFrame()
+        assertTrue(equalPixels(ten, frame("digital-010-return")))
+        compose.runOnIdle { motion.value = false }
+        update(11)
+        val reduced = frame("digital-reduced-011")
+        compose.mainClock.advanceTimeBy(250)
+        assertTrue(equalPixels(reduced, frame("digital-reduced-011-still")))
     }
 
     @Test fun compactWindowKeepsSettledNumeralsInsideBothEdges() {

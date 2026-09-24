@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalContext
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.sp
 import com.example.androidmixtape.playback.CounterWheelState
+import com.example.androidmixtape.viewmodel.DeckTheme
 
 /** One clock for all changed wheels; transport remains the only source of counter values. */
 @Composable
@@ -37,10 +39,12 @@ internal fun CounterWheels(
     color: Color,
     modifier: Modifier = Modifier,
     motionEnabled: Boolean = true,
+    deckTheme: DeckTheme = DeckTheme.SilverfaceHiFi,
 ) {
-    var wheel by remember { mutableStateOf(CounterWheelState.settled(value, revision)) }
+    var wheel by remember(deckTheme) { mutableStateOf(CounterWheelState.settled(value, revision)) }
     val platformMotionEnabled = platformCounterMotionEnabled()
-    val next = wheel.update(value, playing, revision, motionEnabled && platformMotionEnabled)
+    val next = wheel.update(value, playing, revision,
+        motionEnabled && platformMotionEnabled && !deckTheme.usesDigitalCounter())
     if (next != wheel) wheel = next
     val progress = remember(wheel.generation) { Animatable(0f) }
     LaunchedEffect(wheel.generation) {
@@ -69,9 +73,40 @@ internal fun CounterWheels(
             .clipToBounds()
             .semantics { contentDescription = "Tape counter $target" },
     ) {
+        val cellWidth = incoming.size.width / 3f
+        if (deckTheme.usesDigitalCounter()) {
+            val segments = arrayOf(
+                intArrayOf(0, 1, 2, 4, 5, 6), intArrayOf(2, 5),
+                intArrayOf(0, 2, 3, 4, 6), intArrayOf(0, 2, 3, 5, 6),
+                intArrayOf(1, 2, 3, 5), intArrayOf(0, 1, 3, 5, 6),
+                intArrayOf(0, 1, 3, 4, 5, 6), intArrayOf(0, 2, 5),
+                intArrayOf(0, 1, 2, 3, 4, 5, 6), intArrayOf(0, 1, 2, 3, 5, 6),
+            )
+            val strokes = arrayOf(
+                floatArrayOf(.24f, .14f, .76f, .14f),
+                floatArrayOf(.19f, .19f, .19f, .48f),
+                floatArrayOf(.81f, .19f, .81f, .48f),
+                floatArrayOf(.24f, .50f, .76f, .50f),
+                floatArrayOf(.19f, .52f, .19f, .81f),
+                floatArrayOf(.81f, .52f, .81f, .81f),
+                floatArrayOf(.24f, .86f, .76f, .86f),
+            )
+            target.forEachIndexed { index, digit ->
+                strokes.forEachIndexed { segment, line ->
+                    val lit = segment in segments[digit.digitToInt()]
+                    drawLine(
+                        color = color.copy(alpha = if (lit) 1f else .13f),
+                        start = Offset((index + line[0]) * cellWidth, line[1] * size.height),
+                        end = Offset((index + line[2]) * cellWidth, line[3] * size.height),
+                        strokeWidth = size.height * .075f,
+                        cap = StrokeCap.Round,
+                    )
+                }
+            }
+            return@Canvas
+        }
         // Draw the measured whole string through fixed per-digit clips. This preserves
         // the original Text's spacing, baseline and centering, including letter spacing.
-        val cellWidth = incoming.size.width / 3f
         wheel.frame(progress.value).forEach { cell ->
             clipRect(left = cell.index * cellWidth, right = (cell.index + 1) * cellWidth) {
                 cell.glyphs.forEach { glyph ->
@@ -85,6 +120,9 @@ internal fun CounterWheels(
         }
     }
 }
+
+internal fun DeckTheme.usesDigitalCounter(): Boolean =
+    this == DeckTheme.BlackoutPortable || this == DeckTheme.NavyMicro || this == DeckTheme.GraphiteSlim
 
 /** Observe scale zero explicitly so disabling motion also cancels a wheel already in flight. */
 @Composable

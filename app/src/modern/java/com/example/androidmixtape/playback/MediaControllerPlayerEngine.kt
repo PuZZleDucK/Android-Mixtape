@@ -3,6 +3,8 @@ package com.example.androidmixtape.playback
 import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
@@ -27,6 +29,26 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
     private var currentIndexChangedListener: ((Int) -> Unit)? = null
     private var externalPlaybackSnapshotListener: ((ExternalPlaybackSnapshot) -> Unit)? = null
     private var released = false
+    private val positionHandler = Handler(Looper.getMainLooper())
+    private var lastPublishedPositionMs: Long? = null
+    private val positionSample = object : Runnable {
+        override fun run() {
+            val player = controller?.takeIf { !released && it.isConnected && it.isPlaying && it.mediaItemCount > 0 }
+                ?: return
+            val positionMs = player.currentPosition.coerceAtLeast(0L)
+            if (shouldPublishPositionSample(true, player.mediaItemCount, positionMs, lastPublishedPositionMs)) {
+                publishExternalPlaybackSnapshot(player)
+            }
+            positionHandler.postDelayed(this, 350L)
+        }
+    }
+
+    private fun schedulePositionSamples(player: Player) {
+        positionHandler.removeCallbacks(positionSample)
+        if (!released && player.isPlaying && player.mediaItemCount > 0) {
+            positionHandler.postDelayed(positionSample, 350L)
+        }
+    }
 
     init {
         controllerFuture.addListener(
@@ -56,11 +78,13 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
                                         player,
                                         positionDiscontinuity = events.contains(Player.EVENT_POSITION_DISCONTINUITY),
                                     )
+                                    schedulePositionSamples(player)
                                 }
                             }
                         },
                     )
                     publishExternalPlaybackSnapshot(connectedController)
+                    schedulePositionSamples(connectedController)
                     pendingActions.toList().also { pendingActions.clear() }
                 }
                 actions.forEach { pendingAction -> pendingAction.action(connectedController) }
@@ -129,6 +153,7 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
             released = true
             pendingActions.clear()
         }
+        positionHandler.removeCallbacks(positionSample)
         controller?.release() ?: MediaController.releaseFuture(controllerFuture)
         controller = null
         currentIndexChangedListener = null
@@ -166,13 +191,15 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
         val duration = player.duration.takeIf { it > 0L }
             ?: tracks.getOrNull(currentIndex)?.durationMs
             ?: 0L
+        val positionMs = player.currentPosition.coerceAtLeast(0L)
+        lastPublishedPositionMs = positionMs
         externalPlaybackSnapshotListener?.invoke(
             ExternalPlaybackSnapshot(
                 tracks = tracks,
                 currentIndex = currentIndex,
                 currentMediaId = currentMediaId,
                 isPlaying = player.isPlaying,
-                positionMs = player.currentPosition.coerceAtLeast(0L),
+                positionMs = positionMs,
                 durationMs = duration,
                 positionDiscontinuity = positionDiscontinuity,
             ),
@@ -196,6 +223,10 @@ class MediaControllerPlayerEngine(context: Context) : PlayerEngine {
         )
         .build()
 }
+
+internal fun shouldPublishPositionSample(
+    playing: Boolean, itemCount: Int, positionMs: Long, lastPublishedPositionMs: Long?,
+): Boolean = playing && itemCount > 0 && positionMs.coerceAtLeast(0L) != lastPublishedPositionMs
 
 private const val EXTRA_TRACK_ID = "com.example.androidmixtape.extra.TRACK_ID"
 private const val EXTRA_TRACK_TITLE = "com.example.androidmixtape.extra.TRACK_TITLE"
