@@ -1,6 +1,7 @@
 package com.example.androidmixtape
 
 import android.app.Activity
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Build
@@ -20,6 +21,7 @@ import com.example.androidmixtape.permissions.AudioPermissionPolicy
 import com.example.androidmixtape.playback.AudioTrackTransportCuePlayer
 import com.example.androidmixtape.playback.MediaControllerPlayerEngine
 import com.example.androidmixtape.playback.MixtapeController
+import com.example.androidmixtape.playback.MixtapeMediaLibraryService
 import com.example.androidmixtape.ui.AndroidMixtapeTheme
 import com.example.androidmixtape.ui.MixtapeApp
 import com.example.androidmixtape.viewmodel.MixtapeViewModel
@@ -73,6 +75,7 @@ class MainActivity : ComponentActivity() {
             permission == null || checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED,
         )
         viewModel.onDeleteTrackUserActionRequired = deleteConfirmationCallback
+        handleMediaNotificationIntent(intent)
 
         setContent {
             val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -130,6 +133,18 @@ class MainActivity : ComponentActivity() {
                     onUpdateCurrentMixtapeCustomization = viewModel::updateCurrentMixtapeCustomization,
                 )
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleMediaNotificationIntent(intent)
+    }
+
+    private fun handleMediaNotificationIntent(intent: Intent?) {
+        if (intent?.action == MixtapeMediaLibraryService.ACTION_OPEN_NOW_PLAYING) {
+            viewModel.openNowPlayingFromNotification()
         }
     }
 

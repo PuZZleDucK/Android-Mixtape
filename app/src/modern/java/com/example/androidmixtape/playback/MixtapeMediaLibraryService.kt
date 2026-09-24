@@ -1,6 +1,8 @@
 package com.example.androidmixtape.playback
 
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -46,6 +48,16 @@ class MixtapeMediaLibraryService : MediaLibraryService() {
             this,
             player,
             MixtapeLibraryCallback(applicationContext, mediaTree),
+        ).setSessionActivity(
+            PendingIntent.getActivity(
+                this,
+                4921,
+                Intent(this, com.example.androidmixtape.MainActivity::class.java).apply {
+                    action = ACTION_OPEN_NOW_PLAYING
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                },
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            ),
         ).build()
     }
 
@@ -219,6 +231,8 @@ class MixtapeMediaLibraryService : MediaLibraryService() {
     }
 
     companion object {
+        const val ACTION_OPEN_NOW_PLAYING = "org.puzzleduck.mixtape.action.OPEN_NOW_PLAYING"
+
         private fun List<MediaItem>.diagnosticIds(): String {
             val shown = take(20).map { it.mediaId }
             return if (size > shown.size) "$shown (+${size - shown.size} more)" else shown.toString()

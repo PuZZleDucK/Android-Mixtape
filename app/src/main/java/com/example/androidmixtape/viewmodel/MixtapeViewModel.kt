@@ -328,6 +328,7 @@ class MixtapeViewModel(
     private var mixtapeExclusionSettings: MixtapeExclusionSettings = exclusionSettingsStore.settings()
     private var currentMixtapeStableKey: String? = null
     private var startupSessionPending = true
+    private var notificationNavigationPending = false
     private var currentMixtapeVisualProperties: MixtapeVisualProperties = MixtapeVisualProperties()
     private var trackJumpCueJob: Job? = null
     private val assignedMixtapeNames = mutableMapOf<String, String>()
@@ -360,6 +361,7 @@ class MixtapeViewModel(
             trackJumpCueJob?.cancel()
             transportCuePlayer.cancel()
             pendingDelete = null
+            notificationNavigationPending = false
             rawLibraryTracks = emptyList()
             libraryTracks = emptyList()
             mixtapeTracks = emptyList()
@@ -402,6 +404,7 @@ class MixtapeViewModel(
                     }
                     controller.initializeLibraryIfEmpty(libraryTracks)
                     if (tracks.isEmpty()) {
+                        notificationNavigationPending = false
                         _uiState.value = MixtapeUiState(
                             status = LibraryStatus.Empty,
                             mixtapeSymbolSettings = mixtapeSymbolSettings,
@@ -412,6 +415,7 @@ class MixtapeViewModel(
                             message = "No audio files found. Add music to the device, then refresh.",
                         )
                     } else if (libraryTracks.isEmpty()) {
+                        notificationNavigationPending = false
                         _uiState.value = controller.toUiState(
                             status = LibraryStatus.Ready,
                             screen = MixtapeScreen.MixTapes,
@@ -428,6 +432,7 @@ class MixtapeViewModel(
                         if (startupSessionPending && controller.hasReceivedSessionSnapshot) {
                             restoreStartupSessionIfPresent()
                         }
+                        resolveNotificationNavigation()
                     }
                 }
                 .onFailure { error ->
@@ -437,6 +442,7 @@ class MixtapeViewModel(
                         onPermissionResult(false)
                         return@launch
                     }
+                    notificationNavigationPending = false
                     _uiState.value = MixtapeUiState(
                         status = LibraryStatus.Error,
                         mixtapeSymbolSettings = mixtapeSymbolSettings,
@@ -448,6 +454,32 @@ class MixtapeViewModel(
                     )
                 }
         }
+    }
+
+    /** A media-card body tap changes screens only; transport state belongs to the session. */
+    fun openNowPlayingFromNotification() {
+        notificationNavigationPending = true
+        resolveNotificationNavigation()
+    }
+
+    private fun resolveNotificationNavigation() {
+        if (!notificationNavigationPending) return
+        when (_uiState.value.status) {
+            LibraryStatus.PermissionRequired, LibraryStatus.Empty, LibraryStatus.Error -> {
+                notificationNavigationPending = false
+                return
+            }
+            LibraryStatus.Loading -> return
+            LibraryStatus.Ready -> Unit
+        }
+        if (!controller.hasReceivedSessionSnapshot) return
+        notificationNavigationPending = false
+        if (!audioPermissionGranted || controller.state.currentTrack == null) return
+        _uiState.value = controller.toUiState(
+            status = LibraryStatus.Ready,
+            screen = MixtapeScreen.NowPlaying,
+            message = _uiState.value.message,
+        )
     }
 
     fun showMixTapes() {
@@ -1441,6 +1473,7 @@ class MixtapeViewModel(
         } else {
             refreshCurrentUiState()
         }
+        resolveNotificationNavigation()
     }
 
     private fun refreshCurrentUiState() {
@@ -1452,6 +1485,7 @@ class MixtapeViewModel(
             screen = currentState.screen,
             message = currentState.message,
         )
+        resolveNotificationNavigation()
     }
 
     private fun matchingMixtapeStableKeyFor(queueTracks: List<Track>): String? {

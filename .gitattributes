@@ -90,3 +90,4 @@ gradle/wrapper/gradle-wrapper.jar filter=lfs diff=lfs merge=lfs -text
 docs/evidence/live-counter/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/card-4919/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/card-4920/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/card-4921/*.png filter=lfs diff=lfs merge=lfs -text
