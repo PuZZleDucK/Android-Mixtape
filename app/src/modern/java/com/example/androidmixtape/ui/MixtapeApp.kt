@@ -90,6 +90,8 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.StrokeCap
@@ -1744,6 +1746,24 @@ private fun MixtapeSymbolColor.toComposeColor(): Color = when (this) {
     MixtapeSymbolColor.Green -> Color(0xFF2E7D32)
     MixtapeSymbolColor.Purple -> Color(0xFF6A3D9A)
     MixtapeSymbolColor.Amber -> Color(0xFF8A5A14)
+    MixtapeSymbolColor.Cyan -> Color(0xFF006B88)
+    MixtapeSymbolColor.Fuchsia -> Color(0xFFA00070)
+    MixtapeSymbolColor.Orange -> Color(0xFFA44200)
+    MixtapeSymbolColor.Teal -> Color(0xFF00733D)
+}
+
+// Sleeve paper can be black, blue or cream. Keep the chosen hue but adjust
+// its lightness when the actual paper behind the name would swallow it.
+private fun Color.onPaper(paper: Color): Color {
+    val background = paper.luminance()
+    val target = if (background < 0.25f) Color.White else Color.Black
+    for (step in 0..20) {
+        val candidate = lerp(this, target, step / 20f)
+        val foreground = candidate.luminance()
+        val ratio = (maxOf(background, foreground) + 0.05f) / (minOf(background, foreground) + 0.05f)
+        if (ratio >= 4.5f) return candidate
+    }
+    return target
 }
 
 @Composable
@@ -2024,6 +2044,7 @@ private fun CassetteSpineRow(
     modifier: Modifier = Modifier,
 ) {
     val paper = group.visualProperties.sleeveTheme.paperPalette()
+    val nameInk = group.visualProperties.nameColor.toComposeColor().onPaper(paper.base)
     val plastic = group.visualProperties.caseTheme.plasticPalette()
     val handwritingFont = group.handwritingFont
     val fontFamily = handwritingFont.cassetteHandwritingFontFamily()
@@ -2104,7 +2125,7 @@ private fun CassetteSpineRow(
                     text = group.name,
                     modifier = Modifier.weight(1f),
                     startIndex = jitterStartIndex,
-                    color = paper.ink,
+                    color = nameInk,
                     fontFamily = fontFamily, fontOpticalScale = handwritingFont.opticalScale(),
                     fontStyle = FontStyle.Italic,
                     fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.ExtraBold),

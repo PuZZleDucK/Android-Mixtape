@@ -188,6 +188,10 @@ object MixtapeCarArtworkRenderer {
         MixtapeSymbolColor.Green -> Color.rgb(34, 111, 82)
         MixtapeSymbolColor.Purple -> Color.rgb(104, 63, 143)
         MixtapeSymbolColor.Amber -> Color.rgb(172, 106, 24)
+        MixtapeSymbolColor.Cyan -> Color.rgb(0, 107, 136)
+        MixtapeSymbolColor.Fuchsia -> Color.rgb(160, 0, 112)
+        MixtapeSymbolColor.Orange -> Color.rgb(164, 66, 0)
+        MixtapeSymbolColor.Teal -> Color.rgb(0, 115, 61)
     }
 
     private fun palette(skin: MixtapeSpineSkin): SpinePalette = PALETTES[skin.ordinal % PALETTES.size]

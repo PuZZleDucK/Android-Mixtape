@@ -99,7 +99,11 @@ enum class MixtapeSymbolColor {
     Red,
     Green,
     Purple,
-    Amber;
+    Amber,
+    Cyan,
+    Fuchsia,
+    Orange,
+    Teal;
 
     fun next(): MixtapeSymbolColor {
         val colors = entries
