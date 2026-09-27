@@ -1,0 +1,12 @@
+final-01-idle-library.xml: full-page tape list, no player
+final-02-idle-warm-return.xml: full-page tape list, no player
+final-11-paused-new-activity.xml: full-page tape list, no player
+final-13-handoff-library.xml: full-page tape list, no player
+final-03-playing-warm-return.xml: playback active after entry
+final-04-playing-new-activity.xml: playback active after entry
+final-08-safety-portrait.xml: player aspect 1.326371
+final-09-safety-landscape-light.xml: player aspect 1.326406
+Stop button is entirely to the left of Play/Pause
+Portrait player-spine gap: 6.10 dp; spine ratio: 6.5128:1
+Track row height: 36.19 dp (was 48 dp minimum)
+Current shelf spine centered to within 1.0 px

@@ -126,7 +126,7 @@ internal fun DeckTheme.usesDigitalCounter(): Boolean =
 
 /** Observe scale zero explicitly so disabling motion also cancels a wheel already in flight. */
 @Composable
-private fun platformCounterMotionEnabled(): Boolean {
+internal fun platformCounterMotionEnabled(): Boolean {
     val resolver = LocalContext.current.contentResolver
     fun readEnabled() = android.provider.Settings.Global.getFloat(
         resolver, android.provider.Settings.Global.ANIMATOR_DURATION_SCALE, 1f) > 0f

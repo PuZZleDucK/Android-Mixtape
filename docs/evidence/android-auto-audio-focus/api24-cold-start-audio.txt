@@ -1,0 +1,97 @@
+
+MediaFocusControl dump time: 6:15:58 PM
+
+Audio Focus stack entries (last is top of stack):
+  source:android.os.BinderProxy@9507fc2 -- pack: com.example.androidmixtape -- client: android.media.AudioManager@15a3f01androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@9e638b8 -- gain: GAIN -- flags:  -- loss: none -- uid: 10079 -- attr: AudioAttributes: usage=1 content=2 flags=0x0 tags= bundle=null
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:

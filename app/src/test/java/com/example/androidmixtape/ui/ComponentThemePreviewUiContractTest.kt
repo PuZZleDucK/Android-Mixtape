@@ -27,8 +27,8 @@ class ComponentThemePreviewUiContractTest {
         val body = source.substringAfter("private fun <T> ThemeToggleSettingsScreen(").substringBefore("@Composable\nprivate fun DeckComponentPreview(")
 
         assertTrue(body.contains("preview: @Composable (T, Modifier) -> Unit"))
-        assertTrue(body.contains("preview(") && body.contains(".width(112.dp)") && body.contains(".height(64.dp)"))
-        assertTrue(body.contains("Checkbox("))
+        assertTrue(body.contains("preview(") && body.contains(".width(168.dp)") && body.contains(".height(96.dp)"))
+        assertTrue(body.contains("SettingsPreviewCard(") && body.contains("SettingsOptionGrid("))
     }
 
     private fun mixtapeAppSource(): String {

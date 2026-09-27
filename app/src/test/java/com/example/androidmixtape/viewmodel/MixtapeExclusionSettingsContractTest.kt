@@ -68,7 +68,7 @@ class MixtapeExclusionSettingsContractTest {
         )
         assertTrue(
             "Filtering should be applied with FilenameExclusionMatcher before controller queues and mix tape groups are rebuilt.",
-            viewModelSource.contains("FilenameExclusionMatcher") && viewModelSource.contains("buildMixTapeGroups(mixtapeTracks"),
+            viewModelSource.contains("FilenameExclusionMatcher") && viewModelSource.contains("resolveMixtapeGroups(mixtapeTracks"),
         )
     }
 }

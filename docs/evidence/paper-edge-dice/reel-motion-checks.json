@@ -1,0 +1,16 @@
+{
+  "play": {
+    "median_degrees_per_second": -82.39,
+    "frame_pairs": 221
+  },
+  "forward": {
+    "median_degrees_per_second": -538.88,
+    "frame_pairs": 234
+  },
+  "rewind": {
+    "median_degrees_per_second": 539.97,
+    "frame_pairs": 235
+  },
+  "forward_to_play_ratio": 6.54,
+  "rewind_to_play_ratio": 6.55
+}

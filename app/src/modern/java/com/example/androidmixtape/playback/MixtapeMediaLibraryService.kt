@@ -4,7 +4,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Build
 import androidx.media3.common.C
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.ForwardingPlayer
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.util.UnstableApi
@@ -40,13 +43,31 @@ class MixtapeMediaLibraryService : MediaLibraryService() {
             this,
             MeteringRenderersFactory(this, meteringAudioProcessor),
         ).build().apply {
+            // Request our own media focus, including for play commands from a car.
+            // ExoPlayer then handles focus loss, ducking and resumption itself.
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(C.USAGE_MEDIA)
+                    .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+                    .build(),
+                /* handleAudioFocus = */ true,
+            )
             setHandleAudioBecomingNoisy(true)
             setWakeMode(C.WAKE_MODE_LOCAL)
+        }
+        val sessionPlayer = object : ForwardingPlayer(player) {
+            override fun play() {
+                if (prepareForegroundForAudioFocus()) super.play()
+            }
+
+            override fun setPlayWhenReady(playWhenReady: Boolean) {
+                if (!playWhenReady || prepareForegroundForAudioFocus()) super.setPlayWhenReady(playWhenReady)
+            }
         }
         val mediaTree = AndroidAutoMediaTree(MediaStoreAudioRepository(applicationContext))
         mediaLibrarySession = MediaLibrarySession.Builder(
             this,
-            player,
+            sessionPlayer,
             MixtapeLibraryCallback(applicationContext, mediaTree),
         ).setSessionActivity(
             PendingIntent.getActivity(
@@ -59,6 +80,23 @@ class MixtapeMediaLibraryService : MediaLibraryService() {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             ),
         ).build()
+    }
+
+    @UnstableApi
+    private fun prepareForegroundForAudioFocus(): Boolean {
+        if (Build.VERSION.SDK_INT < 35) return true
+        val session = mediaLibrarySession ?: return true
+        if (session.player.mediaItemCount == 0) return true
+        // Android 15 requires foreground-service status before a background app
+        // requests focus. Media3 1.5.1 only promotes early on API 31/32, too late
+        // for this case. Keep Media3's notification/lifecycle, but promote first.
+        return try {
+            onUpdateNotification(session, /* startInForegroundRequired = */ true)
+            true
+        } catch (error: IllegalStateException) {
+            AndroidAutoDiagnostics.logError(this, "media_audio_focus_foreground_failed", error)
+            false
+        }
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? {

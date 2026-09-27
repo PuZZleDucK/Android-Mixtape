@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.example.androidmixtape.playback.DeckTransportCueUiTest" tests="1" failures="0" errors="0" skipped="0" time="12.896" timestamp="2026-09-21T00:31:45" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 7.0" />
+    <property name="flavor" value="modern" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="bothDeckButtonsProduceAudioBeforeChangingTracks" classname="com.example.androidmixtape.playback.DeckTransportCueUiTest" time="11.491" />
+</testsuite>

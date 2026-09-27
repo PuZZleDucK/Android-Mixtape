@@ -1,0 +1,59 @@
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.TrackHighlightAlignmentTest:
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=trackInkFitsAndCentersWithinItsHighlightForEveryFont
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.TrackHighlightAlignmentTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+Error in trackInkFitsAndCentersWithinItsHighlightForEveryFont(com.example.androidmixtape.ui.TrackHighlightAlignmentTest):
+java.lang.AssertionError: Kalam: row=995.0..1117.0, ink=1021..1133, centerError=21.0
+PatrickHand: row=995.0..1117.0, ink=1026..1137, centerError=25.5
+Caveat: row=995.0..1117.0, ink=1017..1120, centerError=12.5
+IndieFlower: row=995.0..1117.0, ink=1014..1148, centerError=25.0
+GloriaHallelujah: row=995.0..1117.0, ink=1048..1204, centerError=70.0
+ArchitectsDaughter: row=995.0..1117.0, ink=1014..1143, centerError=22.5
+ShadowsIntoLight: row=995.0..1117.0, ink=1023..1163, centerError=37.0
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.ui.TrackHighlightAlignmentTest.trackInkFitsAndCentersWithinItsHighlightForEveryFont(TrackHighlightAlignmentTest.kt:89)
+
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=trackInkFitsAndCentersWithinItsHighlightForEveryFont
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.TrackHighlightAlignmentTest
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Kalam: row=995.0..1117.0, ink=1021..1133, centerError=21.0
+PatrickHand: row=995.0..1117.0, ink=1026..1137, centerError=25.5
+Caveat: row=995.0..1117.0, ink=1017..1120, centerError=12.5
+IndieFlower: row=995.0..1117.0, ink=1014..1148, centerError=25.0
+GloriaHallelujah: row=995.0..1117.0, ink=1048..1204, centerError=70.0
+ArchitectsDaughter: row=995.0..1117.0, ink=1014..1143, centerError=22.5
+ShadowsIntoLight: row=995.0..1117.0, ink=1023..1163, centerError=37.0
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.ui.TrackHighlightAlignmentTest.trackInkFitsAndCentersWithinItsHighlightForEveryFont(TrackHighlightAlignmentTest.kt:89)
+
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 7.553
+There was 1 failure:
+1) trackInkFitsAndCentersWithinItsHighlightForEveryFont(com.example.androidmixtape.ui.TrackHighlightAlignmentTest)
+java.lang.AssertionError: Kalam: row=995.0..1117.0, ink=1021..1133, centerError=21.0
+PatrickHand: row=995.0..1117.0, ink=1026..1137, centerError=25.5
+Caveat: row=995.0..1117.0, ink=1017..1120, centerError=12.5
+IndieFlower: row=995.0..1117.0, ink=1014..1148, centerError=25.0
+GloriaHallelujah: row=995.0..1117.0, ink=1048..1204, centerError=70.0
+ArchitectsDaughter: row=995.0..1117.0, ink=1014..1143, centerError=22.5
+ShadowsIntoLight: row=995.0..1117.0, ink=1023..1163, centerError=37.0
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.ui.TrackHighlightAlignmentTest.trackInkFitsAndCentersWithinItsHighlightForEveryFont(TrackHighlightAlignmentTest.kt:89)
+
+FAILURES!!!
+Tests run: 1,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1

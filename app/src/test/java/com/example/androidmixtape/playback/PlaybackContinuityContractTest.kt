@@ -28,27 +28,6 @@ class PlaybackContinuityContractTest {
     }
 
     @Test
-    fun legacyMediaPlayerUsesPartialWakeLockMode() {
-        val source = File(projectDir, "app/src/legacy/java/com/example/androidmixtape/playback/PlatformMediaPlayerEngine.kt").readText()
-
-        assertTrue(
-            "Legacy MediaPlayer playback should call setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK) before prepare/start.",
-            source.contains("setWakeMode") && source.contains("PARTIAL_WAKE_LOCK"),
-        )
-    }
-
-    @Test
-    fun legacyActivityDoesNotReleasePlaybackDuringConfigurationChange() {
-        val source = File(projectDir, "app/src/legacy/java/com/example/androidmixtape/MainActivity.kt").readText()
-        val onDestroyBody = source.substringAfter("override fun onDestroy()").substringBefore("\n    }", missingDelimiterValue = source)
-
-        assertTrue(
-            "Legacy orientation changes recreate MainActivity; onDestroy must guard controller.release() with !isChangingConfigurations or retain playback outside the Activity.",
-            source.contains("isChangingConfigurations") && (!onDestroyBody.contains("controller.release()") || onDestroyBody.contains("!isChangingConfigurations")),
-        )
-    }
-
-    @Test
     fun playerEngineExposesCurrentIndexChangeNotification() {
         val source = File(projectDir, "app/src/main/java/com/example/androidmixtape/playback/PlayerEngine.kt").readText()
 
@@ -87,7 +66,6 @@ class PlaybackContinuityContractTest {
         val engineSources = listOf(
             "ExoPlayerEngine" to "app/src/modern/java/com/example/androidmixtape/playback/ExoPlayerEngine.kt",
             "MediaControllerPlayerEngine" to "app/src/modern/java/com/example/androidmixtape/playback/MediaControllerPlayerEngine.kt",
-            "PlatformMediaPlayerEngine" to "app/src/legacy/java/com/example/androidmixtape/playback/PlatformMediaPlayerEngine.kt",
         )
 
         engineSources.forEach { (engineName, path) ->
@@ -124,48 +102,6 @@ class PlaybackContinuityContractTest {
                 body.contains("currentIndex") &&
                 body.contains("currentPosition") &&
                 body.contains("playWhenReady"),
-        )
-    }
-
-    @Test
-    fun legacyReplacementUpdatesBackingQueueWithoutReleasingCurrentPlayer() {
-        val source = File(projectDir, "app/src/legacy/java/com/example/androidmixtape/playback/PlatformMediaPlayerEngine.kt").readText()
-        val body = methodBody(source, "replacePlaylistPreservingPlayback")
-
-        assertTrue(
-            "PlatformMediaPlayerEngine preservation should update its backing tracks list and remapped currentIndex without releasing/recreating the active MediaPlayer when the current track survives deletion.",
-            body.contains("tracks = tracks") &&
-                body.contains("currentIndex") &&
-                !body.contains("player?.release()"),
-        )
-    }
-
-    @Test
-    fun legacyMediaPlayerCompletionAdvancesAndReportsNextTrack() {
-        val source = File(projectDir, "app/src/legacy/java/com/example/androidmixtape/playback/PlatformMediaPlayerEngine.kt").readText()
-
-        assertTrue(
-            "Legacy MediaPlayerEngine should set an OnCompletionListener that advances to currentIndex + 1 when available and reports that automatic index change.",
-            source.contains("setOnCompletionListener") &&
-                source.contains("currentIndex + 1") &&
-                (source.contains("CurrentIndexChanged") || source.contains("currentIndexChanged")),
-        )
-    }
-
-    @Test
-    fun legacyActivityRefreshesUiWhenControllerPlaybackStateChangesAutomatically() {
-        val source = File(projectDir, "app/src/legacy/java/com/example/androidmixtape/MainActivity.kt").readText()
-        val registersPlaybackChangeCallback = listOf(
-            Regex("""(?:MixtapeController\(|controller\.)[\s\S]{0,400}(?:on|set|add|observe)\w*(?:State|Playback|CurrentIndex|Change|Changed|Listener)"""),
-            Regex("""controller\.\w*(?:on|state|playback|currentIndex)\w*(?:Changed|Listener)\s*="""),
-        ).any { it.containsMatchIn(source) }
-        val refreshesStatusOnUiThread = Regex(
-            """runOnUiThread\s*(?:\(\s*::updatePlaybackStatus\s*\)|\{[\s\S]{0,300}updatePlaybackStatus\(\))""",
-        ).containsMatchIn(source)
-
-        assertTrue(
-            "Legacy MainActivity must observe controller/player automatic track changes and call runOnUiThread { updatePlaybackStatus() } so MediaPlayer completion refreshes the status text and buttons without a user tapping Next.",
-            registersPlaybackChangeCallback && refreshesStatusOnUiThread,
         )
     }
 

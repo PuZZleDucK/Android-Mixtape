@@ -1,0 +1,6 @@
+5e4fa0f5190516a56f76905fa15054f749106dc1d1e6f7e0fc6c9ea55b927603  app/src/modern/java/com/example/androidmixtape/ui/DemoPackaging.kt
+6c96d1863b8e787dc9763f72427e2b9098388725fa5b8f3c75522951ad014c38  app/src/modern/java/com/example/androidmixtape/ui/DemoShelfLayout.kt
+fe3a4fedc5d521836fa0fcbc925ccbb77d9ef8f26cdfc800f854c171b3956f28  app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt
+9694a5d80655995e6f9442b2563d7f40035deba7924477a662c9e714a96b92db  app/src/test/java/com/example/androidmixtape/ui/NowPlayingMixTapeToggleContractTest.kt
+1c9a8151822a92aa250eba93573c7157703270f58f5fe9ab55c3c7ddcda8a7b9  app/src/test/java/com/example/androidmixtape/ui/MixTapeScrollStateContractTest.kt
+8e44bde308266172fc346e6f7335778a3eb6c968cefaa627597a48cc0e6b4b28  app/src/testModern/java/com/example/androidmixtape/ui/DemoShelfLayoutTest.kt

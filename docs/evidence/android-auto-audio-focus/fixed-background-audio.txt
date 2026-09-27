@@ -1,0 +1,890 @@
+Events log: audio services lifecycle
+09-07 17:51:49:853 AudioService()
+
+Message handler (watch for unhandled messages):
+  Handler (com.android.server.audio.AudioService$AudioHandler) {15d8e02} @ 855170
+    Looper (AudioService, tid 140) {45b6817}
+      (MessageQueue is using Legacy implementation)
+      (Total messages: 0, polling=true, quitting=false)
+
+Fun with Flags:
+	com.android.media.audio.as_device_connection_failure:false
+	android.media.audio.autoPublicVolumeApiHardening:false
+	android.media.audio.automaticBtDeviceType:true
+	android.media.audio.featureSpatialAudioHeadtrackingLowLatency:false
+	android.media.audio.focusFreezeTestApi:true
+	com.android.media.audio.audioserverPermissions:false
+	com.android.media.audio.disablePrescaleAbsoluteVolume:true
+	com.android.media.audio.setStreamVolumeOrder:true
+	android.media.audio.roForegroundAudioControl:true
+	android.media.audio.scoManagedByAudio:false
+	com.android.media.audio.vgsVssSyncMuteOrder:true
+	com.android.media.audio.absVolumeIndexFix:true
+	com.android.media.audio.replaceStreamBtSco:true
+	com.android.media.audio.equalScoLeaVcIndexRange:false
+Events log: Hardening enforcement
+09-07 17:56:31:574 Focus request DENIED for uid:1010248 clientId:android.media.AudioManager@2763747androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@31cfa45 req:1 procState:4
+
+MediaFocusControl dump time: 6:05:45 PM
+
+Audio Focus stack entries (last is top of stack):
+
+
+External focus policy: android.media.audiopolicy.IAudioPolicyCallback$Stub$Proxy@da64313, focus owners:
+
+  source:android.os.BinderProxy@5e3b1e7 -- pack: com.example.androidmixtape -- client: android.media.AudioManager@9175b74androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@e277569 -- gain: GAIN -- flags:  -- loss: none -- notified: true -- limbofalse -- uid: 1010248 -- attr: AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_MUSIC flags=0x800 tags= bundle=null -- sdk:35
+
+
+ Notify on duck:  true
+
+ In ring or call: false
+
+
+
+Events log: focus commands as seen by MediaFocusControl
+09-07 17:51:55:016 abandonAudioFocus() from uid/pid 1010175/2197 clientId=android.media.AudioManager@4ce46a4com.android.car.media.localmediaplayer.Player$1@c323c0d callingPack=com.android.car.media.localmediaplayer
+09-07 17:51:55:076 abandonAudioFocus() from uid/pid 1010175/2197 clientId=android.media.AudioManager@9b38e0ecom.android.car.media.localmediaplayer.Player$1@38ff02f callingPack=com.android.car.media.localmediaplayer
+09-07 17:52:04:062 abandonAudioFocus() from uid/pid 1010248/3295 clientId=android.media.AudioManager@3d63dcccom.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda1@d4a815 callingPack=com.example.androidmixtape
+09-07 17:52:07:231 abandonAudioFocus() from uid/pid 1010248/3295 clientId=android.media.AudioManager@3d63dcccom.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda1@7c32426 callingPack=com.example.androidmixtape
+09-07 17:52:08:566 abandonAudioFocus() from uid/pid 1010248/3295 clientId=android.media.AudioManager@3d63dcccom.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda1@a77077e callingPack=com.example.androidmixtape
+09-07 17:56:29:634 requestAudioFocus() from uid/pid 1010248/5167 AA=USAGE_MEDIA/CONTENT_TYPE_MUSIC clientId=android.media.AudioManager@2763747androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@9175b74 callingPack=com.example.androidmixtape req=1 flags=0x0 sdk=35
+09-07 17:56:29:678 abandonAudioFocus() from uid/pid 1010248/5167 clientId=android.media.AudioManager@fb0581acom.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda1@7099f4b callingPack=com.example.androidmixtape
+09-07 17:56:29:679 abandonAudioFocus() from uid/pid 1010248/5167 clientId=android.media.AudioManager@2763747androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@9175b74 callingPack=com.example.androidmixtape
+09-07 17:56:31:584 abandonAudioFocus() from uid/pid 1010248/5167 clientId=android.media.AudioManager@fb0581acom.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda1@f17f5c1 callingPack=com.example.androidmixtape
+09-07 17:56:32:348 requestAudioFocus() from uid/pid 1010248/5167 AA=USAGE_MEDIA/CONTENT_TYPE_MUSIC clientId=android.media.AudioManager@2763747androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@ce2285b callingPack=com.example.androidmixtape req=1 flags=0x0 sdk=35
+09-07 17:56:32:363 abandonAudioFocus() from uid/pid 1010248/5167 clientId=android.media.AudioManager@fb0581acom.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda1@5120f10 callingPack=com.example.androidmixtape
+09-07 17:56:32:363 abandonAudioFocus() from uid/pid 1010248/5167 clientId=android.media.AudioManager@2763747androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@ce2285b callingPack=com.example.androidmixtape
+09-07 18:05:42:356 requestAudioFocus() from uid/pid 1010248/6054 AA=USAGE_MEDIA/CONTENT_TYPE_MUSIC clientId=android.media.AudioManager@9175b74androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@c87789d callingPack=com.example.androidmixtape req=1 flags=0x0 sdk=35
+09-07 18:05:42:886 requestAudioFocus() from uid/pid 1010248/6054 AA=USAGE_MEDIA/CONTENT_TYPE_UNKNOWN clientId=android.media.AudioManager@2e739e9com.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda2@34ed66e callingPack=com.example.androidmixtape req=2 flags=0x0 sdk=35
+09-07 18:05:42:941 abandonAudioFocus() from uid/pid 1010248/6054 clientId=android.media.AudioManager@2e739e9com.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda2@34ed66e callingPack=com.example.androidmixtape
+09-07 18:05:42:992 requestAudioFocus() from uid/pid 1010248/6054 AA=USAGE_MEDIA/CONTENT_TYPE_UNKNOWN clientId=android.media.AudioManager@2e739e9com.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda2@34ed66e callingPack=com.example.androidmixtape req=1 flags=0x0 sdk=35
+09-07 18:05:42:995 abandonAudioFocus() from uid/pid 1010248/6054 clientId=android.media.AudioManager@9175b74androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@c87789d callingPack=com.example.androidmixtape
+09-07 18:05:43:047 abandonAudioFocus() from uid/pid 1010248/6054 clientId=android.media.AudioManager@2e739e9com.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda2@34ed66e callingPack=com.example.androidmixtape
+09-07 18:05:43:348 abandonAudioFocus() from uid/pid 1010248/6054 clientId=android.media.AudioManager@2e739e9com.example.androidmixtape.playback.MediaAudioFocusTest$$ExternalSyntheticLambda2@34ed66e callingPack=com.example.androidmixtape
+09-07 18:05:45:227 requestAudioFocus() from uid/pid 1010248/6054 AA=USAGE_MEDIA/CONTENT_TYPE_MUSIC clientId=android.media.AudioManager@9175b74androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@e277569 callingPack=com.example.androidmixtape req=1 flags=0x0 sdk=35
+Multi Audio Focus enabled :false
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Muted Internally: false
+   Min: 1
+   Max: 15
+   streamVolume:15
+   Current: 1000000 (bus): 15, 40000000 (default): 15
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_VOICE_CALL
+
+- STREAM_SYSTEM (aliased to: STREAM_RING):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 7
+   streamVolume:7
+   Current: 1000000 (bus): 7, 40000000 (default): 7
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_SYSTEM
+
+- STREAM_RING:
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 7
+   streamVolume:7
+   Current: 1000000 (bus): 7, 40000000 (default): 7
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_RING
+
+- STREAM_MUSIC:
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:15
+   Current: 1000000 (bus): 15, 40000000 (default): 15
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_MUSIC
+
+- STREAM_ALARM:
+   Muted: false
+   Muted Internally: false
+   Min: 1
+   Max: 7
+   streamVolume:7
+   Current: 1000000 (bus): 7, 40000000 (default): 7
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_ALARM
+
+- STREAM_NOTIFICATION:
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 7
+   streamVolume:7
+   Current: 1000000 (bus): 7, 40000000 (default): 7
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_NOTIFICATION
+
+- STREAM_SYSTEM_ENFORCED (aliased to: STREAM_RING):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 7
+   streamVolume:7
+   Current: 1000000 (bus): 7, 40000000 (default): 7
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_ENFORCED_AUDIBLE
+
+- STREAM_DTMF (aliased to: STREAM_MUSIC):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:15
+   Current: 1000000 (bus): 15, 40000000 (default): 15
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_DTMF
+
+- STREAM_TTS (aliased to: STREAM_MUSIC):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:15
+   Current: 1000000 (bus): 15, 40000000 (default): 15
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_TTS
+
+- STREAM_ACCESSIBILITY (aliased to: STREAM_MUSIC):
+   Muted: false
+   Muted Internally: false
+   Min: 1
+   Max: 15
+   streamVolume:15
+   Current: 1000000 (bus): 15, 40000000 (default): 15
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_ACCESSIBILITY
+
+- STREAM_ASSISTANT (aliased to: STREAM_MUSIC):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:15
+   Current: 1000000 (bus): 15, 40000000 (default): 15
+   Devices: bus(1000000)
+   Volume Group: AUDIO_STREAM_ASSISTANT
+
+
+- mute affected streams = 0x6f
+
+- user mutable streams = 0x2e
+
+Volume Groups (device: index)
+- VOLUME GROUP AUDIO_STREAM_ACCESSIBILITY:
+   Muted: false
+   Min: 1
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: STREAM_ACCESSIBILITY 
+- VOLUME GROUP AUDIO_STREAM_ALARM:
+   Muted: false
+   Min: 1
+   Max: 7
+   Current: 40000000 (default): 7
+   Devices: bus
+   Streams: STREAM_ALARM 
+- VOLUME GROUP AUDIO_STREAM_ASSISTANT:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: STREAM_ASSISTANT 
+- VOLUME GROUP AUDIO_STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: STREAM_VOICE_CALL 
+- VOLUME GROUP AUDIO_STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: STREAM_DTMF 
+- VOLUME GROUP AUDIO_STREAM_ENFORCED_AUDIBLE:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 7
+   Devices: bus
+   Streams: STREAM_SYSTEM_ENFORCED 
+- VOLUME GROUP AUDIO_STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: STREAM_MUSIC 
+- VOLUME GROUP AUDIO_STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 7
+   Devices: bus
+   Streams: STREAM_NOTIFICATION 
+- VOLUME GROUP AUDIO_STREAM_PATCH:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: UNKNOWN_STREAM_13 
+- VOLUME GROUP AUDIO_STREAM_REROUTING:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: UNKNOWN_STREAM_12 
+- VOLUME GROUP AUDIO_STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 7
+   Devices: bus
+   Streams: STREAM_RING 
+- VOLUME GROUP AUDIO_STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 7
+   Devices: bus
+   Streams: STREAM_SYSTEM 
+- VOLUME GROUP AUDIO_STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: STREAM_TTS 
+- VOLUME GROUP AUDIO_STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: STREAM_VOICE_CALL 
+- VOLUME GROUP AUDIO_STREAM_CALL_ASSISTANT:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 15
+   Devices: bus
+   Streams: UNKNOWN_STREAM_14 
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- zen mode:ZEN_MODE_OFF
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio mode: 
+- Requested mode = MODE_NORMAL
+- Actual mode = MODE_NORMAL
+- Mode owner: 
+   None
+- Mode owner stack: 
+   Empty
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mUseVolumeGroupAliases=false
+  mVolumeController=VolumeController(null,mVisible=false)
+  mEnableCsd=false
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mSafeMediaVolumeIndex[4]=100
+  mSafeMediaVolumeIndex[8]=100
+  mSafeMediaVolumeIndex[128]=-1
+  mSafeMediaVolumeIndex[256]=-1
+  mSafeMediaVolumeIndex[67108864]=30
+  mSafeMediaVolumeIndex[536870912]=-1
+  mSafeMediaVolumeIndex[536870914]=-1
+  mSafeMediaVolumeDbfs=-37.0
+  mMusicActiveMs=0
+  mMcc=310
+  mPendingVolumeCommand=null
+
+Events log: CSD updates
+
+  sIndependentA11yVolume=false
+  mCameraSoundForced=false
+  mHasVibrator=true
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=false,volumeUpToExitSilent=false,doNotDisturbWhenSilent=false,vibrateToSilentDebounce=400]
+  mAvrcpAbsVolSupported=false
+  mBtScoOnByApp=false
+  mIsSingleVolume=false
+  mUseFixedVolume=true
+  mNotifAliasRing=false
+  mFixedVolumeDevices=0x800,0x200000
+  mFullVolumeDevices=0x40000,0x40001
+  absolute volume devices=
+  adjust-only absolute volume devices=
+  pre-scale for bluetooth absolute volume = disabled
+  mExtVolumeController=android.media.audiopolicy.IAudioPolicyCallback$Stub$Proxy@7a9eaac
+  mHdmiAudioSystemClient=null
+  mHdmiPlaybackClient=null
+  mHdmiTvClient=null
+  mHdmiSystemAudioSupported=false
+  mHdmiCecVolumeControlEnabled=false
+  mIsCallScreeningModeSupported=false
+  mic mute FromSwitch=false FromRestrictions=false FromApi=false from system=false
+  mMasterMute=false
+  No accessibility service Uids.
+  Assistant service UIDs:
+  - 1010211
+  supportsBluetoothVariableLatency=false
+  isBluetoothVariableLatencyEnabled=true
+
+Audio policies:
+android.media.audiopolicy.AudioPolicyConfig:
+0 AudioMix, reg:32:ap:0
+ Uid Device Affinities:
+ UserId Device Affinities:
+ Proxy:
+   is focus policy= false
+   media projection= null
+
+android.media.audiopolicy.AudioPolicyConfig:
+0 AudioMix, reg:32:ap:5
+ Uid Device Affinities:
+ UserId Device Affinities:
+ Proxy:
+   is focus policy= true
+     focus duck behaviour= 0
+     is test focus policy= false
+     has focus listener= true
+   media projection= null
+
+android.media.audiopolicy.AudioPolicyConfig:
+12 AudioMix, reg:1893844342:ap:6
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_NOTIFICATION
+  match usage USAGE_NOTIFICATION_EVENT
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_UNKNOWN
+  match usage USAGE_MEDIA
+  match usage USAGE_ANNOUNCEMENT
+  match usage USAGE_GAME
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_ASSISTANCE_ACCESSIBILITY
+  match usage USAGE_ASSISTANT
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_NOTIFICATION_RINGTONE
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_VOICE_COMMUNICATION_SIGNALLING
+  match usage USAGE_VOICE_COMMUNICATION
+  match usage USAGE_CALL_ASSISTANT
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_ALARM
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_SAFETY
+  match usage USAGE_ASSISTANCE_SONIFICATION
+  match usage USAGE_VEHICLE_STATUS
+  match usage USAGE_EMERGENCY
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_UNKNOWN
+  match usage USAGE_MEDIA
+  match usage USAGE_GAME
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_VOICE_COMMUNICATION
+  match usage USAGE_ALARM
+  match usage USAGE_ASSISTANCE_ACCESSIBILITY
+  match usage USAGE_SAFETY
+  match usage USAGE_CALL_ASSISTANT
+  match usage USAGE_ANNOUNCEMENT
+  match usage USAGE_ASSISTANCE_SONIFICATION
+  match usage USAGE_VOICE_COMMUNICATION_SIGNALLING
+  match usage USAGE_NOTIFICATION_RINGTONE
+  match usage USAGE_NOTIFICATION
+  match usage USAGE_ASSISTANT
+  match usage USAGE_NOTIFICATION_EVENT
+  match usage USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+  match usage USAGE_VEHICLE_STATUS
+  match usage USAGE_EMERGENCY
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_UNKNOWN
+  match usage USAGE_MEDIA
+  match usage USAGE_GAME
+* route flags=0x1
+  rate=48000Hz
+  encoding=2
+  channels=0x2
+  ignore playback capture opt out=false
+  allow voice communication capture=false
+  specified mix type=0
+  match usage USAGE_VOICE_COMMUNICATION
+  match usage USAGE_ALARM
+  match usage USAGE_ASSISTANCE_ACCESSIBILITY
+  match usage USAGE_SAFETY
+  match usage USAGE_CALL_ASSISTANT
+  match usage USAGE_ANNOUNCEMENT
+  match usage USAGE_ASSISTANCE_SONIFICATION
+  match usage USAGE_VOICE_COMMUNICATION_SIGNALLING
+  match usage USAGE_NOTIFICATION_RINGTONE
+  match usage USAGE_NOTIFICATION
+  match usage USAGE_ASSISTANT
+  match usage USAGE_NOTIFICATION_EVENT
+  match usage USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+  match usage USAGE_VEHICLE_STATUS
+  match usage USAGE_EMERGENCY
+ Uid Device Affinities:
+ UserId Device Affinities:
+     UserId: 10
+        Type: 0x1000000 Address: bus6_notification_out
+        Type: 0x1000000 Address: bus0_media_out
+        Type: 0x1000000 Address: bus2_voice_command_out
+        Type: 0x1000000 Address: bus1_navigation_out
+        Type: 0x1000000 Address: bus3_call_ring_out
+        Type: 0x1000000 Address: bus4_call_out
+        Type: 0x1000000 Address: bus5_alarm_out
+        Type: 0x1000000 Address: bus7_system_sound_out
+ Proxy:
+   is focus policy= false
+   media projection= null
+
+android.media.audiopolicy.AudioPolicyConfig:
+0 AudioMix, reg:32:ap:7
+ Uid Device Affinities:
+ UserId Device Affinities:
+ Proxy:
+   is focus policy= false
+   media projection= null
+
+android.media.audiopolicy.AudioPolicyConfig:
+0 AudioMix, reg:32:ap:4
+ Uid Device Affinities:
+ UserId Device Affinities:
+ Proxy:
+   is focus policy= false
+   media projection= null
+
+Events log: dynamic policy events (logged when command received by AudioService)
+09-07 17:51:51:033 registerAudioPolicy for android.os.BinderProxy@b70a18 u/pid:1000/1131 with config:reg:32:ap:1
+09-07 17:51:51:034 registerAudioPolicy for android.os.BinderProxy@992cc71 u/pid:1000/1131 with config:reg:32:ap:2
+09-07 17:51:51:492 AudioPolicy android.os.BinderProxy@b70a18 died
+09-07 17:51:51:492 AudioPolicy android.os.BinderProxy@992cc71 died
+09-07 17:51:51:512 AudioPolicy android.os.BinderProxy@18fead7 died
+09-07 17:51:51:512 registerAudioPolicy for android.os.BinderProxy@18fead7 u/pid:1000/1131 with config:reg:-263285962:ap:3 Mix:0-Typ:p-Rul:2 Mix:1-Typ:p-Rul:4 Mix:2-Typ:p-Rul:2 Mix:3-Typ:p-Rul:1 Mix:4-Typ:p-Rul:1 Mix:5-Typ:p-Rul:3 Mix:6-Typ:p-Rul:1 Mix:7-Typ:p-Rul:4 Mix:8-Typ:p-Rul:3 Mix:9-Typ:p-Rul:15 Mix:10-Typ:p-Rul:3 Mix:11-Typ:p-Rul:15
+09-07 17:51:51:588 registerAudioPolicy for android.os.BinderProxy@1962639 u/pid:1000/1289 with config:reg:32:ap:4
+09-07 17:51:51:589 registerAudioPolicy for android.os.BinderProxy@5a9d47e u/pid:1000/1289 with config:reg:32:ap:5
+09-07 17:51:52:094 registerAudioPolicy for android.os.BinderProxy@f820ddf u/pid:1000/1289 with config:reg:1893844342:ap:6 Mix:0-Typ:p-Rul:2 Mix:1-Typ:p-Rul:4 Mix:2-Typ:p-Rul:2 Mix:3-Typ:p-Rul:1 Mix:4-Typ:p-Rul:1 Mix:5-Typ:p-Rul:3 Mix:6-Typ:p-Rul:1 Mix:7-Typ:p-Rul:4 Mix:8-Typ:p-Rul:3 Mix:9-Typ:p-Rul:15 Mix:10-Typ:p-Rul:3 Mix:11-Typ:p-Rul:15
+09-07 17:51:52:096 registerAudioPolicy for android.os.BinderProxy@df22ddc u/pid:1000/1289 with config:reg:32:ap:7
+
+PlaybackActivityMonitor dump time: 6:05:45 PM
+
+  playback listeners:
+ PlayMonitorClient:S uid:1000 pid:687
+ PlayMonitorClient:S uid:1000 pid:687
+ PlayMonitorClient:S uid:1000 pid:1289
+ PlayMonitorClient:S uid:1001002 pid:1706
+
+
+
+  players:
+(not logged)  AudioPlaybackConfiguration piid:95 deviceId:0 type:android.media.SoundPool u/pid:1000/687 state:idle attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:103 deviceId:0 type:android.media.SoundPool u/pid:10223/1284 state:idle attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:111 deviceId:0 type:android.media.AudioTrack u/pid:1010211/1679 state:idle attr:AudioAttributes: usage=USAGE_ASSISTANT content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null sessionId:97 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:143 deviceId:0 type:hardware source u/pid:1010154/2252 state:idle attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:151 deviceId:0 type:android.media.MediaPlayer u/pid:1010175/2197 state:idle attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null sessionId:129 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:159 deviceId:0 type:hardware source u/pid:1010154/2252 state:idle attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:191 deviceId:0 type:hardware source u/pid:1010154/2252 state:idle attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:223 deviceId:0 type:hardware source u/pid:1010154/2252 state:idle attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:239 deviceId:2 type:android.media.AudioTrack u/pid:1010248/6054 state:started attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_MUSIC flags=0xA00 tags= bundle=null sessionId:233 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+
+  ducked players piids:
+
+  faded out players piids:
+
+  muted player piids due to call/ring:
+
+  banned uids:
+
+
+  muted players (piids) awaiting device connection:
+
+
+  current piid to portId map:
+  piid: 111 portId: 65
+  piid: 239 portId: 76
+
+
+Events log: playback activity as reported through PlayerBase
+09-07 17:51:50:552 new player piid:95 uid/pid:1000/687 type:android.media.SoundPool attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null session:0
+09-07 17:51:51:754 new player piid:103 uid/pid:10223/1284 type:android.media.SoundPool attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null session:0
+09-07 17:51:53:047 player piid:103 event:started
+09-07 17:51:53:050 player piid:103 event:started
+09-07 17:51:54:922 new player piid:111 uid/pid:1010211/1679 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_ASSISTANT content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null session:97
+09-07 17:51:54:943 new player piid:127 uid/pid:1010175/2197 type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:113
+09-07 17:51:54:953 port updated portId:65 mapped to player piid:111
+09-07 17:51:55:017 releasing player piid:127, uid:1010175
+09-07 17:51:55:042 new player piid:135 uid/pid:1010175/2197 type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:121
+09-07 17:51:55:078 releasing player piid:135, uid:1010175
+09-07 17:51:55:581 new player piid:143 uid/pid:1010154/2252 type:unknown attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:0
+09-07 17:51:55:746 new player piid:151 uid/pid:1010175/2197 type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:129
+09-07 17:51:55:962 new player piid:159 uid/pid:1010154/2252 type:unknown attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:0
+09-07 17:52:03:877 new player piid:167 uid/pid:1010248/3295 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0xA00 tags= bundle=null session:161
+09-07 17:52:03:880 port updated portId:69 mapped to player piid:167
+09-07 17:52:03:932 player piid:167 event:started
+09-07 17:52:03:953 player piid:167 event:device updated deviceId:2
+09-07 17:52:03:964 player piid:167 format update:FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+09-07 17:52:04:069 player piid:167 event:paused
+09-07 17:52:04:089 player piid:167 event:stopped
+09-07 17:52:04:090 releasing player piid:167, uid:1010248
+09-07 17:52:06:270 new player piid:175 uid/pid:1010248/3295 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0xA00 tags= bundle=null session:169
+09-07 17:52:06:270 port updated portId:70 mapped to player piid:175
+09-07 17:52:07:045 player piid:175 event:started
+09-07 17:52:07:053 player piid:175 format update:FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+09-07 17:52:07:115 player piid:175 event:device updated deviceId:2
+09-07 17:52:07:246 player piid:175 event:paused
+09-07 17:52:07:267 player piid:175 event:stopped
+09-07 17:52:07:267 releasing player piid:175, uid:1010248
+09-07 17:52:08:469 new player piid:183 uid/pid:1010248/3295 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0xA00 tags= bundle=null session:177
+09-07 17:52:08:476 port updated portId:71 mapped to player piid:183
+09-07 17:52:08:520 player piid:183 event:started
+09-07 17:52:08:520 player piid:183 format update:FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+09-07 17:52:08:541 player piid:183 event:device updated deviceId:2
+09-07 17:52:08:573 player piid:183 event:paused
+09-07 17:52:08:593 player piid:183 event:stopped
+09-07 17:52:08:594 releasing player piid:183, uid:1010248
+09-07 17:52:24:316 new player piid:191 uid/pid:1010154/2252 type:unknown attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:0
+09-07 17:56:29:576 new player piid:199 uid/pid:1010248/5167 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_MUSIC flags=0xA00 tags= bundle=null session:193
+09-07 17:56:29:576 port updated portId:72 mapped to player piid:199
+09-07 17:56:29:638 player piid:199 event:started
+09-07 17:56:29:642 player piid:199 format update:FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+09-07 17:56:29:647 player piid:199 event:device updated deviceId:2
+09-07 17:56:29:680 player piid:199 event:paused
+09-07 17:56:29:706 player piid:199 event:stopped
+09-07 17:56:29:706 releasing player piid:199, uid:1010248
+09-07 17:56:30:811 new player piid:207 uid/pid:1010248/5167 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_MUSIC flags=0xA00 tags= bundle=null session:201
+09-07 17:56:30:812 port updated portId:73 mapped to player piid:207
+09-07 17:56:31:605 player piid:207 event:stopped
+09-07 17:56:31:606 releasing player piid:207, uid:1010248
+09-07 17:56:32:303 new player piid:215 uid/pid:1010248/5167 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_MUSIC flags=0xA00 tags= bundle=null session:209
+09-07 17:56:32:303 port updated portId:74 mapped to player piid:215
+09-07 17:56:32:349 player piid:215 event:started
+09-07 17:56:32:353 player piid:215 format update:FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+09-07 17:56:32:360 player piid:215 event:device updated deviceId:2
+09-07 17:56:32:364 player piid:215 event:paused
+09-07 17:56:32:386 player piid:215 event:stopped
+09-07 17:56:32:386 releasing player piid:215, uid:1010248
+09-07 17:59:47:654 new player piid:223 uid/pid:1010154/2252 type:unknown attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:0
+09-07 18:05:42:292 new player piid:231 uid/pid:1010248/6054 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_MUSIC flags=0xA00 tags= bundle=null session:225
+09-07 18:05:42:292 port updated portId:75 mapped to player piid:231
+09-07 18:05:42:358 player piid:231 event:started
+09-07 18:05:42:362 player piid:231 format update:FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+09-07 18:05:42:364 player piid:231 event:device updated deviceId:2
+09-07 18:05:42:888 player piid:231 event:paused
+09-07 18:05:42:942 player piid:231 event:started
+09-07 18:05:42:942 player piid:231 format update:FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+09-07 18:05:42:994 player piid:231 event:paused
+09-07 18:05:43:371 player piid:231 event:stopped
+09-07 18:05:43:371 releasing player piid:231, uid:1010248
+09-07 18:05:44:463 new player piid:239 uid/pid:1010248/6054 type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_MUSIC flags=0xA00 tags= bundle=null session:233
+09-07 18:05:44:463 port updated portId:76 mapped to player piid:239
+09-07 18:05:45:228 player piid:239 event:started
+09-07 18:05:45:231 player piid:239 format update:FormatInfo{isSpatialized=false, channelMask=0x1, sampleRate=48000}
+09-07 18:05:45:250 player piid:239 event:device updated deviceId:2
+
+  allowed capture policies:
+
+RecordActivityMonitor dump time: 6:05:45 PM
+riid 119; active? true
+  no config
+
+
+Events log: recording activity received by AudioService
+09-07 17:51:54:965 rec update riid:119 uid:1010211 session:105 src:HOTWORD not silenced pack:com.google.android.carassistant
+
+AudioDeviceBroker:
+  Message handler (watch for unhandled messages):
+    Handler (com.android.server.audio.AudioDeviceBroker$BrokerHandler) {c210598} @ 855173
+      Looper (AudioDeviceBroker, tid 136) {492a077}
+        (MessageQueue is using Legacy implementation)
+        (Total messages: 0, polling=true, quitting=false)
+
+  BECOMING_NOISY_INTENT_DEVICES_SET=
+ 0x400 0x800 0x8000000 0x20000000 0x80 0x100 0x200 0x2000 0x4000 0x4000000 0x20000001 0x20000 0x20000002 0x4 0x8
+  Preferred devices for strategy:
+
+  Non-default devices for strategy:
+
+  Connected devices:
+
+  APM Connected device (A2DP sink only):
+
+  Preferred devices for capture preset:
+
+  Applied devices roles for strategies (from API):
+
+  Applied devices roles for strategies (internal):
+
+  Applied devices roles for presets (from API):
+
+  Applied devices roles for presets (internal:
+
+devices:
+
+
+  Communication route clients:
+
+  Computed Preferred communication device: null
+
+  Applied Preferred communication device: null
+  Active communication device: AudioDeviceAttributes: role:output type:bus addr:bus4_call_out name:Car on x86_64 emulator profiles:[{ENCODING_PCM_16BIT, sampling rates=[48000], channel masks=0x0C, encapsulation type=0}] descriptors:[]
+  mCommunicationStrategyId: 0
+  mAccessibilityStrategyId: 3
+
+  mAudioModeOwner: AudioModeInfo: mMode=MODE_NORMAL, mPid=0, mUid=0
+
+  mScoManagedByAudio: false
+
+  mBluetoothHeadset: null
+  mBluetoothHeadsetDevice: null
+  mScoAudioState: SCO_STATE_INACTIVE
+  mScoAudioMode: SCO_MODE_VIRTUAL_CALL
+
+  mHearingAid: null
+
+  mLeAudio: null
+  mA2dp: android.bluetooth.BluetoothA2dp@bf4bb35
+  mAvrcpAbsVolSupported: false
+
+SoundEffects:
+  Message handler (watch for unhandled messages):
+  Handler (com.android.server.audio.SoundEffectsHelper$SfxHandler) {4f4d1d6} @ 855173
+    Looper (AS.SfxWorker, tid 139) {5b0bc57}
+      (MessageQueue is using Legacy implementation)
+      (Total messages: 0, polling=true, quitting=false)
+  Default attenuation (dB): -6
+Events log: Sound Effects Loading
+09-07 17:51:50:549 effects loading started
+09-07 17:51:50:786 effect Effect_Tick.ogg loaded
+09-07 17:51:50:806 effect KeypressStandard.ogg loaded
+09-07 17:51:50:828 effect KeypressSpacebar.ogg loaded
+09-07 17:51:50:873 effect KeypressDelete.ogg loaded
+09-07 17:51:50:878 effect KeypressReturn.ogg loaded
+09-07 17:51:50:937 effect KeypressInvalid.ogg loaded
+09-07 17:51:50:937 effects loading completed
+
+
+
+Event logs:
+Events log: phone state (logged after successful call to AudioSystem.setPhoneState(int, int))
+
+
+Events log: wired/A2DP/hearing aid device connection
+09-07 17:51:50:526 updateCommunicationRoute, preferredCommunicationDevice: null eventSource: resetBluetoothSco
+09-07 17:51:53:393 broadcast ACTION_AUDIO_BECOMING_NOISY
+09-07 17:51:53:509 updateCommunicationRoute, preferredCommunicationDevice: null eventSource: resetBluetoothSco
+09-07 17:51:54:315 BT profile service: connecting A2DP profile
+09-07 17:51:54:315 BT profile A2DP connected to proxy android.bluetooth.BluetoothA2dp@bf4bb35
+09-07 17:51:54:315 BT profile service: connecting A2DP_SINK profile
+09-07 17:51:54:315 BT profile A2DP_SINK connected to proxy android.bluetooth.BluetoothA2dpSink@83c0bca
+
+
+Events log: force use (logged before setForceUse() is executed)
+09-07 17:51:49:923 setForceUse(FOR_SYSTEM, FORCE_NONE) due to AudioService ctor
+09-07 17:51:49:957 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:51:50:352 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+09-07 17:51:50:549 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:51:52:825 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+09-07 17:51:52:830 setForceUse(FOR_ENCODED_SURROUND, FORCE_NONE) due to readPersistedSettings
+09-07 17:51:52:915 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:51:53:401 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+09-07 17:51:53:402 setForceUse(FOR_ENCODED_SURROUND, FORCE_NONE) due to readPersistedSettings
+09-07 17:51:53:403 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+09-07 17:51:53:490 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:51:53:511 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+09-07 17:51:53:512 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+09-07 17:51:53:531 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:51:53:566 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:52:04:048 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:52:09:185 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:56:29:656 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 17:56:32:579 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+09-07 18:05:42:873 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/687
+
+
+Events log: volume changes (logged when command received by AudioService)
+
+
+Events log: mute commands
+09-07 17:51:49:922 RingerZenMutedStreams 0x0 from onInitStreamsAndVolumes
+
+
+Supported System Usages:
+	USAGE_CALL_ASSISTANT
+	USAGE_EMERGENCY
+	USAGE_SAFETY
+	USAGE_VEHICLE_STATUS
+	USAGE_ANNOUNCEMENT
+
+
+
+Spatial audio:
+mHasSpatializerEffect:false (effect present)
+isSpatializerEnabled:false (routing dependent)
+SpatializerHelper:
+	mState:1
+	mSpatLevel:0
+	mCapableSpatLevel:0
+	mIsHeadTrackingSupported:false
+	supported head tracking modes:
+	mDesiredHeadTrackingMode:HEAD_TRACKING_MODE_RELATIVE_WORLD
+	mActualHeadTrackingMode:HEAD_TRACKING_MODE_UNSUPPORTED
+	headtracker available:false
+	supports binaural:false / transaural:false
+	mSpatOutput:0
+	has FEATURE_AUDIO_SPATIAL_HEADTRACKING_LOW_LATENCY:false
+Events log: spatial audio
+09-07 17:51:49:923 init effectExpected=false
+09-07 17:51:49:923 init(): setting state to STATE_NOT_SUPPORTED due to effect not expected
+09-07 17:51:49:923 setFeatureEnabled(false) was featureEnabled:false
+
+
+
+Loudness alignment:
+
+Registered clients:
+
+Player piid 239 pid -1 active codec types 
+
+
+Events log: Loudness updates
+09-07 17:51:59:533 Loudness client with pid 2404 died
+09-07 17:52:04:123 Stop loudness updates for piid 167 for client pid -1
+09-07 17:52:07:369 Stop loudness updates for piid 175 for client pid -1
+09-07 17:52:08:591 Stop loudness updates for piid 183 for client pid -1
+09-07 17:52:09:229 Loudness client with pid 3295 died
+09-07 17:56:28:125 Loudness client with pid 5038 died
+09-07 17:56:29:689 Stop loudness updates for piid 199 for client pid -1
+09-07 17:56:32:370 Stop loudness updates for piid 215 for client pid -1
+09-07 17:56:32:599 Loudness client with pid 5167 died
+09-07 18:05:40:869 Loudness client with pid 5938 died
+09-07 18:05:43:358 Stop loudness updates for piid 231 for client pid -1
+
+
+Absolute voume devices:
+Device type: 0x20000000, driving stream 3
+Device type: 0x8000000, driving stream 3
+Device type: 0x20000001, driving stream 3
+Device type: 0x20000002, driving stream 3
+
+AudioSystemAdapter:
+ last cache clear time: 09-07 18:05:42:873
+ mDevicesForAttrCache:
+	AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_SYSTEM(1)
+		AudioDeviceAttributes: role:output type:bus addr:bus7_system_sound_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x801 tags= bundle=null forVolume: true stream: STREAM_SYSTEM(1)
+		AudioDeviceAttributes: role:output type:bus addr:bus0_media_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_ASSISTANCE_ACCESSIBILITY content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_ACCESSIBILITY(10)
+		AudioDeviceAttributes: role:output type:bus addr:bus2_voice_command_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_NOTIFICATION_RINGTONE content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_RING(2)
+		AudioDeviceAttributes: role:output type:bus addr:bus3_call_ring_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_ALARM(4)
+		AudioDeviceAttributes: role:output type:bus addr:bus5_alarm_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_ASSISTANT content=CONTENT_TYPE_SPEECH flags=0x800 tags= bundle=null forVolume: true stream: STREAM_ASSISTANT(11)
+		AudioDeviceAttributes: role:output type:bus addr:bus2_voice_command_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_NOTIFICATION(5)
+		AudioDeviceAttributes: role:output type:bus addr:bus6_notification_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_VOICE_COMMUNICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_VOICE_CALL(0)
+		AudioDeviceAttributes: role:output type:bus addr:bus4_call_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_VOICE_COMMUNICATION_SIGNALLING content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_DTMF(8)
+		AudioDeviceAttributes: role:output type:bus addr:bus4_call_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_MUSIC(3)
+		AudioDeviceAttributes: role:output type:bus addr:bus0_media_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x808 tags= bundle=null forVolume: true stream: STREAM_MUSIC(3)
+		AudioDeviceAttributes: role:output type:bus addr:bus0_media_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: false stream: STREAM_MUSIC(3)
+		AudioDeviceAttributes: role:output type:bus addr:bus0_media_out name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_MUSIC flags=0x800 tags= bundle=null forVolume: false stream: STREAM_MUSIC(3)
+		AudioDeviceAttributes: role:output type:bus addr:bus0_media_out name: profiles:[] descriptors:[]

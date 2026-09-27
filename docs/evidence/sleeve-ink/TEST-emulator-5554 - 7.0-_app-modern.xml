@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.example.androidmixtape.ui.SleeveInkUiTest" tests="2" failures="0" errors="0" skipped="0" time="20.455" timestamp="2026-09-21T06:54:18" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 7.0" />
+    <property name="flavor" value="modern" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged" classname="com.example.androidmixtape.ui.SleeveInkUiTest" time="17.982" />
+  <testcase name="inkPreferencesPersistAndOldTapesKeepTheirOriginalColor" classname="com.example.androidmixtape.ui.SleeveInkUiTest" time="0.407" />
+</testsuite>

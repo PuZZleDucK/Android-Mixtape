@@ -124,9 +124,7 @@ Running should implement the minimum production API to satisfy those tests, then
 
 ```sh
 ./gradlew testModernDebugUnitTest
-./gradlew testLegacyDebugUnitTest
 ./gradlew assembleModernDebug
-./gradlew assembleLegacyDebug
 ```
 
 ## Card #2211 — Cassette visual aspect ratio TDD checks

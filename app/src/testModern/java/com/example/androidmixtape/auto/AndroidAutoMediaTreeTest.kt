@@ -73,8 +73,8 @@ class AndroidCustomCarUiFlowContractTest {
             modernSource.contains("CarMixtape") && modernSource.contains("CarMixtapeCatalog"),
         )
         assertTrue(
-            "The car catalog must reuse the phone mixtape grouping function so phone and car agree on mixtape order/count.",
-            modernSource.contains("buildMixTapeGroups"),
+            "The car catalog must resolve the phone's saved membership so removals cannot regroup or rename tapes in the car.",
+            modernSource.contains("resolveMixtapeGroups") && modernSource.contains("SharedPreferencesMixtapeMembershipStore"),
         )
         assertTrue(
             "Car catalog media IDs should be stable and distinguish mixtapes from tracks.",

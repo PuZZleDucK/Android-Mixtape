@@ -1,0 +1,103 @@
+{
+  "track_row_pitch_px": {
+    "before": 95.0,
+    "after_landscape": 86,
+    "after_portrait": 86
+  },
+  "row_pitch_reduction_percent": 9.47,
+  "spine_name_ink": {
+    "Large": [
+      {
+        "ink_height_px": 98,
+        "spine_height_px": 135
+      },
+      {
+        "ink_height_px": 98,
+        "spine_height_px": 135
+      },
+      {
+        "ink_height_px": 98,
+        "spine_height_px": 135
+      }
+    ],
+    "Medium": [
+      {
+        "ink_height_px": 83,
+        "spine_height_px": 135
+      },
+      {
+        "ink_height_px": 84,
+        "spine_height_px": 135
+      },
+      {
+        "ink_height_px": 83,
+        "spine_height_px": 135
+      }
+    ],
+    "Small": [
+      {
+        "ink_height_px": 68,
+        "spine_height_px": 135
+      },
+      {
+        "ink_height_px": 69,
+        "spine_height_px": 135
+      },
+      {
+        "ink_height_px": 68,
+        "spine_height_px": 135
+      }
+    ]
+  },
+  "large_setting_restored": true,
+  "font_gallery_families_checked": [
+    "Architects Daughter",
+    "Caveat",
+    "Gloria Hallelujah",
+    "Indie Flower",
+    "Kalam",
+    "Nanum Pen Script",
+    "Patrick Hand",
+    "Shadows Into Light"
+  ],
+  "portrait_library": {
+    "columns": 1,
+    "visible_tapes": 11,
+    "ratio": 6.5,
+    "player_absent": true
+  },
+  "landscape_library": {
+    "columns": 2,
+    "visible_tapes": 8,
+    "ratio": 6.5,
+    "player_absent": true
+  },
+  "landscape_library_bottom": {
+    "columns": 2,
+    "visible_tapes": 7,
+    "ratio": 6.5,
+    "player_absent": true
+  },
+  "all_13_full_names_in_accessibility_tree": true,
+  "single_line_overrun": "Visually checked in final screenshots; renderer contract tested by JVM tests.",
+  "persistence": {
+    "tapes": 13,
+    "existing_non_ink_properties_preserved": true,
+    "every_initial_ink_pair_distinct": true,
+    "persisted_styles_unchanged_after_qa": true,
+    "alignment_counts": {
+      "Center": 5,
+      "Left": 2,
+      "Right": 6
+    },
+    "symbol_position_counts": {
+      "UpperLeft": 3,
+      "LowerRight": 2,
+      "UpperRight": 3,
+      "LowerLeft": 3,
+      "Left": 2
+    },
+    "name_ink_count": 8,
+    "symbol_ink_count": 8
+  }
+}

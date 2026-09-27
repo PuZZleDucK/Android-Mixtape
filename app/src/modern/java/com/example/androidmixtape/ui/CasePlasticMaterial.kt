@@ -29,6 +29,7 @@ internal fun CaseTheme.plasticPalette(): CasePlasticPalette {
         CaseTheme.ElectricBlueClear -> CasePlasticPalette(Color(0x4A187EFF), Color.Transparent, Color(0xC787C4FF), Color(0x75053482))
         CaseTheme.AcidGreenClear -> CasePlasticPalette(Color(0x4A67F523), Color.Transparent, Color(0xC7BCFF8B), Color(0x70387805))
         CaseTheme.VioletClear -> CasePlasticPalette(Color(0x4A8943FF), Color.Transparent, Color(0xC7CA9EFF), Color(0x73411287))
+        else -> CasePlasticPalette(Color(0x33ECF5F3), Color.Transparent, Color(0xA6FFFFFF), Color(0x4714141E))
     }
     return palette.copy(
         tint = palette.tint.copy(alpha = palette.tint.alpha * 0.62f),

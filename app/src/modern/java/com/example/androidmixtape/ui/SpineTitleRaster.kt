@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.unit.Density
@@ -32,8 +33,13 @@ internal fun rasterizeSpineTitle(
     height: Int,
     density: Density,
     layoutDirection: LayoutDirection,
+    textAlign: TextAlign = TextAlign.Center,
+    fillHeightFraction: Float? = null,
+    alignmentInsetLeft: Int = 0,
+    alignmentInsetRight: Int = 0,
 ): SpineTitleRaster? {
     if (width <= 0 || height <= 2 || tokens.isEmpty()) return null
+    if (fillHeightFraction != null) return rasterizeFilledSpineTitle(tokens,samples,em,width,height,density,layoutDirection,textAlign,fillHeightFraction,alignmentInsetLeft,alignmentInsetRight)
     val rasterHeight = ceil(max(tokens.maxOf { it.second.size.height }.toFloat(), em) * 4f).toInt().coerceAtLeast(1)
     var factor = 1f
     repeat(16) {
@@ -72,7 +78,7 @@ internal fun rasterizeSpineTitle(
             }
         }
         val fitting = complete && left > 0 && right < scratchWidth && right > left && right - left <= width - 2
-        val sourceX = if (fitting) left - (width - (right - left)) / 2 else padding
+        val sourceX = if (fitting) left - spineTitleLineLeft(width,right-left,textAlign) else padding
         val image = ImageBitmap(width, rasterHeight)
         val bitmap = image.asAndroidBitmap()
         // Integer translation preserves the measured pixels, weight and jitter without a

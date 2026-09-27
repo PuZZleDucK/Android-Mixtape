@@ -21,15 +21,14 @@ class DeckAudioLevelMeterContractTest {
 
     @Test
     fun deckMetersConsumeIndependentLiveLeftAndRightLevels() {
-        val source = source("app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt")
-        val deck = source.substringAfter("private fun DeckCassetteBay(").substringBefore("@Composable\nprivate fun DemoDeckButton(")
-
-        assertTrue(source.contains("AudioLevelMonitor.levels.collectAsState()"))
-        assertTrue(deck.contains("leftAudioLevel: Float") && deck.contains("rightAudioLevel: Float"))
-        assertTrue(deck.contains("DeckLevelMeter(\"L\", leftAudioLevel"))
-        assertTrue(deck.contains("DeckLevelMeter(\"R\", rightAudioLevel"))
-        assertTrue(deck.contains("fillMaxHeight(displayedLevel)"))
-        assertFalse("Remove the old fixed decorative meter heights.", deck.contains("0.56f") || deck.contains("0.72f") || deck.contains("0.08f"))
+        val ui = source("app/src/modern/java/com/example/androidmixtape/ui/DemoPlayerScreen.kt")
+        val deck = source("app/src/modern/java/com/example/androidmixtape/ui/DemoDeck.kt")
+        assertTrue(ui.contains("AudioLevelMonitor.levels.collectAsState()"))
+        assertTrue(ui.contains("leftLevel=audio.left,rightLevel=audio.right"))
+        assertTrue(deck.contains("if(playing)leftLevel else 0f") && deck.contains("if(playing)rightLevel else 0f"))
+        assertTrue(deck.contains("0xFF62BF70") && deck.contains("0xFFEAAF48") && deck.contains("0xFFE45B48"))
+        assertTrue(deck.contains("extent.height*(9-i)/10"))
+        assertFalse(deck.contains("Random") || deck.contains("sin("))
     }
 
     private fun source(path: String): String {

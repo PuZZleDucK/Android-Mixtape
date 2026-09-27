@@ -1,0 +1,17 @@
+{
+  "installed_apk_sha256": "6246234b09556d2064c9fb9170eef6ccd01c9ecec12d57224edf342be4955616",
+  "model": "A001T",
+  "product": "Galaxian",
+  "rotation": "free",
+  "automatic_rotation": "1",
+  "user_rotation": "0",
+  "font_size": "Large",
+  "messiness": "High",
+  "mixtape_packages": [
+    "package:org.puzzleduck.mixtape"
+  ],
+  "media_state": [
+    "active=true",
+    "state=PlaybackState {state=PAUSED(2), position=0, buffered position=65503, speed=0.0, updated=1032667993, actions=7340031, custom actions=[], active item id=0, error=null}"
+  ]
+}

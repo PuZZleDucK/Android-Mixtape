@@ -48,27 +48,32 @@ enum class MixtapeTapeSkin {
 
 enum class DeckTheme {
     SilverfaceHiFi, BlackoutPortable, SunsetBoombox, NavyMicro, CrimsonMetal, SafetyYellow, GraphiteSlim,
+    GraphiteTall, StudioSilver, ParkLife, ChalkEdition,
 }
 
 enum class CassetteTheme {
     StudioFerric, MidnightChrome, GhostClear, BubblegumPop, TranslucentSmoke,
     TranslucentRuby, TranslucentCobalt, TranslucentLime, TranslucentViolet,
+    ClearStudy, SmokeC90, WarmIvory, BlueHour, SignalOrange, SkinClassicCreamDots, SkinBlackMagentaStripe, SkinChromeGreen, SkinCharcoalGold, SkinTranslucentViolet, SkinSmokedGreenLowNoise, SkinTealMeterDeck, SkinIvoryRedStripe, SkinIvoryBlue120, SkinRubyFerroGrid, SkinMidnightCreamSuper, SkinLimeNavyC30,
 }
 
 enum class ScrewTheme { Light, Dark }
 
 enum class StickerTheme {
     None, StudioStock, MinimalMono, VintageSunset, AquaOrbit, LowerDeck, HissTachiLoNoise, PrismC60,
+    MagneticStudio, YoursTruly, NightShift, FreshStart, SkinClassicCreamDots, SkinBlackMagentaStripe, SkinChromeGreen, SkinCharcoalGold, SkinTranslucentViolet, SkinSmokedGreenLowNoise, SkinTealMeterDeck, SkinIvoryRedStripe, SkinIvoryBlue120, SkinRubyFerroGrid, SkinMidnightCreamSuper, SkinLimeNavyC30,
 }
 
 enum class CaseTheme {
     CrystalClear, SmokeTint, AmberTint, RubyClear, HotPinkClear,
     ElectricBlueClear, AcidGreenClear, VioletClear, CloudyClear,
+    ArchiveCrystal, AmberArchive, LagoonBlue, SmokedGlass,
 }
 
 enum class SleeveTheme {
     BlankWhite, RuledNotebook, AlbumPrint, KraftBrown, MidnightGrid,
     CoralAlbum, ForestFleck, BlueprintGrid, GraphPaper,
+    StudioIndex, NotebookPage, AfterDark, CottonPaper, SkinCreamRed, SkinBlushBlue, SkinSkyGreen, SkinMintAmber, SkinLemonNavy, SkinPinkZineBorder, SkinVioletLibraryStripe, SkinMintCollageTab, SkinAmberIndexBlock, SkinPowderBlueMarker, SkinCoralStickerRail, SkinEmeraldNotebookLines, SkinSepiaNewsprintFrame, SkinBlackPhotoNegative, SkinRainbowCutout, SkinSunburstCreamRail, SkinAquaLibraryTab, SkinCandyStripePink, SkinGoldenMemoBlock, SkinTomatoBorderLabel, SkinTealNotebookRail, SkinVioletIndexPanel, SkinLimeCutoutStripe, SkinPeachGridSticker, SkinMidnightRainbowFrame,
 }
 
 enum class MixtapeEmbellishment {
@@ -117,6 +122,8 @@ data class MixtapeVisualProperties(
     val embellishment: MixtapeEmbellishment = MixtapeEmbellishment.Star,
     val symbolColor: MixtapeSymbolColor = MixtapeSymbolColor.Navy,
     val nameColor: MixtapeSymbolColor = MixtapeSymbolColor.Navy,
+    val spineTextAlignment: SpineTextAlignment = SpineTextAlignment.Center,
+    val spineSymbolPlacement: SpineSymbolPlacement = SpineSymbolPlacement.Right,
     val tapeSkin: MixtapeTapeSkin = MixtapeTapeSkin.ClassicCreamDots,
     val spineSkin: MixtapeSpineSkin = MixtapeSpineSkin.CreamRed,
     val decorativeId: String = "A",
@@ -125,6 +132,7 @@ data class MixtapeVisualProperties(
     val stickerTheme: StickerTheme = StickerTheme.None,
     val caseTheme: CaseTheme = CaseTheme.CrystalClear,
     val sleeveTheme: SleeveTheme = SleeveTheme.AlbumPrint,
+    val sleeveInk: SleeveInk = SleeveInk.Original,
 )
 
 data class MixtapeSymbolSettings(
@@ -536,12 +544,14 @@ class SharedPreferencesMixtapeVisualPropertiesStore(
         val spineSkin = spineSkinName
             ?.let { savedName -> MixtapeSpineSkin.entries.firstOrNull { it.name == savedName } }
             ?: MixtapeSpineSkin.CreamRed
-        return MixtapeVisualProperties(
+        val properties = MixtapeVisualProperties(
             handwritingFont = handwritingFont,
             jitterStartIndex = jitterStartIndex,
             embellishment = embellishment,
             symbolColor = symbolColor,
             nameColor = nameColor,
+            spineTextAlignment = enumValue<SpineTextAlignment>(stableMixtapeKey, "spine_text_alignment") ?: SpineTextAlignment.Center,
+            spineSymbolPlacement = enumValue<SpineSymbolPlacement>(stableMixtapeKey, "spine_symbol_placement") ?: SpineSymbolPlacement.Right,
             tapeSkin = tapeSkin,
             spineSkin = spineSkin,
             decorativeId = decorativeId,
@@ -550,7 +560,13 @@ class SharedPreferencesMixtapeVisualPropertiesStore(
             stickerTheme = stickerTheme,
             caseTheme = caseTheme,
             sleeveTheme = sleeveTheme,
+            // Keep existing tapes' original ink when upgrading from before ink choices.
+            sleeveInk = enumValue<SleeveInk>(stableMixtapeKey, "sleeve_ink") ?: SleeveInk.Original,
         )
+        if (!preferences.contains(prefKey(stableMixtapeKey, "spine_style_version"))) {
+            return properties.withInitialSpineStyle().also { saveProperties(stableMixtapeKey,it) }
+        }
+        return properties
     }
 
     override fun saveProperties(stableMixtapeKey: String, properties: MixtapeVisualProperties) {
@@ -562,6 +578,9 @@ class SharedPreferencesMixtapeVisualPropertiesStore(
             .putString(prefKey(stableMixtapeKey, "embellishment"), properties.embellishment.name)
             .putString(prefKey(stableMixtapeKey, "symbol_color"), properties.symbolColor.name)
             .putString(prefKey(stableMixtapeKey, "name_color"), properties.nameColor.name)
+            .putInt(prefKey(stableMixtapeKey, "spine_style_version"), 1)
+            .putString(prefKey(stableMixtapeKey, "spine_text_alignment"), properties.spineTextAlignment.name)
+            .putString(prefKey(stableMixtapeKey, "spine_symbol_placement"), properties.spineSymbolPlacement.name)
             .putString(prefKey(stableMixtapeKey, "tape_skin"), properties.tapeSkin.name)
             .putString(prefKey(stableMixtapeKey, "spine_skin"), properties.spineSkin.name)
             .putString(prefKey(stableMixtapeKey, "decorative_id"), properties.decorativeId)
@@ -570,6 +589,7 @@ class SharedPreferencesMixtapeVisualPropertiesStore(
             .putString(prefKey(stableMixtapeKey, "sticker_theme"), properties.stickerTheme.name)
             .putString(prefKey(stableMixtapeKey, "case_theme"), properties.caseTheme.name)
             .putString(prefKey(stableMixtapeKey, "sleeve_theme"), properties.sleeveTheme.name)
+            .putString(prefKey(stableMixtapeKey, "sleeve_ink"), properties.sleeveInk.name)
             .apply()
     }
 

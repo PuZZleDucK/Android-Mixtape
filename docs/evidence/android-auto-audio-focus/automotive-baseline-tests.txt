@@ -1,0 +1,146 @@
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.playback.MediaAudioFocusTest:
+INSTRUMENTATION_STATUS: test=transientInterruptionResumesButPermanentFocusLossStaysPaused
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.transientInterruptionResumesButPermanentFocusLossStaysPaused(MediaAudioFocusTest.kt:81)
+
+INSTRUMENTATION_STATUS: stream=
+Error in transientInterruptionResumesButPermanentFocusLossStaysPaused(com.example.androidmixtape.playback.MediaAudioFocusTest):
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.transientInterruptionResumesButPermanentFocusLossStaysPaused(MediaAudioFocusTest.kt:81)
+
+INSTRUMENTATION_STATUS: test=transientInterruptionResumesButPermanentFocusLossStaysPaused
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=controllerCanStartPlaybackWhilePhoneActivityIsInBackground
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.controllerCanStartPlaybackWhilePhoneActivityIsInBackground(MediaAudioFocusTest.kt:100)
+
+INSTRUMENTATION_STATUS: stream=
+Error in controllerCanStartPlaybackWhilePhoneActivityIsInBackground(com.example.androidmixtape.playback.MediaAudioFocusTest):
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.controllerCanStartPlaybackWhilePhoneActivityIsInBackground(MediaAudioFocusTest.kt:100)
+
+INSTRUMENTATION_STATUS: test=controllerCanStartPlaybackWhilePhoneActivityIsInBackground
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(MediaAudioFocusTest.kt:73)
+
+INSTRUMENTATION_STATUS: stream=
+Error in coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(com.example.androidmixtape.playback.MediaAudioFocusTest):
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(MediaAudioFocusTest.kt:73)
+
+INSTRUMENTATION_STATUS: test=coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 7.907
+There were 3 failures:
+1) transientInterruptionResumesButPermanentFocusLossStaysPaused(com.example.androidmixtape.playback.MediaAudioFocusTest)
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.transientInterruptionResumesButPermanentFocusLossStaysPaused(MediaAudioFocusTest.kt:81)
+2) controllerCanStartPlaybackWhilePhoneActivityIsInBackground(com.example.androidmixtape.playback.MediaAudioFocusTest)
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.controllerCanStartPlaybackWhilePhoneActivityIsInBackground(MediaAudioFocusTest.kt:100)
+3) coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(com.example.androidmixtape.playback.MediaAudioFocusTest)
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:113)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(MediaAudioFocusTest.kt:73)
+
+FAILURES!!!
+Tests run: 3,  Failures: 3
+
+
+INSTRUMENTATION_CODE: -1

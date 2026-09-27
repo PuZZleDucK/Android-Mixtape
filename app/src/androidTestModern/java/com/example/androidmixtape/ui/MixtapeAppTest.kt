@@ -200,10 +200,13 @@ class MixtapeAppTest {
         }
 
         composeRule.onNodeWithText("Settings").assertIsDisplayed()
+        composeRule.onNodeWithText("Library").performClick()
         composeRule.onNodeWithText("Reset all mixtapes")
             .performScrollTo()
             .assertIsDisplayed()
             .performClick()
+        assertEquals(0, resetCount)
+        composeRule.onNodeWithText("Reset mixtapes").performClick()
         assertEquals(1, resetCount)
     }
 

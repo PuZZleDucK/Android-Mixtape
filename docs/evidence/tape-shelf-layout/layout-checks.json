@@ -1,0 +1,193 @@
+{
+  "passed": 41,
+  "failures": 0,
+  "checks": [
+    {
+      "check": "after-02-first-landscape-playing-current-fully-visible",
+      "passed": true
+    },
+    {
+      "check": "after-02-first-landscape-playing-single-column-player-shelf",
+      "passed": true
+    },
+    {
+      "check": "after-02-first-landscape-playing-bounded-top",
+      "passed": true,
+      "gap_px": 22
+    },
+    {
+      "check": "after-03-first-portrait-current-fully-visible",
+      "passed": true
+    },
+    {
+      "check": "after-03-first-portrait-single-column-player-shelf",
+      "passed": true
+    },
+    {
+      "check": "after-03-first-portrait-bounded-top",
+      "passed": true,
+      "gap_px": 22
+    },
+    {
+      "check": "after-07-last-portrait-current-fully-visible",
+      "passed": true
+    },
+    {
+      "check": "after-07-last-portrait-single-column-player-shelf",
+      "passed": true
+    },
+    {
+      "check": "after-07-last-portrait-bounded-bottom",
+      "passed": true,
+      "gap_px": 22
+    },
+    {
+      "check": "after-08-last-landscape-current-fully-visible",
+      "passed": true
+    },
+    {
+      "check": "after-08-last-landscape-single-column-player-shelf",
+      "passed": true
+    },
+    {
+      "check": "after-08-last-landscape-bounded-bottom",
+      "passed": true,
+      "gap_px": 22
+    },
+    {
+      "check": "after-09-middle-landscape-current-fully-visible",
+      "passed": true
+    },
+    {
+      "check": "after-09-middle-landscape-single-column-player-shelf",
+      "passed": true
+    },
+    {
+      "check": "after-09-middle-landscape-middle-still-centered",
+      "passed": true,
+      "error_px": 0.0
+    },
+    {
+      "check": "after-10-middle-portrait-current-fully-visible",
+      "passed": true
+    },
+    {
+      "check": "after-10-middle-portrait-single-column-player-shelf",
+      "passed": true
+    },
+    {
+      "check": "after-10-middle-portrait-middle-still-centered",
+      "passed": true,
+      "error_px": 0.0
+    },
+    {
+      "check": "first-shelf-verified-during-playback",
+      "passed": true
+    },
+    {
+      "check": "manual-player-shelf-scroll-retained",
+      "passed": true
+    },
+    {
+      "check": "selecting-tape-opens-tracklist",
+      "passed": true
+    },
+    {
+      "check": "after-01-landscape-library-two-columns",
+      "passed": true
+    },
+    {
+      "check": "after-01-landscape-library-no-player",
+      "passed": true
+    },
+    {
+      "check": "after-01-landscape-library-spines-fit-half-page",
+      "passed": true
+    },
+    {
+      "check": "after-12-landscape-library-two-columns",
+      "passed": true
+    },
+    {
+      "check": "after-12-landscape-library-no-player",
+      "passed": true
+    },
+    {
+      "check": "after-12-landscape-library-spines-fit-half-page",
+      "passed": true
+    },
+    {
+      "check": "after-13-landscape-library-bottom-two-columns",
+      "passed": true
+    },
+    {
+      "check": "after-13-landscape-library-bottom-no-player",
+      "passed": true
+    },
+    {
+      "check": "after-13-landscape-library-bottom-spines-fit-half-page",
+      "passed": true
+    },
+    {
+      "check": "after-15-landscape-library-retained-two-columns",
+      "passed": true
+    },
+    {
+      "check": "after-15-landscape-library-retained-no-player",
+      "passed": true
+    },
+    {
+      "check": "after-15-landscape-library-retained-spines-fit-half-page",
+      "passed": true
+    },
+    {
+      "check": "all-13-tapes-reachable-by-grid-scrolling",
+      "passed": true,
+      "names": [
+        "Boots Along the Boardwalk",
+        "Chestnut Husks",
+        "Fuzz Budget",
+        "Garden Gnome Amnesty",
+        "Halfway Into His Coat",
+        "Hollow Where You Slept",
+        "Our Shadows Grew Tall",
+        "Secondhand Summer",
+        "Sober at the Lock-In",
+        "Static in Silk",
+        "Tanned Around the Plaster",
+        "The Hills Beyond Reception",
+        "Then the Mountains Appeared"
+      ]
+    },
+    {
+      "check": "after-11-portrait-library-one-column",
+      "passed": true
+    },
+    {
+      "check": "after-11-portrait-library-no-player",
+      "passed": true
+    },
+    {
+      "check": "after-14-portrait-library-retained-one-column",
+      "passed": true
+    },
+    {
+      "check": "after-14-portrait-library-retained-no-player",
+      "passed": true
+    },
+    {
+      "check": "portrait-library-scroll-retained-on-rotation",
+      "passed": true
+    },
+    {
+      "check": "landscape-grid-scroll-retained-on-rotation",
+      "passed": true
+    },
+    {
+      "check": "removed-old-half-screen-padding",
+      "passed": true,
+      "before_px": 346,
+      "after_px": 22
+    }
+  ]
+}

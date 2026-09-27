@@ -1,0 +1,123 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.13/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:mergeModernDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:processModernDebugNavigationResources UP-TO-DATE
+> Task :app:compileModernDebugNavigationResources UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets UP-TO-DATE
+> Task :app:compressModernDebugAssets UP-TO-DATE
+> Task :app:checkModernDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarModernDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexModernDebug UP-TO-DATE
+> Task :app:mergeLibDexModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeModernDebugNativeLibs UP-TO-DATE
+> Task :app:stripModernDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningModernDebug UP-TO-DATE
+> Task :app:writeModernDebugAppMetadata UP-TO-DATE
+> Task :app:writeModernDebugSigningConfigVersions UP-TO-DATE
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest UP-TO-DATE
+> Task :app:packageModernDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:processModernDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateModernDebugUnitTestConfig UP-TO-DATE
+> Task :app:preModernDebugAndroidTestBuild SKIPPED
+> Task :app:generateModernDebugAndroidTestResValues UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:compileModernDebugKotlin
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:dexBuilderModernDebug
+> Task :app:mergeModernDebugGlobalSynthetics UP-TO-DATE
+> Task :app:processModernDebugJavaRes
+> Task :app:mergeModernDebugJavaResource
+> Task :app:mergeProjectDexModernDebug
+> Task :app:bundleModernDebugClassesToRuntimeJar
+> Task :app:bundleModernDebugClassesToCompileJar
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleModernDebug
+> Task :app:generateModernDebugAndroidTestLintModel
+> Task :app:generateModernDebugLintReportModel
+> Task :app:generateModernDebugUnitTestLintModel
+> Task :app:compileModernDebugUnitTestKotlin
+> Task :app:lintAnalyzeModernDebug
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processModernDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:testModernDebugUnitTest
+> Task :app:lintAnalyzeModernDebugAndroidTest
+> Task :app:lintAnalyzeModernDebugUnitTest
+
+> Task :app:lintReportModernDebug
+Wrote HTML report to file:///home/puzzleduck/x/android-mixtape/app/build/reports/lint-results-modernDebug.html
+Lint found 3 errors, 44 warnings and 2 hints. First failure:
+/home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:1754: Error: Suspicious indentation: This is indented but is not continuing the previous expression (val jitterStartIndex...) [SuspiciousIndentation]
+                }
+                ~
+    /home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:1753: Previous statement here
+
+
+> Task :app:lintModernDebug FAILED
+Lint found 3 errors, 44 warnings, 2 hints. First failure:
+
+/home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:1754: Error: Suspicious indentation: This is indented but is not continuing the previous expression (val jitterStartIndex...) [SuspiciousIndentation]
+                }
+                ~
+    /home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:1753: Previous statement here
+
+The full lint text report is located at:
+  /home/puzzleduck/x/android-mixtape/app/build/intermediates/lint_intermediate_text_report/modernDebug/lintReportModernDebug/lint-results-modernDebug.txt
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:lintModernDebug'.
+> Lint found errors in the project; aborting build.
+  
+  Fix the issues identified by lint, or create a baseline to see only new errors.
+  To create a baseline, run `gradlew updateLintBaseline` after adding the following to the module's build.gradle file:
+  ```
+  android {
+      lint {
+          baseline = file("lint-baseline.xml")
+      }
+  }
+  ```
+  For more details, see https://developer.android.com/studio/write/lint#snapshot
+  
+  Lint found 3 errors, 44 warnings, 2 hints. First failure:
+  
+  /home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:1754: Error: Suspicious indentation: This is indented but is not continuing the previous expression (val jitterStartIndex...) [SuspiciousIndentation]
+                  }
+                  ~
+      /home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:1753: Previous statement here
+  
+  The full lint text report is located at:
+    /home/puzzleduck/x/android-mixtape/app/build/intermediates/lint_intermediate_text_report/modernDebug/lintReportModernDebug/lint-results-modernDebug.txt
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 11m 35s
+56 actionable tasks: 18 executed, 38 up-to-date

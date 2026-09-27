@@ -78,6 +78,12 @@ enum class HandwritingMessiness(val strengthMultiplier: Float) {
     Off(0f),
 }
 
+enum class HandwritingFontSize(val scale: Float) {
+    Small(0.7f),
+    Medium(0.85f),
+    Large(1f),
+}
+
 enum class MixtapeHandwritingFont {
     Kalam,
     PatrickHand,
@@ -93,6 +99,7 @@ data class MixtapeSettings(
     val songsPerMixTape: Int = DEFAULT_SONGS_PER_MIXTAPE,
     val artistGrouping: ArtistGrouping = ArtistGrouping.ArtistTripletsAcrossTapes,
     val handwritingMessiness: HandwritingMessiness = HandwritingMessiness.Low,
+    val handwritingFontSize: HandwritingFontSize = HandwritingFontSize.Large,
 ) {
     init {
         require(songsPerMixTape > 0) { "songsPerMixTape must be positive" }
@@ -136,6 +143,9 @@ class SharedPreferencesMixtapeSettingsStore(context: Context) : MixtapeSettingsS
             songsPerMixTape = songsPerMixTape,
             artistGrouping = artistGrouping,
             handwritingMessiness = handwritingMessiness,
+            handwritingFontSize = preferences.getString(KEY_HANDWRITING_FONT_SIZE, null)
+                ?.let { saved -> HandwritingFontSize.entries.firstOrNull { it.name == saved } }
+                ?: HandwritingFontSize.Large,
         )
     }
 
@@ -144,6 +154,7 @@ class SharedPreferencesMixtapeSettingsStore(context: Context) : MixtapeSettingsS
             .putInt(KEY_SONGS_PER_MIXTAPE, settings.songsPerMixTape)
             .putString(KEY_ARTIST_GROUPING, settings.artistGrouping.name)
             .putString(KEY_HANDWRITING_MESSINESS, settings.handwritingMessiness.name)
+            .putString(KEY_HANDWRITING_FONT_SIZE, settings.handwritingFontSize.name)
             .apply()
     }
 
@@ -151,6 +162,7 @@ class SharedPreferencesMixtapeSettingsStore(context: Context) : MixtapeSettingsS
         private const val KEY_SONGS_PER_MIXTAPE = "songs_per_mixtape"
         private const val KEY_ARTIST_GROUPING = "artist_grouping"
         private const val KEY_HANDWRITING_MESSINESS = "handwriting_messiness"
+        private const val KEY_HANDWRITING_FONT_SIZE = "handwriting_font_size"
     }
 }
 
@@ -159,6 +171,7 @@ data class MixTapeGroup(
     val tracks: List<Track>,
     val startIndex: Int,
     val visualProperties: MixtapeVisualProperties = MixtapeVisualProperties(),
+    val stableKey: String = "$startIndex|${tracks.joinToString(",") { it.id.toString() }}",
 ) {
     val handwritingFont: MixtapeHandwritingFont get() = visualProperties.handwritingFont
     val handwritingJitterStartIndex: Int get() = visualProperties.jitterStartIndex
@@ -240,6 +253,10 @@ data class MixtapeCustomization(
     val stickerTheme: StickerTheme,
     val caseTheme: CaseTheme,
     val sleeveTheme: SleeveTheme,
+    val sleeveInk: SleeveInk = SleeveInk.Original,
+    val spineTextAlignment: SpineTextAlignment? = null,
+    val spineSymbolPlacement: SpineSymbolPlacement? = null,
+    val jitterStartIndex: Int? = null,
 )
 
 data class MixtapeNameInfo(
@@ -257,6 +274,7 @@ data class MixtapeUiState(
     val selectedTrackInfo: Track? = null,
     val currentIndex: Int = -1,
     val isPlaying: Boolean = false,
+    val transportCueDirection: TransportCueDirection = TransportCueDirection.NONE,
     val positionMs: Long = 0L,
     val durationMs: Long = 0L,
     val counterRevision: Long = 0L,
@@ -307,6 +325,7 @@ class MixtapeViewModel(
     private val themeSettingsStore: MixtapeThemeSettingsStore = InMemoryMixtapeThemeSettingsStore(),
     private val exclusionSettingsStore: MixtapeExclusionSettingsStore = InMemoryMixtapeExclusionSettingsStore(),
     private val transportCuePlayer: TransportCuePlayer = SilentTransportCuePlayer,
+    private val membershipStore: MixtapeMembershipStore = InMemoryMixtapeMembershipStore(),
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MixtapeUiState())
     val uiState: StateFlow<MixtapeUiState> = _uiState.asStateFlow()
@@ -318,7 +337,6 @@ class MixtapeViewModel(
     private var rawLibraryTracks: List<Track> = emptyList()
     private var libraryTracks: List<Track> = emptyList()
     private var mixtapeTracks: List<Track> = emptyList()
-    private var explicitMixtapeGroups: List<List<Track>>? = null
     private var mixtapeSettings: MixtapeSettings = settingsStore.settings()
     private var mixtapeSymbolSettings: MixtapeSymbolSettings = symbolSettingsStore.settings()
     private var mixtapeTapeSkinSettings: MixtapeTapeSkinSettings = tapeSkinSettingsStore.settings()
@@ -331,6 +349,8 @@ class MixtapeViewModel(
     private var notificationNavigationPending = false
     private var currentMixtapeVisualProperties: MixtapeVisualProperties = MixtapeVisualProperties()
     private var trackJumpCueJob: Job? = null
+    private var trackJumpCueGeneration = 0L
+    private var activeTransportCue = TransportCueDirection.NONE
     private val assignedMixtapeNames = mutableMapOf<String, String>()
 
     init {
@@ -358,8 +378,7 @@ class MixtapeViewModel(
         if (!granted) {
             ++scanGeneration
             scanJob?.cancel()
-            trackJumpCueJob?.cancel()
-            transportCuePlayer.cancel()
+            cancelTrackJumpCue()
             pendingDelete = null
             notificationNavigationPending = false
             rawLibraryTracks = emptyList()
@@ -397,7 +416,6 @@ class MixtapeViewModel(
                 .onSuccess { tracks ->
                     if (generation != scanGeneration || !audioPermissionGranted) return@launch
                     rawLibraryTracks = tracks
-                    explicitMixtapeGroups = null
                     rebuildFilteredTracks(preserveMixtapeOrder = false)
                     if (controller.hasReceivedSessionSnapshot && controller.state.tracks.isEmpty()) {
                         startupSessionPending = false
@@ -454,6 +472,22 @@ class MixtapeViewModel(
                     )
                 }
         }
+    }
+
+    /** A launcher entry is library-first while idle; never issue transport commands here. */
+    fun openFromLauncher() {
+        notificationNavigationPending = false
+        if (_uiState.value.status != LibraryStatus.Ready || !controller.hasReceivedSessionSnapshot) {
+            startupSessionPending = true
+            return
+        }
+        startupSessionPending = false
+        _uiState.value = controller.toUiState(
+            status = LibraryStatus.Ready,
+            screen = if (controller.state.isPlaying && controller.state.currentTrack != null)
+                MixtapeScreen.NowPlaying else MixtapeScreen.MixTapes,
+            message = _uiState.value.message,
+        )
     }
 
     /** A media-card body tap changes screens only; transport state belongs to the session. */
@@ -720,23 +754,45 @@ class MixtapeViewModel(
     }
 
     fun updateCurrentMixtapeCustomization(customization: MixtapeCustomization) {
-        val stableKey = currentMixtapeStableKey ?: return
-        val updated = currentMixtapeVisualProperties.copy(
+        currentMixtapeStableKey?.let { updateMixtapeCustomization(it, customization) }
+    }
+
+    /** Editing an unloaded spine must never select it, replace the queue, or start playback. */
+    fun updateMixtapeCustomization(stableKey: String, customization: MixtapeCustomization) {
+        val group = buildAssignedMixTapeGroups().firstOrNull { it.stableKey == stableKey } ?: return
+        val original = group.visualProperties
+        val updated = original.copy(
             decorativeId = customization.decorativeId.trim().ifBlank { randomDecorativeId() }.take(2),
             handwritingFont = customization.handwritingFont,
+            jitterStartIndex = customization.jitterStartIndex?.let { Math.floorMod(it, HANDWRITING_PERTURBATION_COUNT) } ?: original.jitterStartIndex,
             embellishment = customization.embellishment,
             symbolColor = customization.symbolColor,
             nameColor = customization.nameColor,
+            spineTextAlignment = customization.spineTextAlignment ?: original.spineTextAlignment,
+            spineSymbolPlacement = customization.spineSymbolPlacement ?: original.spineSymbolPlacement,
             cassetteTheme = customization.cassetteTheme,
             screwTheme = customization.screwTheme,
             stickerTheme = customization.stickerTheme,
             caseTheme = customization.caseTheme,
             sleeveTheme = customization.sleeveTheme,
+            sleeveInk = customization.sleeveInk,
         )
-        currentMixtapeVisualProperties = updated
+        if (stableKey == currentMixtapeStableKey) currentMixtapeVisualProperties = updated
         visualPropertiesStore.saveProperties(stableKey, updated)
         editMixtapeName(stableKey, customization.name)
         refreshCurrentUiState()
+    }
+
+    /** Pure editor draft: dice never persist anything until the user explicitly saves. */
+    fun randomizeMixtapePackaging(stableKey: String, draft: MixtapeCustomization): MixtapeCustomization {
+        if (_uiState.value.mixTapeGroups.none { it.stableKey == stableKey }) return draft
+        val otherNames = _uiState.value.mixTapeGroups.filterNot { it.stableKey == stableKey }.map { it.name }.toSet()
+        val names = nameSource.names()
+        val available = names.filterNot { it == draft.name || it in otherNames }
+            .ifEmpty { names.filterNot { it == draft.name } }
+        val name = available.takeIf { it.isNotEmpty() }?.random(mixtapeRandom) ?: draft.name
+        return draft.randomizedPackaging(mixtapeRandom, name, enabledHandwritingFonts(), enabledEmbellishments(),
+            mixtapeThemeSettings.enabledCaseThemes.toList(), mixtapeThemeSettings.enabledSleeveThemes.toList())
     }
 
     fun cycleCurrentMixtapeSymbolColor() {
@@ -784,7 +840,7 @@ class MixtapeViewModel(
 
     fun resetAllMixTapes() {
         mixtapeTracks = libraryTracks.shuffled(mixtapeRandom)
-        explicitMixtapeGroups = null
+        membershipStore.clear()
         assignedMixtapeNames.clear()
         currentMixtapeVisualProperties = MixtapeVisualProperties()
         controller.stop()
@@ -802,8 +858,7 @@ class MixtapeViewModel(
     }
 
     fun eject() {
-        trackJumpCueJob?.cancel()
-        transportCuePlayer.cancel()
+        cancelTrackJumpCue()
         controller.stop()
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
@@ -814,6 +869,7 @@ class MixtapeViewModel(
 
     fun selectMixTapeGroup(index: Int) {
         val group = buildAssignedMixTapeGroups().getOrNull(index) ?: return
+        cancelTrackJumpCue()
         startupSessionPending = false
         currentMixtapeStableKey = group.stableMixtapeKey()
         currentMixtapeVisualProperties = group.visualProperties
@@ -848,42 +904,14 @@ class MixtapeViewModel(
     }
 
     fun removeTrackFromCurrentMixtape(trackId: Long) {
-        val currentGroups = buildBaseMixTapeGroups()
-        val currentTapeIndex = currentMixtapeStableKey
-            ?.let { stableKey -> currentGroups.indexOfFirst { it.stableMixtapeKey() == stableKey } }
-            ?.takeIf { it >= 0 }
-            ?: currentGroups.indexOfFirst { group -> group.tracks.any { it.id == trackId } }
-        val currentGroup = currentGroups.getOrNull(currentTapeIndex) ?: return
-        val removeIndex = currentGroup.tracks.indexOfFirst { it.id == trackId }
-        if (removeIndex < 0) return
+        val stableKey = currentMixtapeStableKey ?: return
+        val currentGroup = buildBaseMixTapeGroups().firstOrNull { it.stableKey == stableKey } ?: return
+        val removedTrack = currentGroup.tracks.firstOrNull { it.id == trackId } ?: return
+        val oldPlaybackState = controller.state
 
-        val otherTapeCandidates = currentGroups.mapIndexedNotNull { index, group ->
-            if (index != currentTapeIndex && group.tracks.isNotEmpty()) index to group else null
-        }
-        if (otherTapeCandidates.isEmpty()) {
-            _uiState.value = controller.toUiState(
-                status = LibraryStatus.Ready,
-                screen = _uiState.value.screen,
-                message = "No other mix tape available to receive ${currentGroup.tracks[removeIndex].title}",
-            )
-            return
-        }
-
-        val (otherTapeIndex, otherTape) = otherTapeCandidates.random(mixtapeRandom)
-        val otherTrackIndex = otherTape.tracks.indices.random(mixtapeRandom)
-        val updatedGroups = currentGroups.map { it.tracks.toMutableList() }.toMutableList()
-        val removedTrack = updatedGroups[currentTapeIndex][removeIndex]
-        val swapTrack = updatedGroups[otherTapeIndex][otherTrackIndex]
-        updatedGroups[currentTapeIndex][removeIndex] = swapTrack
-        updatedGroups[otherTapeIndex][otherTrackIndex] = removedTrack
-        explicitMixtapeGroups = updatedGroups.map { it.toList() }
-
-        val assignedGroups = buildAssignedMixTapeGroups()
-        val openGroup = assignedGroups.getOrNull(currentTapeIndex)
-        currentMixtapeStableKey = openGroup?.stableMixtapeKey()
-        openGroup?.let { currentMixtapeVisualProperties = it.visualProperties }
-        val queueTracks = openGroup?.tracks.orEmpty()
-        controller.load(queueTracks)
+        membershipStore.removeTracks(setOf(trackId), onlyMixtapeKey = stableKey)
+        val queueTracks = currentGroup.tracks.filterNot { it.id == trackId }
+        replaceQueueAfterRemoval(queueTracks, removedTrack, oldPlaybackState)
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
             screen = if (queueTracks.isEmpty()) MixtapeScreen.MixTapes else MixtapeScreen.NowPlaying,
@@ -902,9 +930,6 @@ class MixtapeViewModel(
             when (val result = repository.deleteTrack(track)) {
                 DeleteTrackResult.Success -> {
                     pendingDelete = null
-                    rawLibraryTracks = rawLibraryTracks.filterNot { it.matchesDeleteTarget(track) }
-                    libraryTracks = libraryTracks.filterNot { it.matchesDeleteTarget(track) }
-                    mixtapeTracks = mixtapeTracks.filterNot { it.matchesDeleteTarget(track) }
                     removeDeletedTrackFromAppState(track, "Deleted ${track.title} from device")
                 }
                 is DeleteTrackResult.RequiresUserAction -> {
@@ -949,8 +974,6 @@ class MixtapeViewModel(
             runCatching { repository.loadTracks() }
                 .onSuccess { refreshedTracks ->
                     rawLibraryTracks = refreshedTracks.filterNot { it.matchesDeleteTarget(confirmedDelete.track) }
-                    libraryTracks = libraryTracks.filterNot { it.matchesDeleteTarget(confirmedDelete.track) }
-                    mixtapeTracks = mixtapeTracks.filterNot { it.matchesDeleteTarget(confirmedDelete.track) }
                 }
             removeDeletedTrackFromAppState(confirmedDelete.track, "Deleted ${confirmedDelete.track.title} from device")
         }
@@ -979,7 +1002,7 @@ class MixtapeViewModel(
     fun updateSongsPerMixTape(songsPerMixTape: Int) {
         if (songsPerMixTape !in MIXTAPE_TRACK_COUNT_OPTIONS || songsPerMixTape == mixtapeSettings.songsPerMixTape) return
         mixtapeSettings = mixtapeSettings.copy(songsPerMixTape = songsPerMixTape)
-        explicitMixtapeGroups = null
+        membershipStore.clear()
         settingsStore.saveSettings(mixtapeSettings)
         assignedMixtapeNames.clear()
         refreshMixtapeSettingsState("${buildBaseMixTapeGroups().size} mix tapes ready")
@@ -989,7 +1012,7 @@ class MixtapeViewModel(
     fun updateArtistGrouping(artistGrouping: ArtistGrouping) {
         if (artistGrouping == mixtapeSettings.artistGrouping) return
         mixtapeSettings = mixtapeSettings.copy(artistGrouping = artistGrouping)
-        explicitMixtapeGroups = null
+        membershipStore.clear()
         settingsStore.saveSettings(mixtapeSettings)
         assignedMixtapeNames.clear()
         refreshMixtapeSettingsState("${buildBaseMixTapeGroups().size} mix tapes ready")
@@ -1003,7 +1026,15 @@ class MixtapeViewModel(
         refreshMixtapeSettingsState(_uiState.value.message)
     }
 
+    fun updateHandwritingFontSize(handwritingFontSize: HandwritingFontSize) {
+        if (handwritingFontSize == mixtapeSettings.handwritingFontSize) return
+        mixtapeSettings = mixtapeSettings.copy(handwritingFontSize = handwritingFontSize)
+        settingsStore.saveSettings(mixtapeSettings)
+        refreshMixtapeSettingsState(_uiState.value.message)
+    }
+
     fun togglePlayPause() {
+        cancelTrackJumpCue()
         controller.togglePlayPause()
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
@@ -1013,6 +1044,7 @@ class MixtapeViewModel(
     }
 
     fun next() {
+        cancelTrackJumpCue()
         controller.next()
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
@@ -1022,6 +1054,7 @@ class MixtapeViewModel(
     }
 
     fun previous() {
+        cancelTrackJumpCue()
         controller.previous()
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
@@ -1030,7 +1063,20 @@ class MixtapeViewModel(
         )
     }
 
+    fun nextWithCue() {
+        if (!controller.state.canGoNext) return
+        val targetIndex = controller.state.currentIndex + 1
+        jumpToTrackWithCue(targetIndex, controller.state.tracks[targetIndex])
+    }
+
+    fun previousWithCue() {
+        if (!controller.state.canGoPrevious) return
+        val targetIndex = controller.state.currentIndex - 1
+        jumpToTrackWithCue(targetIndex, controller.state.tracks[targetIndex])
+    }
+
     fun seekTo(positionMs: Long) {
+        cancelTrackJumpCue()
         controller.seekTo(positionMs)
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
@@ -1040,8 +1086,7 @@ class MixtapeViewModel(
     }
 
     fun stop() {
-        trackJumpCueJob?.cancel()
-        transportCuePlayer.cancel()
+        cancelTrackJumpCue()
         controller.stop()
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
@@ -1059,9 +1104,10 @@ class MixtapeViewModel(
             targetIndex == currentIndex -> TransportCueDirection.NONE
             else -> TransportCueDirection.NONE
         }
-        trackJumpCueJob?.cancel()
-        transportCuePlayer.cancel()
+        cancelTrackJumpCue()
         controller.stop()
+        activeTransportCue = direction
+        val cueGeneration = trackJumpCueGeneration
         _uiState.value = controller.toUiState(
             status = LibraryStatus.Ready,
             screen = _uiState.value.screen,
@@ -1071,6 +1117,8 @@ class MixtapeViewModel(
             try {
                 val cueDurationMs = if (direction == TransportCueDirection.NONE) 0L else 5_000L
                 transportCuePlayer.play(direction, cueDurationMs)
+                if (cueGeneration != trackJumpCueGeneration) return@launch
+                activeTransportCue = TransportCueDirection.NONE
                 if (controller.state.tracks.getOrNull(targetIndex)?.matchesDeleteTarget(targetTrack) == true) {
                     controller.select(targetIndex)
                     _uiState.value = controller.toUiState(
@@ -1086,17 +1134,29 @@ class MixtapeViewModel(
                     )
                 }
             } catch (error: CancellationException) {
-                transportCuePlayer.cancel()
+                if (cueGeneration == trackJumpCueGeneration) transportCuePlayer.cancel()
                 throw error
+            } finally {
+                if (cueGeneration == trackJumpCueGeneration) {
+                    activeTransportCue = TransportCueDirection.NONE
+                    refreshCurrentUiState()
+                }
             }
         }
+    }
+
+    private fun cancelTrackJumpCue() {
+        ++trackJumpCueGeneration
+        trackJumpCueJob?.cancel()
+        trackJumpCueJob = null
+        activeTransportCue = TransportCueDirection.NONE
+        transportCuePlayer.cancel()
     }
 
     override fun onCleared() {
         ++scanGeneration
         scanJob?.cancel()
-        trackJumpCueJob?.cancel()
-        transportCuePlayer.cancel()
+        cancelTrackJumpCue()
         transportCuePlayer.release()
         onDeleteTrackUserActionRequired = null
         controller.setOnPlaybackStateChanged(null)
@@ -1113,28 +1173,17 @@ class MixtapeViewModel(
         val previousState = _uiState.value
         val oldPlaybackState = controller.state
         val removedCurrentTrack = oldPlaybackState.currentTrack?.matchesDeleteTarget(track) == true
-        val oldStableKey = currentMixtapeStableKey
-        val oldVisualProperties = currentMixtapeVisualProperties
-
+        // Freeze membership before removing anything from the library. Never
+        // rechunk the remaining songs or derive new name keys from their positions.
+        buildBaseMixTapeGroups()
+        val removedIds = (rawLibraryTracks + libraryTracks + mixtapeTracks + oldPlaybackState.tracks)
+            .filter { it.matchesDeleteTarget(track) }.map { it.id }.toSet() + track.id
+        membershipStore.removeTracks(removedIds)
         rawLibraryTracks = rawLibraryTracks.filterNot { it.matchesDeleteTarget(track) }
         libraryTracks = libraryTracks.filterNot { it.matchesDeleteTarget(track) }
         mixtapeTracks = mixtapeTracks.filterNot { it.matchesDeleteTarget(track) }
-        explicitMixtapeGroups = explicitMixtapeGroups?.map { group -> group.filterNot { it.matchesDeleteTarget(track) } }
 
-        val assignedGroups = buildAssignedMixTapeGroups()
-        val openGroup = assignedGroups.getOrNull(previousState.currentMixtapeIndex)
-            ?: oldPlaybackState.currentTrack
-                ?.takeUnless { it.matchesDeleteTarget(track) }
-                ?.let { current -> assignedGroups.firstOrNull { group -> group.tracks.any { it.matchesDeleteTarget(current) } } }
-            ?: assignedGroups.firstOrNull()
-        val nextStableKey = openGroup?.stableMixtapeKey()
-        if (oldStableKey != null && nextStableKey != null && oldStableKey != nextStableKey) {
-            carryMixtapeIdentity(oldStableKey, nextStableKey, oldVisualProperties)
-        }
-        currentMixtapeStableKey = nextStableKey
-        openGroup?.let { currentMixtapeVisualProperties = it.visualProperties }
-
-        val queueTracks = openGroup?.tracks.orEmpty()
+        val queueTracks = oldPlaybackState.tracks.filterNot { it.matchesDeleteTarget(track) }
         if (removedCurrentTrack) {
             controller.replaceQueueAfterCurrentRemoval(
                 tracks = queueTracks,
@@ -1149,46 +1198,6 @@ class MixtapeViewModel(
             screen = if (queueTracks.isEmpty()) MixtapeScreen.MixTapes else previousState.screen,
             message = message,
             selectedTrackInfo = previousState.selectedTrackInfo?.takeUnless { it.matchesDeleteTarget(track) },
-        )
-    }
-
-    private fun removeTrackFromCurrentMixtapeOnly(trackId: Long, message: String, deletedTrack: Track? = null) {
-        val currentGroups = buildBaseMixTapeGroups()
-        val currentTapeIndex = currentMixtapeStableKey
-            ?.let { stableKey -> currentGroups.indexOfFirst { it.stableMixtapeKey() == stableKey } }
-            ?.takeIf { it >= 0 }
-            ?: currentGroups.indexOfFirst { group -> group.tracks.any { it.id == trackId } }
-        if (currentTapeIndex !in currentGroups.indices) return
-
-        val currentGroup = currentGroups[currentTapeIndex]
-        val removeTarget = deletedTrack ?: currentGroup.tracks.firstOrNull { it.id == trackId } ?: return
-        if (currentGroup.tracks.none { it.matchesDeleteTarget(removeTarget) }) return
-
-        val oldStableKey = currentGroup.stableMixtapeKey()
-        val oldVisualProperties = currentMixtapeVisualProperties
-        val oldPlaybackState = controller.state
-        val updatedGroupTracks = currentGroup.tracks.filterNot { it.matchesDeleteTarget(removeTarget) }
-        val updatedGroups = currentGroups.mapIndexed { index, group ->
-            if (index == currentTapeIndex) updatedGroupTracks else group.tracks.filterNot { it.matchesDeleteTarget(removeTarget) }
-        }
-        explicitMixtapeGroups = updatedGroups
-
-        val assignedGroups = buildAssignedMixTapeGroups()
-        val openGroup = assignedGroups.getOrNull(currentTapeIndex)
-        val nextStableKey = openGroup?.stableMixtapeKey()
-        if (nextStableKey != null && nextStableKey != oldStableKey) {
-            carryMixtapeIdentity(oldStableKey, nextStableKey, oldVisualProperties)
-        }
-        currentMixtapeStableKey = nextStableKey
-        openGroup?.let { currentMixtapeVisualProperties = it.visualProperties }
-
-        val queueTracks = openGroup?.tracks.orEmpty()
-        replaceQueueAfterRemoval(queueTracks, removeTarget, oldPlaybackState)
-        _uiState.value = controller.toUiState(
-            status = if (libraryTracks.isEmpty()) LibraryStatus.Empty else LibraryStatus.Ready,
-            screen = if (queueTracks.isEmpty()) MixtapeScreen.MixTapes else MixtapeScreen.NowPlaying,
-            message = message,
-            selectedTrackInfo = _uiState.value.selectedTrackInfo?.takeUnless { it.matchesDeleteTarget(removeTarget) },
         )
     }
 
@@ -1263,6 +1272,7 @@ class MixtapeViewModel(
             selectedTrackInfo = selectedTrackInfo,
             currentIndex = state.currentIndex,
             isPlaying = state.isPlaying,
+            transportCueDirection = activeTransportCue,
             positionMs = state.positionMs,
             counterRevision = state.counterRevision,
             durationMs = state.currentTrack?.durationMs ?: state.durationMs,
@@ -1284,19 +1294,8 @@ class MixtapeViewModel(
         )
     }
 
-    private fun buildBaseMixTapeGroups(): List<MixTapeGroup> {
-        explicitMixtapeGroups?.let { groups ->
-            var startIndex = 0
-            return groups.mapIndexed { index, tracks ->
-                MixTapeGroup(
-                    name = "Mix Tape ${index + 1}",
-                    tracks = tracks,
-                    startIndex = startIndex,
-                ).also { startIndex += tracks.size }
-            }
-        }
-        return buildMixTapeGroups(mixtapeTracks, mixtapeSettings)
-    }
+    private fun buildBaseMixTapeGroups(): List<MixTapeGroup> =
+        resolveMixtapeGroups(mixtapeTracks, mixtapeSettings, membershipStore)
 
     private fun buildAssignedMixTapeGroups(): List<MixTapeGroup> =
         buildBaseMixTapeGroups().map { group ->
@@ -1308,15 +1307,6 @@ class MixtapeViewModel(
                 visualProperties = visualPropertiesFor(stableKey),
             )
         }
-
-    private fun carryMixtapeIdentity(oldStableKey: String, newStableKey: String, visualProperties: MixtapeVisualProperties) {
-        val name = assignedMixtapeNames[oldStableKey] ?: nameStore.nameFor(oldStableKey)
-        if (name != null) {
-            assignedMixtapeNames[newStableKey] = name
-            nameStore.saveName(newStableKey, name)
-        }
-        visualPropertiesStore.saveProperties(newStableKey, visualProperties)
-    }
 
     private fun replaceQueueAfterRemoval(queueTracks: List<Track>, removedTrack: Track, oldPlaybackState: PlayerUiState) {
         val removedCurrentTrack = oldPlaybackState.currentTrack?.matchesDeleteTarget(removedTrack) == true
@@ -1363,7 +1353,7 @@ class MixtapeViewModel(
             stickerTheme = mixtapeThemeSettings.enabledStickerThemes.random(mixtapeRandom),
             caseTheme = mixtapeThemeSettings.enabledCaseThemes.random(mixtapeRandom),
             sleeveTheme = mixtapeThemeSettings.enabledSleeveThemes.random(mixtapeRandom),
-        )
+        ).let { it.copy(sleeveInk = SleeveInk.fromJitter(it.jitterStartIndex)).withInitialSpineStyle() }
         visualPropertiesStore.saveProperties(stableMixtapeKey, properties)
         return properties
     }
@@ -1389,11 +1379,7 @@ class MixtapeViewModel(
         MixtapeHandwritingFont.entries.filter { it in mixtapeHandwritingFontSettings.enabledHandwritingFonts }
             .ifEmpty { MixtapeHandwritingFont.entries }
 
-    private fun MixTapeGroup.stableMixtapeKey(): String = buildString {
-        append(startIndex)
-        append('|')
-        tracks.joinTo(this, separator = ",") { it.id.toString() }
-    }
+    private fun MixTapeGroup.stableMixtapeKey(): String = stableKey
 
     private fun MixTapeGroup.toMixtapeNameInfo(): MixtapeNameInfo = MixtapeNameInfo(
         stableKey = stableMixtapeKey(),
@@ -1467,8 +1453,8 @@ class MixtapeViewModel(
             currentMixtapeStableKey = group.stableMixtapeKey()
             _uiState.value = controller.toUiState(
                 status = LibraryStatus.Ready,
-                screen = MixtapeScreen.NowPlaying,
-                message = "Playing ${group.name}",
+                screen = if (controller.state.isPlaying) MixtapeScreen.NowPlaying else MixtapeScreen.MixTapes,
+                message = if (controller.state.isPlaying) "Playing ${group.name}" else "${buildBaseMixTapeGroups().size} mix tapes ready",
             )
         } else {
             refreshCurrentUiState()
@@ -1521,6 +1507,7 @@ class MixtapeViewModel(
         private val themeSettingsStore: MixtapeThemeSettingsStore = InMemoryMixtapeThemeSettingsStore(),
         private val exclusionSettingsStore: MixtapeExclusionSettingsStore = InMemoryMixtapeExclusionSettingsStore(),
         private val transportCuePlayer: TransportCuePlayer = SilentTransportCuePlayer,
+        private val membershipStore: MixtapeMembershipStore = InMemoryMixtapeMembershipStore(),
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
@@ -1540,6 +1527,7 @@ class MixtapeViewModel(
                     themeSettingsStore,
                     exclusionSettingsStore,
                     transportCuePlayer,
+                    membershipStore,
                 ) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

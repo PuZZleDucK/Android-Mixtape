@@ -1,0 +1,4 @@
+Synced APK: /home/puzzleduck/x/android-mixtape/app/build/outputs/apk/modern/debug/app-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+Performing Streamed Install
+Success
+    mResumedActivity: ActivityRecord{cb38dca u0 com.example.androidmixtape/.MainActivity t227}

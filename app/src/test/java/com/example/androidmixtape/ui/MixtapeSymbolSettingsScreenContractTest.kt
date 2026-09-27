@@ -16,7 +16,7 @@ class MixtapeSymbolSettingsScreenContractTest {
 
         assertTrue(
             "Main Settings should expose a Mixtape symbol settings button or card.",
-            settingsBody.contains("Mixtape symbol settings") || settingsBody.contains("Mixtape image settings"),
+            settingsBody.contains("Mixtape symbols"),
         )
         assertTrue(
             "MixtapeApp should expose a callback for opening the symbol settings page.",
@@ -46,7 +46,8 @@ class MixtapeSymbolSettingsScreenContractTest {
         )
         assertTrue(
             "Symbol settings should render a checkbox or switch for each symbol.",
-            symbolSettingsBody.contains("Checkbox") || symbolSettingsBody.contains("Switch"),
+            symbolSettingsBody.contains("SettingsPreviewCard") &&
+                File(projectDir, "app/src/modern/java/com/example/androidmixtape/ui/SettingsComponents.kt").readText().contains("Checkbox"),
         )
         assertTrue(
             "The UI should prevent turning off the final enabled symbol by disabling the last checked toggle.",

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.example.androidmixtape.ui.HandwritingFontSizeUiTest" tests="2" failures="0" errors="0" skipped="0" time="6.555" timestamp="2026-09-21T01:59:25" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 7.0" />
+    <property name="flavor" value="modern" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="preferencesDefaultToLargeAndRoundTripEverySize" classname="com.example.androidmixtape.ui.HandwritingFontSizeUiTest" time="0.516" />
+  <testcase name="bothSettingsPagesChangeSizeAndNowPlayingRowsShrink" classname="com.example.androidmixtape.ui.HandwritingFontSizeUiTest" time="4.212" />
+</testsuite>

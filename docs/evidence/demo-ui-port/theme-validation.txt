@@ -1,0 +1,1 @@
+All 112 native component choices resolve to an approved demo theme. Every typed enum is bound; no missing theme IDs.

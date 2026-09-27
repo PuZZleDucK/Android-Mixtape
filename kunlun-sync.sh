@@ -6,7 +6,8 @@ REMOTE_HOST=${KUNLUN_HOST:-kunlun.local}
 REMOTE_DIR=${KUNLUN_TEST_DIR:-/home/puzzleduck/x/remote-mixtape-testing}
 AVD=${KUNLUN_AVD:-api24-mixtape-portrait}
 EMULATOR_SERIAL=${KUNLUN_EMULATOR_SERIAL:-emulator-5554}
-PACKAGE_NAME=${KUNLUN_PACKAGE_NAME:-com.example.androidmixtape}
+PACKAGE_NAME=${KUNLUN_PACKAGE_NAME:-org.puzzleduck.mixtape}
+MAIN_ACTIVITY=com.example.androidmixtape.MainActivity
 REMOTE_APK="$REMOTE_DIR/android-mixtape-modern-debug.apk"
 
 launch_emulator=false
@@ -175,7 +176,7 @@ fi
 
 if $start_app; then
     remote_adb=/home/puzzleduck/Android/Sdk/platform-tools/adb
-    ssh "$REMOTE_HOST" "$remote_adb -s '$EMULATOR_SERIAL' shell input keyevent WAKEUP >/dev/null && $remote_adb -s '$EMULATOR_SERIAL' shell am start -n '$PACKAGE_NAME/.MainActivity' >/dev/null"
+    ssh "$REMOTE_HOST" "$remote_adb -s '$EMULATOR_SERIAL' shell input keyevent WAKEUP >/dev/null && $remote_adb -s '$EMULATOR_SERIAL' shell am start -n '$PACKAGE_NAME/$MAIN_ACTIVITY' >/dev/null"
     stable_checks=0
     for _ in $(seq 1 15); do
         resumed=$(ssh "$REMOTE_HOST" "$remote_adb -s '$EMULATOR_SERIAL' shell dumpsys activity activities | grep -E 'topResumedActivity|mResumedActivity' | head -1" || true)

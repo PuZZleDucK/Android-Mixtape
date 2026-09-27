@@ -1,0 +1,125 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.13/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:mergeModernDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:processModernDebugNavigationResources UP-TO-DATE
+> Task :app:compileModernDebugNavigationResources UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:javaPreCompileModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugShaders UP-TO-DATE
+> Task :app:compileModernDebugShaders NO-SOURCE
+> Task :app:generateModernDebugAssets UP-TO-DATE
+> Task :app:mergeModernDebugAssets
+> Task :app:compressModernDebugAssets
+> Task :app:checkModernDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarModernDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexModernDebug UP-TO-DATE
+> Task :app:mergeLibDexModernDebug UP-TO-DATE
+> Task :app:mergeModernDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeModernDebugNativeLibs UP-TO-DATE
+> Task :app:stripModernDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningModernDebug UP-TO-DATE
+> Task :app:writeModernDebugAppMetadata UP-TO-DATE
+> Task :app:writeModernDebugSigningConfigVersions UP-TO-DATE
+> Task :app:preModernDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileModernDebugUnitTest UP-TO-DATE
+> Task :app:packageModernDebugUnitTestForUnitTest
+> Task :app:processModernDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateModernDebugUnitTestConfig
+> Task :app:preModernDebugAndroidTestBuild SKIPPED
+> Task :app:generateModernDebugAndroidTestResValues UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+
+> Task :app:compileModernDebugKotlin
+e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
+    1. Kotlin compile daemon is ready
+w: file:///home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/DemoCassette.kt:88:59 'fun quadraticBezierTo(x1: Float, y1: Float, x2: Float, y2: Float): Unit' is deprecated. Use quadraticTo() for consistency with cubicTo().
+w: file:///home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/DemoCassette.kt:88:114 'fun quadraticBezierTo(x1: Float, y1: Float, x2: Float, y2: Float): Unit' is deprecated. Use quadraticTo() for consistency with cubicTo().
+
+> Task :app:compileModernDebugJavaWithJavac NO-SOURCE
+> Task :app:dexBuilderModernDebug
+> Task :app:mergeModernDebugGlobalSynthetics UP-TO-DATE
+> Task :app:processModernDebugJavaRes
+> Task :app:mergeProjectDexModernDebug
+> Task :app:bundleModernDebugClassesToRuntimeJar
+> Task :app:mergeModernDebugJavaResource
+> Task :app:bundleModernDebugClassesToCompileJar
+> Task :app:packageModernDebug
+> Task :app:createModernDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleModernDebug
+> Task :app:generateModernDebugAndroidTestLintModel
+> Task :app:generateModernDebugLintReportModel
+> Task :app:generateModernDebugUnitTestLintModel
+> Task :app:compileModernDebugUnitTestKotlin
+> Task :app:compileModernDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processModernDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testModernDebugUnitTest
+
+CasePlasticMaterialContractTest > allFiveLivePathsUseTheSharedMaterialWithoutLocalTintMultipliers FAILED
+    java.lang.AssertionError at CasePlasticMaterialContractTest.kt:16
+
+DeckAudioLevelMeterContractTest > deckMetersConsumeIndependentLiveLeftAndRightLevels FAILED
+    java.lang.AssertionError at DeckAudioLevelMeterContractTest.kt:27
+
+HandwrittenFontReadabilityContractTest > cassetteHandwritingStillDeclaresReadableEffectiveWeights FAILED
+    java.lang.AssertionError at HandwrittenFontReadabilityContractTest.kt:45
+
+MixTapeScrollStateContractTest > portraitAndLandscapeContainersUseTheHoistedStates FAILED
+    java.lang.AssertionError at MixTapeScrollStateContractTest.kt:48
+
+NowPlayingMixTapeToggleContractTest > nowPlayingExposesTracksVsMixTapesToggleWithoutLeavingNowPlaying FAILED
+    java.lang.AssertionError at NowPlayingMixTapeToggleContractTest.kt:18
+
+> Task :app:lintAnalyzeModernDebug
+
+> Task :app:testModernDebugUnitTest FAILED
+
+NowPlayingMixTapeToggleContractTest > nowPlayingMixTapePaneCentersCurrentMixtapeOnlyWhenPaneOpens FAILED
+    java.lang.AssertionError at NowPlayingMixTapeToggleContractTest.kt:103
+
+NowPlayingMixTapeToggleContractTest > reusableBriefcaseListSupportsCurrentMixtapeHighlightAndSharedSelection FAILED
+    java.lang.AssertionError at NowPlayingMixTapeToggleContractTest.kt:72
+
+TrackLongPressMenuContractTest > trackActionCallbacksAreThreadedFromAppToNowPlayingAndTrackList FAILED
+    java.lang.AssertionError at TrackLongPressMenuContractTest.kt:59
+
+TracklistDoubleClickUiContractTest > doubleClickCallbackIsThreadedFromActivityToBothTrackLists FAILED
+    java.lang.AssertionError at TracklistDoubleClickUiContractTest.kt:34
+
+MixtapeNameInkContrastTest > activeMixTapeSpinesUseTheSelectedNameColorOnSleevePaper FAILED
+    java.lang.AssertionError at MixtapeNameInkContrastTest.kt:41
+
+SleeveInkTest > originalPaletteColorsAreUnchanged FAILED
+    java.lang.AssertionError at SleeveInkTest.kt:46
+
+SleeveInkTest > everySleeveHasThreeDistinctReadableInks FAILED
+    java.util.NoSuchElementException at SleeveInkTest.kt:36
+
+330 tests completed, 12 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testModernDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/puzzleduck/x/android-mixtape/app/build/reports/tests/testModernDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 9m 30s
+52 actionable tasks: 18 executed, 34 up-to-date

@@ -18,7 +18,14 @@ import com.example.androidmixtape.viewmodel.MixtapeVisualPropertiesStore
 import com.example.androidmixtape.viewmodel.MixtapeVisualProperties
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeVisualPropertiesStore
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeSettingsStore
-import com.example.androidmixtape.viewmodel.buildMixTapeGroups
+import com.example.androidmixtape.viewmodel.InMemoryMixtapeMembershipStore
+import com.example.androidmixtape.viewmodel.MixtapeMembershipStore
+import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeMembershipStore
+import com.example.androidmixtape.viewmodel.FilenameExclusionMatcher
+import com.example.androidmixtape.viewmodel.InMemoryMixtapeExclusionSettingsStore
+import com.example.androidmixtape.viewmodel.MixtapeExclusionSettingsStore
+import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeExclusionSettingsStore
+import com.example.androidmixtape.viewmodel.resolveMixtapeGroups
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
@@ -57,6 +64,8 @@ class CarMixtapeCatalog(
     private val nameStore: MixtapeNameStore,
     private val visualPropertiesStore: MixtapeVisualPropertiesStore,
     private val random: Random = Random.Default,
+    private val membershipStore: MixtapeMembershipStore = InMemoryMixtapeMembershipStore(),
+    private val exclusionSettingsStore: MixtapeExclusionSettingsStore = InMemoryMixtapeExclusionSettingsStore(),
 ) {
     constructor(context: Context) : this(
         repository = MediaStoreAudioRepository(context.applicationContext),
@@ -64,6 +73,8 @@ class CarMixtapeCatalog(
         nameSource = AssetMixtapeNameSource(context.applicationContext),
         nameStore = SharedPreferencesMixtapeNameStore(context.applicationContext),
         visualPropertiesStore = SharedPreferencesMixtapeVisualPropertiesStore(context.applicationContext),
+        membershipStore = SharedPreferencesMixtapeMembershipStore(context.applicationContext),
+        exclusionSettingsStore = SharedPreferencesMixtapeExclusionSettingsStore(context.applicationContext),
     )
 
     fun load(): CarMixtapeCatalogState {
@@ -78,8 +89,10 @@ class CarMixtapeCatalog(
             val settings = settingsStore.settings()
         val usedNames = mutableSetOf<String>()
         val availableNames = nameSource.names()
-        val mixtapes = buildMixTapeGroups(tracks, settings).mapIndexed { index, group ->
-            val stableKey = group.stableCarMixtapeKey()
+        val patterns = exclusionSettingsStore.settings().filenamePatterns
+        val eligibleTracks = tracks.filterNot { FilenameExclusionMatcher.matches(it, patterns) }
+        val mixtapes = resolveMixtapeGroups(eligibleTracks, settings, membershipStore).mapIndexed { index, group ->
+            val stableKey = group.stableKey
             val savedName = nameStore.nameFor(stableKey)
             val displayName = savedName ?: availableNames
                 .filterNot { it in usedNames }
@@ -121,12 +134,6 @@ class CarMixtapeCatalog(
                 message = error.message ?: "Mixtape car catalog is unavailable.",
             )
         }
-    }
-
-    private fun com.example.androidmixtape.viewmodel.MixTapeGroup.stableCarMixtapeKey(): String = buildString {
-        append(startIndex)
-        append('|')
-        tracks.joinTo(this, separator = ",") { it.id.toString() }
     }
 
     private fun fallbackVisualProperties(stableKey: String, index: Int): MixtapeVisualProperties {

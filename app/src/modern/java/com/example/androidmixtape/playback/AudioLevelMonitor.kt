@@ -12,7 +12,6 @@ import androidx.media3.exoplayer.audio.AudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import kotlin.math.log10
 import kotlin.math.max
 import kotlin.math.sqrt
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -117,17 +116,10 @@ internal class MeteringAudioProcessor : BaseAudioProcessor() {
         }
     }
 
-    private fun rmsToMeter(rms: Double): Float {
-        if (rms <= 0.000_001) return 0f
-        val decibels = 20.0 * log10(rms)
-        return ((decibels + METER_FLOOR_DB) / METER_FLOOR_DB).toFloat().coerceIn(0f, 1f)
-    }
-
     private fun smooth(previous: Float, measured: Float): Float =
         if (measured >= previous) measured else max(measured, previous * RELEASE_FACTOR)
 
     private companion object {
-        const val METER_FLOOR_DB = 60.0
         const val RELEASE_FACTOR = 0.82f
         const val PUBLISH_INTERVAL_MS = 33L
     }

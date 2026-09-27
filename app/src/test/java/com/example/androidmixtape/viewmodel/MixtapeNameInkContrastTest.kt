@@ -29,36 +29,15 @@ class MixtapeNameInkContrastTest {
     }
 
     @Test fun activeMixTapeSpinesUseTheSelectedNameColorOnSleevePaper() {
-        val source = source("src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt")
-        val spine = source.substringAfter("private fun CassetteSpineRow(")
-            .substringBefore("private fun LegacyCassetteSpineRow(")
-        assertTrue(spine.contains("nameColor.toComposeColor().onPaper(paper.base)"))
-        assertTrue(spine.contains("color = nameInk,"))
-        val paperColors = Regex("SleevePaperPalette\\([^\\n]*?Color\\(0xFF([0-9A-Fa-f]{6})\\)")
-            .findAll(source.substringAfter("private fun SleeveTheme.paperPalette(")
-                .substringBefore("@OptIn(ExperimentalFoundationApi::class)"))
-            .map { it.groupValues[1].toInt(16) }.toList()
-        assertEquals(SleeveTheme.entries.size, paperColors.size)
-        // The renderer adjusts the ink toward white on dark sleeves, black on light ones.
-        val inks = listOf(0x006B88, 0xA00070, 0xA44200, 0x00733D)
-        inks.forEach { ink -> paperColors.forEach { paper ->
-            val background = luminance(paper)
-            val target = if (background < 0.25) 0xFFFFFF else 0x000000
-            val adjusted = (0..20).map { step ->
-                (0..2).fold(0) { rgb, channel ->
-                    val shift = (2 - channel) * 8
-                    val a = (ink shr shift) and 255
-                    val b = (target shr shift) and 255
-                    (rgb shl 8) or (a + (b - a) * step / 20.0).toInt()
-                }
-            }.first { candidate ->
-                val foreground = luminance(candidate)
-                (maxOf(background, foreground) + 0.05) / (minOf(background, foreground) + 0.05) >= 4.5
-            }
-            val ratio = (maxOf(background, luminance(adjusted)) + 0.05) /
-                (minOf(background, luminance(adjusted)) + 0.05)
-            assertTrue("Sleeve paper %06X hides ink %06X".format(paper, ink), ratio >= 4.5)
-        } }
+        val native = source("src/modern/java/com/example/androidmixtape/ui/DemoPackaging.kt")
+        val spine = native.substringAfter("internal fun DemoSpine(").substringBefore("internal fun DemoTapeShelf(")
+        assertTrue(spine.contains("themes.sleeve(properties.sleeveTheme)"))
+        assertTrue(spine.contains("demoCaseInk(properties.nameColor.toComposeColor()"))
+        assertTrue(spine.contains("color=ink"))
+        val optics = source("src/modern/java/com/example/androidmixtape/ui/DemoThemeCatalog.kt")
+        assertTrue(optics.contains("val background = viewed(paper).luminance()"))
+        assertTrue(optics.contains("val foreground = viewed(candidate).luminance()"))
+        assertTrue(optics.contains(">= 4.5f"))
     }
 
     @Test fun carArtworkUsesMatchingInksOnItsRenderedLabels() {

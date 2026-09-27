@@ -1,0 +1,2 @@
+Synced APK: /home/puzzleduck/x/android-mixtape/dist/android-mixtape-v0.1.0-modern-debug.apk -> kunlun.local:/home/puzzleduck/x/remote-mixtape-testing/android-mixtape-modern-debug.apk
+Emulator boot completed: emulator-5554

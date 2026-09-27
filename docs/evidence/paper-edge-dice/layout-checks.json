@@ -1,0 +1,17 @@
+{
+  "name_ink_reaches_paper_edge_px": 67,
+  "expected_paper_edge_px": 67.136,
+  "plastic_edge_px": 43,
+  "track_base_size_sp": {
+    "before": 24,
+    "after": 32
+  },
+  "track_row_pitch_px": {
+    "before": 86,
+    "after": 112
+  },
+  "dice_draft_survives_rotation": true,
+  "dice_cancel_preserves_all_saved_names_and_properties": true,
+  "noncurrent_tape_code_save_and_reopen_verified": true,
+  "test_code_restored_to_original": true
+}

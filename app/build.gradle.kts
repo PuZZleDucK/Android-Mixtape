@@ -9,8 +9,8 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.androidmixtape"
-        minSdk = 19
+        applicationId = "org.puzzleduck.mixtape"
+        minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
@@ -23,12 +23,6 @@ android {
         create("modern") {
             dimension = "platform"
             minSdk = 24
-        }
-        create("legacy") {
-            dimension = "platform"
-            minSdk = 19
-            applicationIdSuffix = ".legacy"
-            versionNameSuffix = "-legacy"
         }
     }
 
@@ -70,7 +64,6 @@ dependencies {
     modernImplementation("androidx.media3:media3-session:1.5.1")
     modernImplementation("androidx.car.app:app:1.8.0-beta01")
     modernImplementation("androidx.media:media:1.6.0")
-    add("legacyCompileOnly", "androidx.compose.runtime:runtime:1.7.6")
 
     modernImplementation("androidx.compose.ui:ui-tooling")
     modernImplementation("androidx.compose.ui:ui-test-manifest")
@@ -83,7 +76,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     add("androidTestUtil", "androidx.test:orchestrator:1.5.1")
-    add("androidTestLegacyCompileOnly", "androidx.compose.runtime:runtime:1.7.6")
 
     add("androidTestModernImplementation", platform("androidx.compose:compose-bom:2024.12.01"))
     add("androidTestModernImplementation", "androidx.compose.ui:ui-test-junit4")

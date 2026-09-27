@@ -1,0 +1,12 @@
+{
+  "unit": {
+    "tests": 345,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "Warning": 44,
+    "Hint": 2
+  }
+}

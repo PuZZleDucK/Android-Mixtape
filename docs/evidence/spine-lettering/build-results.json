@@ -1,0 +1,15 @@
+{
+  "apk_sha256": "513d13b8a1953379e964dfe2d7fbac9315e6b1a84dd2e094ed8e0526f56c31c6",
+  "tests": {
+    "tests": 356,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "Warning": 44,
+    "Hint": 2
+  },
+  "build_successful": true,
+  "installed_base_apk_sha256_matches": true
+}

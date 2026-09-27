@@ -1,0 +1,41 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.13/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preModernDebugBuild UP-TO-DATE
+> Task :app:checkModernDebugAarMetadata UP-TO-DATE
+> Task :app:processModernDebugNavigationResources UP-TO-DATE
+> Task :app:compileModernDebugNavigationResources UP-TO-DATE
+> Task :app:generateModernDebugResValues UP-TO-DATE
+> Task :app:mapModernDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateModernDebugResources UP-TO-DATE
+> Task :app:mergeModernDebugResources UP-TO-DATE
+> Task :app:packageModernDebugResources UP-TO-DATE
+> Task :app:parseModernDebugLocalResources UP-TO-DATE
+> Task :app:createModernDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksModernDebug UP-TO-DATE
+> Task :app:processModernDebugMainManifest UP-TO-DATE
+> Task :app:processModernDebugManifest UP-TO-DATE
+> Task :app:processModernDebugManifestForPackage UP-TO-DATE
+> Task :app:processModernDebugResources UP-TO-DATE
+> Task :app:compileModernDebugKotlin
+e: file:///home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/DemoPackaging.kt:126:73 'val maxWidth: Dp' cannot be called in this context with an implicit receiver. Use an explicit receiver if necessary.
+e: file:///home/puzzleduck/x/android-mixtape/app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt:3212:58 'when' expression must be exhaustive. Add the 'MagneticStudio', 'YoursTruly', 'NightShift', 'FreshStart', 'SkinClassicCreamDots', 'SkinBlackMagentaStripe', 'SkinChromeGreen', ... branches or an 'else' branch.
+
+> Task :app:compileModernDebugKotlin FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileModernDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2m 12s
+16 actionable tasks: 1 executed, 15 up-to-date

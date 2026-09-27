@@ -16,7 +16,7 @@ class MixtapeExclusionSettingsScreenContractTest {
 
         assertTrue(
             "Main Settings should expose an Exclusion settings button/card.",
-            settingsBody.contains("Exclusion settings"),
+            settingsBody.contains("Filename exclusions"),
         )
         assertTrue(
             "MixtapeApp should expose a callback for opening the exclusion settings page.",

@@ -1,218 +1,76 @@
 package com.example.androidmixtape.ui
 
 import java.io.File
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Test
 
+/** Contracts revised for the approved native demo composition, not the retired footer preview. */
 class NowPlayingMixTapeToggleContractTest {
-    @Test
-    fun nowPlayingExposesTracksVsMixTapesToggleWithoutLeavingNowPlaying() {
-        val source = mixtapeAppSource().normalizedLineEndings()
-        val nowPlayingBody = composableBody(source, "private fun NowPlaying(")
-
-        assertTrue(
-            "NowPlaying should define a local body mode for the track-list vs mix-tape-list pane.",
-            nowPlayingBody.contains("NowPlayingBodyMode") || nowPlayingBody.contains("NowPlayingPane"),
-        )
-        assertTrue(
-            "NowPlaying should render an accessible Tracks toggle.",
-            nowPlayingBody.contains("Tracks") && nowPlayingBody.contains("Show current track list"),
-        )
-        assertTrue(
-            "NowPlaying should render an accessible Mix tapes toggle.",
-            nowPlayingBody.contains("Mix tapes") && nowPlayingBody.contains("Show mix tape list"),
-        )
-        assertTrue(
-            "Switching the NowPlaying body should not navigate away; it should conditionally keep the current-track pane available.",
-            nowPlayingBody.contains("CassetteCoverTrackList(") && nowPlayingBody.contains("MixTapeBriefcaseList("),
-        )
+    private fun source(name:String)=listOf(File("src/modern/java/com/example/androidmixtape/ui/$name.kt"),File("app/src/modern/java/com/example/androidmixtape/ui/$name.kt")).first{it.exists()}.readText()
+    @Test fun integratedKeySwitchesListsAndRetainsSettingsLongPress() {
+        val deck=source("DemoDeck")
+        assertTrue(deck.contains("Show track list")&&deck.contains("Show tape list"))
+        assertTrue(deck.contains("onToggleList")&&deck.contains("onLongClick=if(index==5)onSettings"))
+        val app=source("MixtapeApp").substringAfter("private fun NowPlaying(").substringBefore("private fun MixtapeCustomizationDialog(")
+        assertTrue(app.contains("onBodyModeChange(if (showTapes) NowPlayingBodyMode.Tracks else NowPlayingBodyMode.MixTapes)"))
     }
-
-    @Test
-    fun nowPlayingUsesSameHoistedMixtapeScrollStateAsLibraryForEjectPreservation() {
-        val source = mixtapeAppSource().normalizedLineEndings()
-        val appBody = mixtapeAppBody(source)
-        val nowPlayingBody = composableBody(source, "private fun NowPlaying(")
-
-        assertTrue(
-            "MixtapeApp should pass the app-owned portrait LazyListState to NowPlaying so Eject returns to the same browsed list location.",
-            Regex("""NowPlaying\([\s\S]*mixTapeListState\s*=\s*mixTapeListState""").containsMatchIn(appBody),
-        )
-        assertTrue(
-            "MixtapeApp should pass the app-owned landscape LazyGridState to NowPlaying so Eject returns to the same browsed grid location.",
-            Regex("""NowPlaying\([\s\S]*mixTapeGridState\s*=\s*mixTapeGridState""").containsMatchIn(appBody),
-        )
-        assertTrue(
-            "NowPlaying should accept the hoisted portrait LazyListState instead of remembering a fresh one.",
-            Regex("""mixTapeListState\s*:\s*LazyListState""").containsMatchIn(nowPlayingBody),
-        )
-        assertTrue(
-            "NowPlaying should accept the hoisted landscape LazyGridState instead of remembering a fresh one.",
-            Regex("""mixTapeGridState\s*:\s*LazyGridState""").containsMatchIn(nowPlayingBody),
-        )
-        assertFalse(
-            "NowPlaying must not create independent lazy scroll state; that would lose the browsed location when Eject shows Mix Tapes.",
-            nowPlayingBody.contains("rememberLazyListState(") || nowPlayingBody.contains("rememberLazyGridState("),
-        )
+    @Test fun selectingAnyTapeReturnsToItsTracklist() {
+        val app=source("MixtapeApp").substringAfter("fun selectTape(index: Int)").substringBefore("BackHandler")
+        assertTrue(app.indexOf("onBodyModeChange(NowPlayingBodyMode.Tracks)") < app.indexOf("onMixTapeGroupClick(index)"))
+        assertTrue(source("DemoPackaging").contains("onClick={onSelect(index)}"))
     }
-
-    @Test
-    fun reusableBriefcaseListSupportsCurrentMixtapeHighlightAndSharedSelection() {
-        val source = mixtapeAppSource().normalizedLineEndings()
-        val briefcaseSource = composableBody(source, "private fun MixTapeBriefcaseList(")
-        val librarySource = composableBody(source, "private fun MixTapeLibrary(")
-        val nowPlayingBody = composableBody(source, "private fun NowPlaying(")
-        val spineSource = composableBody(source, "private fun CassetteSpineRow(")
-
-        assertTrue(
-            "MixTapeLibrary should delegate the cassette briefcase body to MixTapeBriefcaseList so NowPlaying and Mix Tapes share one list/grid implementation.",
-            librarySource.contains("MixTapeBriefcaseList("),
-        )
-        assertTrue(
-            "NowPlaying should reuse MixTapeBriefcaseList for the Mix tapes pane.",
-            nowPlayingBody.contains("MixTapeBriefcaseList("),
-        )
-        assertTrue(
-            "MixTapeBriefcaseList should thread onMixTapeGroupClick(index) so selecting from NowPlaying opens/plays that mixtape.",
-            briefcaseSource.contains("onMixTapeGroupClick") && briefcaseSource.contains("CassetteSpineRow("),
-        )
-        assertTrue(
-            "MixTapeBriefcaseList should accept the currentMixtapeIndex from state for centering/highlighting.",
-            Regex("""currentMixtapeIndex\s*:\s*Int""").containsMatchIn(briefcaseSource),
-        )
-        assertTrue(
-            "CassetteSpineRow should receive an isCurrentMixtape flag or equivalent current-mixtape marker.",
-            Regex("""isCurrentMixtape\s*:\s*Boolean""").containsMatchIn(spineSource),
-        )
-        assertTrue(
-            "The current cassette spine should expose Current mixtape semantics for accessibility and testability.",
-            spineSource.contains("Current mixtape"),
-        )
+    @Test fun idleLibraryHasFullPageShelfAndOnlyLoadedRouteComposesPlayer() {
+        val app=source("MixtapeApp")
+        val idle=app.substringAfter("MixtapeScreen.MixTapes -> DemoTapeLibrary(").substringBefore("MixtapeScreen.NowPlaying -> NowPlaying(")
+        assertTrue(app.contains("MixtapeScreen.MixTapes -> DemoTapeLibrary("))
+        assertTrue(app.contains("MixtapeScreen.NowPlaying -> NowPlaying("))
+        assertTrue(source("DemoPackaging").contains("centerCurrent=false"))
+        assertTrue(idle.contains("Modifier.weight(1f).fillMaxWidth()"))
+        assertTrue(idle.contains("bodyMode = NowPlayingBodyMode.Tracks"))
+        assertFalse(idle.contains("DemoDeck(")||idle.contains("DemoPlayerScreen("))
+        assertTrue(source("DemoPlayerScreen").contains("if(showTapes) DemoTapeShelf"))
+        assertTrue(source("DemoPlayerScreen").contains("DemoTrackList("))
     }
-
-    @Test
-    fun nowPlayingMixTapePaneCentersCurrentMixtapeOnlyWhenPaneOpens() {
-        val source = mixtapeAppSource().normalizedLineEndings()
-        val nowPlayingBody = composableBody(source, "private fun NowPlaying(")
-
-        assertTrue(
-            "NowPlaying should use uiState.currentMixtapeIndex to identify the mixtape to center/highlight.",
-            nowPlayingBody.contains("currentMixtapeIndex"),
-        )
-        assertTrue(
-            "Opening the Mix tapes pane should scroll the shared portrait/grid state so the current mixtape starts near the center.",
-            nowPlayingBody.contains("animateScrollToItem") || nowPlayingBody.contains("scrollToItem"),
-        )
-        assertTrue(
-            "Centering must be guarded by remembered state/effect keying so recomposition does not keep yanking the list away from the user's browsed location.",
-            nowPlayingBody.contains("LaunchedEffect") && (nowPlayingBody.contains("lastCentered") || nowPlayingBody.contains("centeredMixtape")),
-        )
+    @Test fun shelfCentersCurrentOnEntryButNotOnPlaybackTicks() {
+        val shelf=source("DemoPackaging").substringAfter("internal fun DemoTapeShelf(").substringBefore("internal fun DemoTrackList(")
+        assertTrue(shelf.contains("LaunchedEffect(currentIndex,maxHeight,maxWidth,groups.size,centerCurrent,density)"))
+        assertTrue(shelf.contains("state.scrollToItem(target.index,target.offset)"))
+        assertTrue(shelf.contains("demoShelfScrollTarget("))
+        assertTrue(shelf.contains("contentPadding=PaddingValues(4.dp)"))
+        assertFalse(shelf.contains("(maxHeight-rowHeight)/2"))
+        assertFalse(shelf.contains("positionMs"))
     }
-
-    @Test
-    fun nowPlayingPreviewSlotShowsOppositeOfMainBodyMode() {
-        val source = mixtapeAppSource().normalizedLineEndings()
-        val toggleAndPreviewSource = composableBody(source, "private fun NowPlayingModeToggleAndSpine(")
-
-        assertTrue(
-            "The toggle/preview row should branch on bodyMode so the preview slot shows the opposite of the main pane instead of always showing the cassette spine.",
-            toggleAndPreviewSource.contains("bodyMode == NowPlayingBodyMode.Tracks") || toggleAndPreviewSource.contains("when (bodyMode)"),
-        )
-        assertTrue(
-            "When the main Now Playing body is Tracks, the opposite preview should remain the current-mixtape cassette spine.",
-            Regex("""bodyMode\s*==\s*NowPlayingBodyMode\.Tracks[\s\S]*CassetteSpineRow\(""").containsMatchIn(toggleAndPreviewSource) ||
-                Regex("""NowPlayingBodyMode\.Tracks[\s\S]*CassetteSpineRow\(""").containsMatchIn(toggleAndPreviewSource),
-        )
-        assertTrue(
-            "When the main Now Playing body is Mix tapes, the opposite preview should switch to a compact CurrentTrackPreview in the old spine slot.",
-            Regex("""bodyMode\s*==\s*NowPlayingBodyMode\.MixTapes[\s\S]*CurrentTrackPreview\(""").containsMatchIn(toggleAndPreviewSource) ||
-                Regex("""NowPlayingBodyMode\.MixTapes[\s\S]*CurrentTrackPreview\(""").containsMatchIn(toggleAndPreviewSource),
-        )
-        assertTrue(
-            "The compact preview should receive state.currentTrack plus queue/currentIndex context so it can identify the exact row from the tracklist.",
-            toggleAndPreviewSource.contains("currentTrack = state.currentTrack") &&
-                toggleAndPreviewSource.contains("tracks = state.queueTracks") &&
-                toggleAndPreviewSource.contains("currentIndex = state.currentIndex"),
-        )
+    @Test fun onlyPlaylistHasSeparateCurrentSpineAndNeitherHasHeaders() {
+        val ui=source("DemoPlayerScreen")
+        assertTrue(ui.indexOf("if(showTapes) DemoTapeShelf")<ui.indexOf("else Column"))
+        assertTrue(ui.indexOf("else Column")<ui.indexOf("DemoSpine("))
+        assertFalse(ui.contains("CurrentTrackPreview("))
+        assertFalse(ui.contains("Text("))
+        val deck=source("DemoDeck")
+        assertFalse(deck.contains("demoText(style.name"))
+        assertFalse(deck.contains("Flip")||deck.contains("SIDE A")||deck.contains("SIDE B"))
     }
-
-    @Test
-    fun currentTrackPreviewKeepsTrackListPaperStylingAndEmptyQueueFallback() {
-        val source = mixtapeAppSource().normalizedLineEndings()
-        val previewSource = composableBody(source, "private fun CurrentTrackPreview(")
-
-        assertTrue(
-            "CurrentTrackPreview should expose accessibility semantics for test automation and screen readers.",
-            previewSource.contains("Current track preview"),
-        )
-        assertTrue(
-            "CurrentTrackPreview should accept the current track, full queue, and current index for accurate tracklist context.",
-            Regex("""currentTrack\s*:\s*Track\?""").containsMatchIn(previewSource) &&
-                Regex("""tracks\s*:\s*List<Track>""").containsMatchIn(previewSource) &&
-                Regex("""currentIndex\s*:\s*Int""").containsMatchIn(previewSource),
-        )
-        assertTrue(
-            "CurrentTrackPreview should use the same sleeve-paper and case-plastic theme palettes as the main track list.",
-            previewSource.contains("sleeveTheme.paperPalette()") &&
-                previewSource.contains("caseTheme.plasticPalette()") &&
-                previewSource.contains("CardDefaults.cardColors(containerColor = sleevePaper.base)"),
-        )
-        assertFalse(
-            "The compact track-list preview should not waste space on a Current track header.",
-            previewSource.contains("text = \"Current track\""),
-        )
-        assertTrue(
-            "CurrentTrackPreview should center a three-row window containing the previous, current, and next queue entries.",
-            previewSource.contains("previewIndex - 1") &&
-                previewSource.contains("previewIndex to trackRowText(previewIndex)") &&
-                previewSource.contains("previewIndex + 1"),
-        )
-        assertTrue(
-            "Only the current row should use the sleeve theme highlight; neighboring rows should retain normal ink.",
-            previewSource.contains("if (isCurrent) sleevePaper.accent else sleevePaper.ink"),
-        )
-        assertTrue(
-            "The mini track window should render the regular track-row typography and spacing at canonical size, then uniformly scale the whole surface.",
-            previewSource.contains("requiredWidth(sourceWidth)") &&
-                previewSource.contains("scaleX = previewScale") &&
-                previewSource.contains("scaleY = previewScale") &&
-                previewSource.contains("fontSize = 40.sp") &&
-                previewSource.contains("padding(horizontal = 18.dp)") &&
-                !previewSource.contains("${'$'}{index + 1}."),
-        )
-        assertTrue(
-            "CurrentTrackPreview should not crash or render a blank row when the queue/currentTrack is missing.",
-            previewSource.contains("No current track") || previewSource.contains("No tracks queued"),
-        )
+    @Test fun transportOrderFilledGlyphsAndCompactSpacingFollowPhoneReview() {
+        val deck=source("DemoDeck")
+        assertTrue(deck.contains("val callbacks=listOf(onEject,onPrevious,onStop,onPlayPause,onNext,onToggleList)"))
+        assertTrue(deck.contains("pressed=(index==3&&playing)"))
+        assertTrue(deck.contains("val button=if(index==3)accent"))
+        val symbols=deck.substringAfter("when(index) {").substringBefore("5 -> translate")
+        assertFalse("Transport glyphs are filled, not outlined",symbols.contains("style=Stroke"))
+        assertTrue(source("DemoPlayerScreen").contains("Arrangement.spacedBy(6.dp)"))
+        val tracks=source("DemoPackaging").substringAfter("internal fun DemoTrackList(")
+        assertTrue(tracks.contains("heightIn(min=26.dp)"))
+        assertTrue(tracks.contains("padding(horizontal=4.dp,vertical=1.dp)"))
+        assertTrue(tracks.contains("maxLines=1,overflow=TextOverflow.Ellipsis"))
+        assertTrue(tracks.contains("verticalInkBounds=inkBounds,fixedRowHeight=rowHeight"))
+        assertTrue(tracks.contains("fontSize=32.sp"))
     }
-
-    private fun mixtapeAppBody(source: String): String {
-        val startMarker = "fun MixtapeApp("
-        val endMarker = "@Composable\nprivate fun PermissionRequired("
-        assertTrue("Expected to find MixtapeApp in MixtapeApp.kt", source.contains(startMarker))
-        assertTrue("Expected to find PermissionRequired after MixtapeApp in MixtapeApp.kt", source.contains(endMarker))
-        return source.substringAfter(startMarker).substringBefore(endMarker)
+    @Test fun trackRowsAreTitlesOnlyAndShareTheSpineMaterial() {
+        val paper=source("DemoPackaging")
+        val tracks=paper.substringAfter("internal fun DemoTrackList(")
+        assertTrue(tracks.contains("JitteredHandwritingText(track.title"))
+        assertFalse(tracks.contains("track.artist")||tracks.contains("durationMs"))
+        assertEquals(2,Regex("themes.sleeve\\(properties.sleeveTheme\\)").findAll(paper).count())
+        assertTrue(tracks.contains("DemoCaseSurface(themes.case(properties.caseTheme)"))
     }
-
-    private fun composableBody(source: String, startMarker: String): String {
-        val start = source.indexOf(startMarker)
-        assertTrue("Expected to find $startMarker in MixtapeApp.kt", start >= 0)
-        val nextComposable = source.indexOf("\n@Composable", start + startMarker.length)
-        if (nextComposable > start) return source.substring(start, nextComposable)
-        return source.substring(start)
-    }
-
-    private fun mixtapeAppSource(): String {
-        val path = listOf(
-            File("app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt"),
-            File("app/src/main/java/com/example/androidmixtape/ui/MixtapeApp.kt"),
-            File("src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt"),
-            File("src/main/java/com/example/androidmixtape/ui/MixtapeApp.kt"),
-        ).firstOrNull { it.exists() }
-        assertTrue("Expected to find MixtapeApp.kt from ${System.getProperty("user.dir")}", path != null)
-        return path!!.readText()
-    }
-
-    private fun String.normalizedLineEndings(): String = replace("\r\n", "\n")
 }

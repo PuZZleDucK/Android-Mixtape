@@ -1,0 +1,8 @@
+cd66549386d50ab08f401529a1293cd8219093b0141e2f847cebe83a2023d53a  app/src/modern/java/com/example/androidmixtape/ui/DemoCassette.kt
+7996a4593c543286f28d7858f3b231fde3809dda837158f45ec9e51ce49b3712  app/src/modern/java/com/example/androidmixtape/ui/DemoDeck.kt
+e2d4c7f36b6999952c12c72678f02fd611df441c2e035bce47d6e118f0bb820f  app/src/modern/java/com/example/androidmixtape/ui/DemoPackaging.kt
+6ac9d7171e5b3b4c262cb70559e8245dd4e7af3ee53f83178eb0ab6796eb8d53  app/src/modern/java/com/example/androidmixtape/ui/DemoPlayerScreen.kt
+b738d082adfdaf5040b3d199e964d3dc7cb8587331e417469c5f8d81fba76e9a  app/src/modern/java/com/example/androidmixtape/ui/DemoThemeCatalog.kt
+59982140290129751c0a9e84debdc02cef34dcc0ed4b0b2468bd9b0af529f2c7  app/src/modern/java/com/example/androidmixtape/ui/DemoThemeChoice.kt
+b16ce2851787ed3dde6b63dcc52f1db53a88bdc484f46a25583bbbd7dac424b3  app/src/modern/assets/demo-themes.json
+fcd09e8bc6cad857a74c49128636546bed5ccaec74351998ad4fe3fedb9d7f24  app/src/modern/java/com/example/androidmixtape/ui/MixtapeApp.kt

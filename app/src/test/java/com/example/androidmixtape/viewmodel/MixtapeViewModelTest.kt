@@ -231,7 +231,7 @@ class MixtapeViewModelTest {
     }
 
     @Test
-    fun lateSessionConnectionAfterScanRestoresPausedTapeWithoutStartingFirstTrack() = runTest {
+    fun latePausedSessionKeepsQueueButOpensLibraryWithoutStartingFirstTrack() = runTest {
         val tracks = numberedTracks(60)
         val activeTape = tracks.drop(LP_SONGS_PER_MIXTAPE)
         val player = FakePlayerEngine()
@@ -243,7 +243,7 @@ class MixtapeViewModelTest {
         // the queued startup initialization, even when playback is paused.
         player.simulateExternalPlaybackSnapshot(activeTape, 2, false, 1_234L, activeTape[2].durationMs)
         val state = viewModel.uiState.value
-        assertEquals(MixtapeScreen.NowPlaying, state.screen)
+        assertEquals(MixtapeScreen.MixTapes, state.screen)
         assertEquals(activeTape, state.queueTracks)
         assertEquals(activeTape[2], state.currentTrack)
         assertEquals(1, state.currentMixtapeIndex)
@@ -272,6 +272,54 @@ class MixtapeViewModelTest {
 
         assertEquals(MixtapeScreen.MixTapes, viewModel.uiState.value.screen)
         assertFalse(viewModel.uiState.value.isPlaying)
+        assertEquals(null, player.playedIndex)
+    }
+
+    @Test
+    fun launcherReturnFromPausedPlayerOpensLibraryWithoutResettingQueue() = runTest {
+        val tracks = numberedTracks(3)
+        val player = FakePlayerEngine()
+        val viewModel = viewModelWith(FakeRepository(tracks), MixtapeController(player))
+        viewModel.onPermissionResult(true)
+        viewModel.selectMixTapeGroup(0)
+        player.simulateExternalPlaybackSnapshot(tracks, 1, false, 24_000L, tracks[1].durationMs)
+        assertEquals("Pausing inside the session keeps the loaded player", MixtapeScreen.NowPlaying, viewModel.uiState.value.screen)
+        val before = player.playCount to player.lastSeek
+        viewModel.openFromLauncher()
+        val state = viewModel.uiState.value
+        assertEquals(MixtapeScreen.MixTapes, state.screen)
+        assertEquals(tracks, state.queueTracks)
+        assertEquals(24_000L, state.positionMs)
+        assertFalse(state.isPlaying)
+        assertEquals(before, player.playCount to player.lastSeek)
+    }
+
+    @Test
+    fun launcherReturnDuringMusicOpensPlayerWithoutInterruptingIt() = runTest {
+        val tracks = numberedTracks(3)
+        val player = FakePlayerEngine()
+        val viewModel = viewModelWith(FakeRepository(tracks), MixtapeController(player))
+        player.simulateExternalPlaybackSnapshot(tracks, 1, true, 24_000L, tracks[1].durationMs)
+        viewModel.onPermissionResult(true)
+        viewModel.showSettings()
+        val before = player.playCount to player.lastSeek
+        viewModel.openFromLauncher()
+        assertEquals(MixtapeScreen.NowPlaying, viewModel.uiState.value.screen)
+        assertTrue(viewModel.uiState.value.isPlaying)
+        assertEquals(24_000L, viewModel.uiState.value.positionMs)
+        assertEquals(before, player.playCount to player.lastSeek)
+    }
+
+    @Test
+    fun earlyLauncherEntryWaitsForActiveSessionRatherThanReplacingIt() = runTest {
+        val tracks = numberedTracks(3)
+        val player = FakePlayerEngine()
+        val viewModel = viewModelWith(FakeRepository(tracks), MixtapeController(player))
+        viewModel.openFromLauncher()
+        viewModel.onPermissionResult(true)
+        player.simulateExternalPlaybackSnapshot(tracks, 1, true, 24_000L, tracks[1].durationMs)
+        assertEquals(MixtapeScreen.NowPlaying, viewModel.uiState.value.screen)
+        assertEquals(24_000L, viewModel.uiState.value.positionMs)
         assertEquals(null, player.playedIndex)
     }
 

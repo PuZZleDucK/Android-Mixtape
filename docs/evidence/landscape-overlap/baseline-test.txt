@@ -1,0 +1,44 @@
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.NowPlayingLayoutTest:
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=shortLandscapeKeepsTrackPreviewInsidePlayer
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingLayoutTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+Error in shortLandscapeKeepsTrackPreviewInsidePlayer(com.example.androidmixtape.ui.NowPlayingLayoutTest):
+java.lang.AssertionError: Preview DpRect(left=12.0.dp, top=282.0.dp, right=325.33334.dp, bottom=358.0.dp) spills outside viewport DpRect(left=0.0.dp, top=0.0.dp, right=900.0.dp, bottom=360.0.dp)
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.ui.NowPlayingLayoutTest.assertFooterFits(NowPlayingLayoutTest.kt:101)
+	at com.example.androidmixtape.ui.NowPlayingLayoutTest.shortLandscapeKeepsTrackPreviewInsidePlayer(NowPlayingLayoutTest.kt:81)
+
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=shortLandscapeKeepsTrackPreviewInsidePlayer
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.NowPlayingLayoutTest
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: Preview DpRect(left=12.0.dp, top=282.0.dp, right=325.33334.dp, bottom=358.0.dp) spills outside viewport DpRect(left=0.0.dp, top=0.0.dp, right=900.0.dp, bottom=360.0.dp)
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.ui.NowPlayingLayoutTest.assertFooterFits(NowPlayingLayoutTest.kt:101)
+	at com.example.androidmixtape.ui.NowPlayingLayoutTest.shortLandscapeKeepsTrackPreviewInsidePlayer(NowPlayingLayoutTest.kt:81)
+
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 6.894
+There was 1 failure:
+1) shortLandscapeKeepsTrackPreviewInsidePlayer(com.example.androidmixtape.ui.NowPlayingLayoutTest)
+java.lang.AssertionError: Preview DpRect(left=12.0.dp, top=282.0.dp, right=325.33334.dp, bottom=358.0.dp) spills outside viewport DpRect(left=0.0.dp, top=0.0.dp, right=900.0.dp, bottom=360.0.dp)
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.ui.NowPlayingLayoutTest.assertFooterFits(NowPlayingLayoutTest.kt:101)
+	at com.example.androidmixtape.ui.NowPlayingLayoutTest.shortLandscapeKeepsTrackPreviewInsidePlayer(NowPlayingLayoutTest.kt:81)
+
+FAILURES!!!
+Tests run: 1,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1

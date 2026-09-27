@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.compose.setContent
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,12 +30,17 @@ import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeExclusionSet
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeHandwritingFontSettingsStore
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeSettingsStore
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeSpineSkinSettingsStore
+import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeMembershipStore
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeSymbolSettingsStore
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeTapeSkinSettingsStore
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeThemeSettingsStore
 import com.example.androidmixtape.viewmodel.SharedPreferencesMixtapeVisualPropertiesStore
 
 class MainActivity : ComponentActivity() {
+    // A launcher may merely bring the existing task forward, without onNewIntent.
+    // Distinguish that user return from rotation and explicit notification/deletion flows.
+    private var returningFromUserLeave = false
+    private var handledEntryIntent = false
     private val viewModel: MixtapeViewModel by viewModels {
         MixtapeViewModel.Factory(
             repository = MediaStoreAudioRepository(applicationContext),
@@ -50,6 +56,7 @@ class MainActivity : ComponentActivity() {
             themeSettingsStore = SharedPreferencesMixtapeThemeSettingsStore(applicationContext),
             exclusionSettingsStore = SharedPreferencesMixtapeExclusionSettingsStore(applicationContext),
             transportCuePlayer = AudioTrackTransportCuePlayer(),
+            membershipStore = SharedPreferencesMixtapeMembershipStore(applicationContext),
         )
     }
 
@@ -69,13 +76,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        returningFromUserLeave = savedInstanceState?.getBoolean("mixtape.returningFromUserLeave") ?: false
+        enableEdgeToEdge()
         AndroidAutoDiagnostics.logPhoneEnvironment(this, "main_activity_create")
         val permission = AudioPermissionPolicy.requiredRuntimePermission(Build.VERSION.SDK_INT)
         viewModel.onPermissionResult(
             permission == null || checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED,
         )
         viewModel.onDeleteTrackUserActionRequired = deleteConfirmationCallback
-        handleMediaNotificationIntent(intent)
+        handleMediaNotificationIntent(intent, launcherEntry = savedInstanceState == null)
 
         setContent {
             val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -102,8 +111,8 @@ class MainActivity : ComponentActivity() {
                     onMixTapeGroupClick = viewModel::selectMixTapeGroup,
                     onBackToMixTapes = viewModel::backToMixTapes,
                     onTogglePlayPause = viewModel::togglePlayPause,
-                    onPrevious = viewModel::previous,
-                    onNext = viewModel::next,
+                    onPrevious = viewModel::previousWithCue,
+                    onNext = viewModel::nextWithCue,
                     onStop = viewModel::stop,
                     onEject = viewModel::eject,
                     onSeekTo = viewModel::seekTo,
@@ -116,6 +125,7 @@ class MainActivity : ComponentActivity() {
                     onSongsPerMixTapeChange = viewModel::updateSongsPerMixTape,
                     onArtistGroupingChange = viewModel::updateArtistGrouping,
                     onHandwritingMessinessChange = viewModel::updateHandwritingMessiness,
+                    onHandwritingFontSizeChange = viewModel::updateHandwritingFontSize,
                     onEditMixtapeName = viewModel::editMixtapeName,
                     onRegenerateMixtapeName = viewModel::regenerateMixtapeName,
                     onAddFilenameExclusionPattern = viewModel::addFilenameExclusionPattern,
@@ -131,6 +141,8 @@ class MainActivity : ComponentActivity() {
                     onCaseThemeEnabledChange = viewModel::updateCaseThemeEnabled,
                     onSleeveThemeEnabledChange = viewModel::updateSleeveThemeEnabled,
                     onUpdateCurrentMixtapeCustomization = viewModel::updateCurrentMixtapeCustomization,
+                    onUpdateMixtapeCustomization = viewModel::updateMixtapeCustomization,
+                    onRandomizeMixtapePackaging = viewModel::randomizeMixtapePackaging,
                 )
             }
         }
@@ -142,10 +154,24 @@ class MainActivity : ComponentActivity() {
         handleMediaNotificationIntent(intent)
     }
 
-    private fun handleMediaNotificationIntent(intent: Intent?) {
+    private fun handleMediaNotificationIntent(intent: Intent?, launcherEntry: Boolean = true) {
         if (intent?.action == MixtapeMediaLibraryService.ACTION_OPEN_NOW_PLAYING) {
+            handledEntryIntent = true
             viewModel.openNowPlayingFromNotification()
+        } else if (launcherEntry && intent?.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) {
+            handledEntryIntent = true
+            viewModel.openFromLauncher()
         }
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        returningFromUserLeave = true
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("mixtape.returningFromUserLeave", returningFromUserLeave)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onResume() {
@@ -154,6 +180,9 @@ class MainActivity : ComponentActivity() {
         viewModel.onPermissionResult(
             permission == null || checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED,
         )
+        if (returningFromUserLeave && !handledEntryIntent) viewModel.openFromLauncher()
+        returningFromUserLeave = false
+        handledEntryIntent = false
     }
 
     override fun onDestroy() {
@@ -164,6 +193,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun launchDeleteConfirmation(intentSender: IntentSender) {
+        handledEntryIntent = true // Return to the current screen after Android's approval dialog.
         try {
             deleteTrackConfirmation.launch(IntentSenderRequest.Builder(intentSender).build())
         } catch (error: RuntimeException) {

@@ -1,0 +1,956 @@
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.playback.MediaAudioFocusTest:
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=transientInterruptionResumesButPermanentFocusLossStaysPaused
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+Error in transientInterruptionResumesButPermanentFocusLossStaysPaused(com.example.androidmixtape.playback.MediaAudioFocusTest):
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.transientInterruptionResumesButPermanentFocusLossStaysPaused(MediaAudioFocusTest.kt:81)
+
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=transientInterruptionResumesButPermanentFocusLossStaysPaused
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.transientInterruptionResumesButPermanentFocusLossStaysPaused(MediaAudioFocusTest.kt:81)
+
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=controllerCanStartPlaybackWhilePhoneActivityIsInBackground
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+Error in controllerCanStartPlaybackWhilePhoneActivityIsInBackground(com.example.androidmixtape.playback.MediaAudioFocusTest):
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.controllerCanStartPlaybackWhilePhoneActivityIsInBackground(MediaAudioFocusTest.kt:100)
+
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=controllerCanStartPlaybackWhilePhoneActivityIsInBackground
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.controllerCanStartPlaybackWhilePhoneActivityIsInBackground(MediaAudioFocusTest.kt:100)
+
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=3
+INSTRUMENTATION_STATUS: stream=
+Error in coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(com.example.androidmixtape.playback.MediaAudioFocusTest):
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(MediaAudioFocusTest.kt:73)
+
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.playback.MediaAudioFocusTest
+INSTRUMENTATION_STATUS: stack=java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(MediaAudioFocusTest.kt:73)
+
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 7.615
+There were 3 failures:
+1) transientInterruptionResumesButPermanentFocusLossStaysPaused(com.example.androidmixtape.playback.MediaAudioFocusTest)
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.transientInterruptionResumesButPermanentFocusLossStaysPaused(MediaAudioFocusTest.kt:81)
+2) controllerCanStartPlaybackWhilePhoneActivityIsInBackground(com.example.androidmixtape.playback.MediaAudioFocusTest)
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.controllerCanStartPlaybackWhilePhoneActivityIsInBackground(MediaAudioFocusTest.kt:100)
+3) coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(com.example.androidmixtape.playback.MediaAudioFocusTest)
+java.lang.AssertionError: No ExoPlayer audio-focus owner in current stack:
+ (last is top of stack):
+
+ Notify on duck: true
+
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 5
+   Current: 40000000 (default): 4
+   Devices: speaker
+- STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_ALARM:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 6
+   Devices: speaker
+- STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_BLUETOOTH_SCO:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 7
+   Devices: speaker
+- STREAM_SYSTEM_ENFORCED:
+   Muted: false
+   Min: 0
+   Max: 7
+   Current: 40000000 (default): 5
+   Devices: speaker
+- STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+- STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 11
+   Devices: speaker
+
+- mute affected streams = 0x2e
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- ringer mode affected streams = 0x1a6 (STREAM_SYSTEM,STREAM_RING,STREAM_NOTIFICATION,STREAM_SYSTEM_ENFORCED,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mVolumeController=VolumeController(android.os.BinderProxy@d5f373a,mVisible=false)
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_DISABLED
+  mSafeMediaVolumeIndex=100
+  mPendingVolumeCommand=null
+  mMusicActiveMs=0
+  mMcc=310
+  mCameraSoundForced=false
+  mHasVibrator=false
+  mControllerService={mUid=0,mComponent=null}
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=true,doNotDisturbWhenSilent=true,vibrateToSilentDebounce=400]
+
+Audio policies:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.playAndVerifyFocus(MediaAudioFocusTest.kt:116)
+	at com.example.androidmixtape.playback.MediaAudioFocusTest.coldPlaybackOwnsMediaFocusWithoutAnotherAudioSource(MediaAudioFocusTest.kt:73)
+
+FAILURES!!!
+Tests run: 3,  Failures: 3
+
+
+INSTRUMENTATION_CODE: -1

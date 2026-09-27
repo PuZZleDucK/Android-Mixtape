@@ -91,3 +91,17 @@ docs/evidence/live-counter/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/card-4919/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/card-4920/*.png filter=lfs diff=lfs merge=lfs -text
 docs/evidence/card-4921/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/spine-lettering/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/tape-shelf-layout/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/track-highlight-alignment/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/track-removal/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/audio-meter-scale/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/demo-ui-refinement/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/handwriting-font-size/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/landscape-overlap/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/nothing-landscape-spine/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/paper-edge-dice/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+docs/evidence/paper-edge-dice/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/settings-refresh/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/demo-ui-port/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/evidence/sleeve-ink/**/*.png filter=lfs diff=lfs merge=lfs -text

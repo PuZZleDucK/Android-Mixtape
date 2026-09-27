@@ -1,0 +1,88 @@
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+com.example.androidmixtape.ui.SleeveInkUiTest:
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SleeveInkUiTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+Error in editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged(com.example.androidmixtape.ui.SleeveInkUiTest):
+Selected-track accent must not change: arrays first differed at element [0]; expected:<-328966> but was:<-592145>
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:78)
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:28)
+	at org.junit.Assert.internalArrayEquals(Assert.java:534)
+	at org.junit.Assert.assertArrayEquals(Assert.java:418)
+	at com.example.androidmixtape.ui.SleeveInkUiTest.editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged(SleeveInkUiTest.kt:81)
+	... 52 trimmed
+Caused by: java.lang.AssertionError: expected:<-328966> but was:<-592145>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at org.junit.internal.ExactComparisonCriteria.assertElementsEqual(ExactComparisonCriteria.java:8)
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:76)
+	... 57 more
+
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SleeveInkUiTest
+INSTRUMENTATION_STATUS: stack=Selected-track accent must not change: arrays first differed at element [0]; expected:<-328966> but was:<-592145>
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:78)
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:28)
+	at org.junit.Assert.internalArrayEquals(Assert.java:534)
+	at org.junit.Assert.assertArrayEquals(Assert.java:418)
+	at com.example.androidmixtape.ui.SleeveInkUiTest.editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged(SleeveInkUiTest.kt:81)
+	... 52 trimmed
+Caused by: java.lang.AssertionError: expected:<-328966> but was:<-592145>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at org.junit.internal.ExactComparisonCriteria.assertElementsEqual(ExactComparisonCriteria.java:8)
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:76)
+	... 57 more
+
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=inkPreferencesPersistAndOldTapesKeepTheirOriginalColor
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SleeveInkUiTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=inkPreferencesPersistAndOldTapesKeepTheirOriginalColor
+INSTRUMENTATION_STATUS: class=com.example.androidmixtape.ui.SleeveInkUiTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 5.48
+There was 1 failure:
+1) editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged(com.example.androidmixtape.ui.SleeveInkUiTest)
+Selected-track accent must not change: arrays first differed at element [0]; expected:<-328966> but was:<-592145>
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:78)
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:28)
+	at org.junit.Assert.internalArrayEquals(Assert.java:534)
+	at org.junit.Assert.assertArrayEquals(Assert.java:418)
+	at com.example.androidmixtape.ui.SleeveInkUiTest.editorCyclesAndSavesInkWhileSelectedTrackAccentStaysUnchanged(SleeveInkUiTest.kt:81)
+	... 52 trimmed
+Caused by: java.lang.AssertionError: expected:<-328966> but was:<-592145>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at org.junit.internal.ExactComparisonCriteria.assertElementsEqual(ExactComparisonCriteria.java:8)
+	at org.junit.internal.ComparisonCriteria.arrayEquals(ComparisonCriteria.java:76)
+	... 57 more
+
+FAILURES!!!
+Tests run: 2,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1

@@ -17,23 +17,27 @@
 - For any Kanban-card work on this project, build and deploy the updated app to the Kunlun Android emulator before reporting completion, then capture screenshots of the updated UI/evidence from the emulator. The Kunlun emulator is usually `emulator-5554`; because it is `x86_64,x86`, build an emulator-compatible APK when the default APK is `arm64-v8a` only.
 - Kunlun also has the visible Android Automotive emulator `android-auto-mixtape`, normally running as `emulator-5556` on API 35 with the `x86_64` ABI. For Android Auto/car UI changes, build and install an `x86_64`-compatible modern APK on this emulator, review the affected UI there, and capture a screenshot that clearly highlights the update in the car environment before reporting completion. Where behavior specifically depends on Android Auto projection rather than Android Automotive OS, also verify with the Desktop Head Unit or a connected head unit when available and document any host limitation.
 - Keep `README.md` user-facing. Put agent workflows, host details, test procedures, device serials, and deployment commands in this file instead.
+- For bundled mixtape-name revisions, check the whole asset for repeated templates, broken grammar, and sentences cut down to meet the four-word limit. A passing length/uniqueness test and two emulator samples do not establish that the full list is entertaining. Read every title in batches before handoff.
 
 ## Build and test
 
-The project uses Java 21 and the Android SDK. The main local verification commands are:
+The project uses Java 21 and the Android SDK. Modern is the only flavor, with application ID `org.puzzleduck.mixtape` and minimum API 24. Kotlin's internal namespace remains `com.example.androidmixtape`; explicit launch components use `org.puzzleduck.mixtape/com.example.androidmixtape.MainActivity`. Historical evidence and card plans may mention the retired legacy flavor or old application ID.
+
+The main local verification commands are:
 
 ```bash
-./gradlew testModernDebugUnitTest testLegacyDebugUnitTest
-./gradlew assembleModernDebug assembleLegacyDebug
-./gradlew lintModernDebug lintLegacyDebug
+./gradlew testModernDebugUnitTest
+./gradlew assembleModernDebug
+./gradlew lintModernDebug
 ```
 
 Connected tests must run on the appropriate Kunlun emulator after deploying through `kunlun-sync.sh`:
 
 ```bash
 ./gradlew connectedModernDebugAndroidTest
-./gradlew connectedLegacyDebugAndroidTest
 ```
+
+Reuse a recorded successful test run when its covered source and test bytes are unchanged. Review notes, screenshots and LFS receipts do not invalidate that result or require another APK build/deployment. If a unit task genuinely needs fresh execution, use `./gradlew testModernDebugUnitTest --rerun --console=plain`, which reruns that task while retaining up-to-date compilation. Avoid `--rerun-tasks` for this purpose: card 4835's Review forced the whole dependency chain and hit a 200-second timeout, while the task-only rerun completed in 65 seconds with all 267 tests passing. That interrupted build is not a product failure or a reason to move the card backward.
 
 After card-owned Artigas builds/tests finish, check that no Gradle client or other Android build is still active. If the task's Gradle/Kotlin daemons are then only idle keepalive processes, run `./gradlew --stop` and verify those daemons exited; never stop them while another build is active.
 
@@ -42,9 +46,7 @@ To refresh distributable APKs after a successful build:
 ```bash
 mkdir -p dist
 cp app/build/outputs/apk/modern/debug/app-modern-debug.apk dist/android-mixtape-v0.1.0-modern-debug.apk
-cp app/build/outputs/apk/legacy/debug/app-legacy-debug.apk dist/android-mixtape-v0.1.0-legacy-debug.apk
 sha256sum dist/android-mixtape-v0.1.0-modern-debug.apk > dist/android-mixtape-v0.1.0-modern-debug.apk.sha256
-sha256sum dist/android-mixtape-v0.1.0-legacy-debug.apk > dist/android-mixtape-v0.1.0-legacy-debug.apk.sha256
 ```
 
 For manual emulator smoke testing, seed local audio on the emulator, grant the relevant media permission, and verify scanning, playback, rotation continuity, seeking, transport controls, permission handling, and empty-library behavior. Use `kunlun-sync.sh` rather than treating any copied Kunlun directory as project source.

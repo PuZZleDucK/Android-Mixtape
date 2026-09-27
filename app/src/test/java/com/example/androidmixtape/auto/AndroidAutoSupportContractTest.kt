@@ -11,31 +11,15 @@ class AndroidAutoSupportContractTest {
     private val buildScript = File(moduleDir, "build.gradle.kts").readText()
 
     @Test
-    fun modernFlavorDeclaresCarsAppLibraryAndMediaSessionWithoutLeakingThemToLegacy() {
+    fun modernAppDeclaresCarsAppLibraryAndMediaSession() {
         assertTrue(
             "The custom car UI must use the Android for Cars App Library in the modern flavor.",
             buildScript.contains("modernImplementation(\"androidx.car.app:app"),
-        )
-        assertFalse(
-            "Do not add the Cars App Library to shared implementation; legacy API 19 must not receive car-template runtime dependencies.",
-            Regex("(?m)^\\s*implementation\\(\\\"androidx\\.car\\.app:app").containsMatchIn(buildScript),
-        )
-        assertFalse(
-            "Do not add the Cars App Library to legacyImplementation; custom car UI support is modern-flavor only.",
-            buildScript.contains("legacyImplementation(\"androidx.car.app:app"),
         )
 
         assertTrue(
             "Android Auto/AAOS media plumbing still requires a Media3 session/library service dependency in the modern flavor.",
             buildScript.contains("modernImplementation(\"androidx.media3:media3-session"),
-        )
-        assertFalse(
-            "Do not add media3-session to shared implementation; legacy API 19 must not receive Media3 session runtime dependencies.",
-            Regex("(?m)^\\s*implementation\\(\\\"androidx\\.media3:media3-session").containsMatchIn(buildScript),
-        )
-        assertFalse(
-            "Do not add media3-session to legacyImplementation; Android Auto support is modern-flavor only.",
-            buildScript.contains("legacyImplementation(\"androidx.media3:media3-session"),
         )
     }
 
@@ -213,7 +197,7 @@ class AndroidAutoSupportContractTest {
     private fun modernManifestText(): String {
         val manifest = File(moduleDir, "src/modern/AndroidManifest.xml")
         assertTrue(
-            "Add app/src/modern/AndroidManifest.xml for Android Auto metadata and service declarations without changing legacy.",
+            "Add app/src/modern/AndroidManifest.xml for Android Auto metadata and service declarations.",
             manifest.isFile,
         )
         return manifest.takeIf { it.isFile }?.readText().orEmpty()

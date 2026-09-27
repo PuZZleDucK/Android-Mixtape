@@ -56,6 +56,10 @@ fun JitteredHandwritingText(
     verticalInkBounds: HandwritingInkBounds? = null,
     fixedRowHeight: androidx.compose.ui.unit.Dp? = null,
     fitSpineTitle: Boolean = false,
+    spineTextAlign: TextAlign = TextAlign.Center,
+    spineInkHeightFraction: Float? = null,
+    spineAlignmentInsetLeft: androidx.compose.ui.unit.Dp = 0.dp,
+    spineAlignmentInsetRight: androidx.compose.ui.unit.Dp = 0.dp,
     tokenization: HandwritingJitterTokenization = HandwritingJitterTokenization.Character,
     strength: HandwritingJitterStrength = HandwritingJitterStrength(
         maxDxEm = 0.05f,
@@ -67,7 +71,8 @@ fun JitteredHandwritingText(
     val textMeasurer = rememberTextMeasurer()
     val density = LocalDensity.current
     val messiness = LocalHandwritingMessiness.current
-    val effectiveFontSize = fontSize * (LocalHandwritingFontSize.current.scale * fontOpticalScale)
+    val sizeScale = LocalHandwritingFontSize.current.scale
+    val effectiveFontSize = fontSize * (sizeScale * fontOpticalScale)
     val lineHeightDp = with(density) {
         max(
             max(effectiveFontSize.toPx(), 12.sp.toPx()) * 1.45f * lineHeightScale.coerceAtLeast(0.1f),
@@ -143,7 +148,8 @@ fun JitteredHandwritingText(
         Box(modifier.fillMaxHeight().semantics { this.text = AnnotatedString(text) }.drawWithCache {
             val raster = rasterizeSpineTitle(
                 measuredTokens, samples, effectiveFontSize.toPx(), size.width.toInt(), size.height.toInt(),
-                this, layoutDirection,
+                this, layoutDirection, spineTextAlign, spineInkHeightFraction?.times(sizeScale),
+                spineAlignmentInsetLeft.roundToPx(), spineAlignmentInsetRight.roundToPx(),
             )
             onDrawBehind {
                 raster?.let {

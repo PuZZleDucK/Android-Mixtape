@@ -1,6 +1,9 @@
 package com.example.androidmixtape.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.foundation.ScrollState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -21,8 +24,14 @@ import androidx.compose.foundation.gestures.draggable2D
 import androidx.compose.foundation.gestures.rememberDraggable2DState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -50,6 +59,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -60,16 +70,18 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -120,6 +132,11 @@ import com.example.androidmixtape.playback.mixtapeCounterValue
 import com.example.androidmixtape.playback.mixtapePlaybackProgress
 import com.example.androidmixtape.viewmodel.ArtistGrouping
 import com.example.androidmixtape.viewmodel.HandwritingMessiness
+import com.example.androidmixtape.viewmodel.SpineTextAlignment
+import com.example.androidmixtape.viewmodel.SpineSymbolPlacement
+import com.example.androidmixtape.viewmodel.HandwritingFontSize
+import com.example.androidmixtape.viewmodel.SleeveInk
+import com.example.androidmixtape.viewmodel.inkColor
 import com.example.androidmixtape.viewmodel.CaseTheme
 import com.example.androidmixtape.viewmodel.CassetteTheme
 import com.example.androidmixtape.viewmodel.DeckTheme
@@ -174,7 +191,7 @@ private enum class NowPlayingBodyMode {
 @Composable
 fun AndroidMixtapeTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = lightColorScheme(),
+        colorScheme = if (isSystemInDarkTheme()) darkColorScheme(primary = Color(0xFFBFD6A4)) else lightColorScheme(primary = Color(0xFF466B47)),
         content = content,
     )
 }
@@ -216,6 +233,7 @@ fun MixtapeApp(
     onSongsPerMixTapeChange: (Int) -> Unit = {},
     onArtistGroupingChange: (ArtistGrouping) -> Unit = {},
     onHandwritingMessinessChange: (HandwritingMessiness) -> Unit = {},
+    onHandwritingFontSizeChange: (HandwritingFontSize) -> Unit = {},
     onEditMixtapeName: (String, String) -> Unit = { _, _ -> },
     onRegenerateMixtapeName: (String) -> Unit = {},
     onAddFilenameExclusionPattern: (String) -> Unit = {},
@@ -231,15 +249,44 @@ fun MixtapeApp(
     onCaseThemeEnabledChange: (CaseTheme, Boolean) -> Unit = { _, _ -> },
     onSleeveThemeEnabledChange: (SleeveTheme, Boolean) -> Unit = { _, _ -> },
     onUpdateCurrentMixtapeCustomization: (MixtapeCustomization) -> Unit = {},
+    onUpdateMixtapeCustomization: (String, MixtapeCustomization) -> Unit = { key, draft ->
+        if (key == state.currentMixtapeStableKey) onUpdateCurrentMixtapeCustomization(draft)
+    },
+    onRandomizeMixtapePackaging: (String, MixtapeCustomization) -> MixtapeCustomization = { _, draft -> draft },
 ) {
     var bodyMode by rememberSaveable { mutableStateOf(NowPlayingBodyMode.Tracks) }
+    var customizingTapeKey by rememberSaveable { mutableStateOf<String?>(null) }
+    fun customizeTape(index: Int) { customizingTapeKey = state.mixTapeGroups.getOrNull(index)?.stableKey }
+    state.mixTapeGroups.firstOrNull { it.stableKey == customizingTapeKey }?.let { group ->
+        key(group.stableKey) {
+            CompositionLocalProvider(
+                LocalHandwritingMessiness provides state.mixtapeSettings.handwritingMessiness,
+                LocalHandwritingFontSize provides state.mixtapeSettings.handwritingFontSize,
+            ) {
+                MixtapeCustomizationDialog(
+                    name = group.name, properties = group.visualProperties, settings = state.mixtapeThemeSettings,
+                    enabledEmbellishments = state.enabledMixtapeEmbellishments,
+                    enabledFonts = state.enabledMixtapeHandwritingFonts,
+                    onDismiss = { customizingTapeKey = null },
+                    onSettings = { customizingTapeKey = null; onShowSettings() },
+                    onRandomize = { onRandomizeMixtapePackaging(group.stableKey, it) },
+                    onSave = { onUpdateMixtapeCustomization(group.stableKey, it); customizingTapeKey = null },
+                )
+            }
+        }
+    }
     val mixTapeListState = rememberLazyListState()
     val mixTapeGridState = rememberLazyGridState()
+    var settingsCategory by rememberSaveable { mutableStateOf(0) }
+    val settingsScrollStates = listOf(rememberScrollState(), rememberScrollState(), rememberScrollState())
     if (state.status == LibraryStatus.Ready && state.screen !in setOf(MixtapeScreen.MixTapes, MixtapeScreen.NowPlaying, MixtapeScreen.TrackInfo)) {
         BackHandler { if (state.screen == MixtapeScreen.Settings) onExitSettings() else onShowSettings() }
     }
-    CompositionLocalProvider(LocalHandwritingMessiness provides state.mixtapeSettings.handwritingMessiness) {
-        Scaffold(containerColor = state.mixtapeThemeSettings.deckTheme.backgroundColor()) { padding ->
+    CompositionLocalProvider(
+        LocalHandwritingMessiness provides state.mixtapeSettings.handwritingMessiness,
+        LocalHandwritingFontSize provides state.mixtapeSettings.handwritingFontSize,
+    ) {
+        Scaffold(contentWindowInsets = WindowInsets.safeDrawing, containerColor = if (isSystemInDarkTheme()) Color(0xFF151B1A) else Color(0xFFEEF0E7)) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -253,13 +300,17 @@ fun MixtapeApp(
                 LibraryStatus.Empty -> EmptyLibrary(onRefresh)
                 LibraryStatus.Error -> ErrorState(message = state.message, onRefresh = onRefresh)
                 LibraryStatus.Ready -> when (state.screen) {
-                    MixtapeScreen.MixTapes -> MixTapeLibrary(
+                    MixtapeScreen.MixTapes -> DemoTapeLibrary(
                         groups = state.mixTapeGroups,
-                        mixTapeListState = mixTapeListState,
-                        mixTapeGridState = mixTapeGridState,
-                        onShowSettings = onShowSettings,
-                        onMixTapeGroupClick = onMixTapeGroupClick,
-                        modifier = Modifier.weight(1f),
+                        currentIndex = state.currentMixtapeIndex,
+                        listState = mixTapeListState,
+                        gridState = mixTapeGridState,
+                        onSelect = { index ->
+                            bodyMode = NowPlayingBodyMode.Tracks
+                            onMixTapeGroupClick(index)
+                        },
+                        modifier = Modifier.weight(1f).fillMaxWidth(),
+                        onCustomizeTape = ::customizeTape,
                     )
                     MixtapeScreen.NowPlaying -> NowPlaying(
                         state = state,
@@ -278,7 +329,7 @@ fun MixtapeApp(
                         onRemoveTrackFromMixtape = onRemoveTrackFromMixtape,
                         onShowTrackInfo = onShowTrackInfo,
                         onTrackDoubleClick = onTrackDoubleClick,
-                        onUpdateCurrentMixtapeCustomization = onUpdateCurrentMixtapeCustomization,
+                        onCustomizeTape = ::customizeTape,
                         modifier = Modifier.weight(1f),
                     )
                     MixtapeScreen.TrackInfo -> TrackInfoScreen(
@@ -292,6 +343,11 @@ fun MixtapeApp(
                         songsPerMixTape = state.mixtapeSettings.songsPerMixTape,
                         artistGrouping = state.mixtapeSettings.artistGrouping,
                         handwritingMessiness = state.mixtapeSettings.handwritingMessiness,
+                        handwritingFontSize = state.mixtapeSettings.handwritingFontSize,
+                        themeSettings = state.mixtapeThemeSettings,
+                        selectedCategory = settingsCategory,
+                        onCategoryChange = { settingsCategory = it },
+                        scrollState = settingsScrollStates[settingsCategory],
                         onBackToMixTapes = onExitSettings,
                         onShowHelp = onShowHelp,
                         onShowMixtapeNames = onShowMixtapeNames,
@@ -310,6 +366,7 @@ fun MixtapeApp(
                         onSongsPerMixTapeChange = onSongsPerMixTapeChange,
                         onArtistGroupingChange = onArtistGroupingChange,
                         onHandwritingMessinessChange = onHandwritingMessinessChange,
+                        onHandwritingFontSizeChange = onHandwritingFontSizeChange,
                         modifier = Modifier.weight(1f),
                     )
                     MixtapeScreen.Help -> HelpScreen(
@@ -343,6 +400,8 @@ fun MixtapeApp(
                     )
                     MixtapeScreen.HandwritingFontSettings -> HandwritingFontSettingsScreen(
                         enabledHandwritingFonts = state.enabledMixtapeHandwritingFonts,
+                        handwritingFontSize = state.mixtapeSettings.handwritingFontSize,
+                        onHandwritingFontSizeChange = onHandwritingFontSizeChange,
                         onBackToSettings = onShowSettings,
                         onMixtapeHandwritingFontEnabledChange = onMixtapeHandwritingFontEnabledChange,
                         modifier = Modifier.weight(1f),
@@ -565,6 +624,11 @@ private fun SettingsScreen(
     songsPerMixTape: Int,
     artistGrouping: ArtistGrouping,
     handwritingMessiness: HandwritingMessiness,
+    handwritingFontSize: HandwritingFontSize,
+    themeSettings: MixtapeThemeSettings,
+    selectedCategory: Int,
+    onCategoryChange: (Int) -> Unit,
+    scrollState: ScrollState,
     onBackToMixTapes: () -> Unit,
     onShowHelp: () -> Unit,
     onShowMixtapeNames: () -> Unit,
@@ -583,118 +647,117 @@ private fun SettingsScreen(
     onSongsPerMixTapeChange: (Int) -> Unit,
     onArtistGroupingChange: (ArtistGrouping) -> Unit,
     onHandwritingMessinessChange: (HandwritingMessiness) -> Unit,
+    onHandwritingFontSizeChange: (HandwritingFontSize) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+    var confirmReset by rememberSaveable { mutableStateOf(false) }
+    SettingsPage(
+        title = "Settings",
+        subtitle = "$mixTapeCount mixtapes · Changes save automatically",
+        onBack = onBackToMixTapes,
+        backLabel = "Back",
+        modifier = modifier,
+        controls = {
+            TabRow(selectedTabIndex = selectedCategory, containerColor = Color.Transparent) {
+                listOf("Mixtapes", "Appearance", "Library").forEachIndexed { index, title ->
+                    Tab(selected = selectedCategory == index, onClick = { onCategoryChange(index) }, text = { Text(title) })
+                }
+            }
+        },
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(
-                onClick = onBackToMixTapes,
-                modifier = Modifier.semantics { contentDescription = "Back" },
-            ) { Text("Back") }
-        }
-        Text("Settings", style = MaterialTheme.typography.titleLarge)
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Help", style = MaterialTheme.typography.titleMedium)
-                Text("Setup instructions and troubleshooting for Android Auto.")
-                Button(onClick = onShowHelp) { Text("Android Auto help") }
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Mixtape names", style = MaterialTheme.typography.titleMedium)
-                Text("Review names, edit them, or pick another random name from the bundled list.")
-                Button(onClick = onShowMixtapeNames) { Text("Mixtape names") }
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Mixtape symbol settings", style = MaterialTheme.typography.titleMedium)
-                Text("Choose which hand-drawn mixtape images can be used on cassettes.")
-                Button(onClick = onShowMixtapeSymbolSettings) { Text("Mixtape symbol settings") }
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Component themes", style = MaterialTheme.typography.titleMedium)
-                Text("Choose the global deck and which components can be assigned to new mixtapes.")
-                Button(onClick = onShowDeckThemeSettings) { Text("Deck theme") }
-                Button(onClick = onShowCassetteThemeSettings) { Text("Cassette themes") }
-                Button(onClick = onShowScrewThemeSettings) { Text("Screw themes") }
-                Button(onClick = onShowStickerThemeSettings) { Text("Sticker themes") }
-                Button(onClick = onShowCaseThemeSettings) { Text("Case themes") }
-                Button(onClick = onShowSleeveThemeSettings) { Text("Sleeve themes") }
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Handwriting font settings", style = MaterialTheme.typography.titleMedium)
-                Text("Preview and choose which handwritten label fonts can be assigned to mixtapes.")
-                Button(onClick = onShowHandwritingFontSettings) { Text("Handwriting font settings") }
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Exclusion settings", style = MaterialTheme.typography.titleMedium)
-                Text("Hide files from mixtapes when their filenames match your patterns.")
-                Button(onClick = onShowExclusionSettings) { Text("Exclusion settings") }
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("Messiness", style = MaterialTheme.typography.titleMedium)
-                Text("Choose how strongly handwritten labels are shifted and rotated.")
-                SongCountOption(label = "High", selected = handwritingMessiness == HandwritingMessiness.High, onClick = { onHandwritingMessinessChange(HandwritingMessiness.High) })
-                SongCountOption(label = "Low", selected = handwritingMessiness == HandwritingMessiness.Low, onClick = { onHandwritingMessinessChange(HandwritingMessiness.Low) })
-                SongCountOption(label = "Off", selected = handwritingMessiness == HandwritingMessiness.Off, onClick = { onHandwritingMessinessChange(HandwritingMessiness.Off) })
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Songs per mix tape", style = MaterialTheme.typography.titleMedium)
-                Text("$songsPerMixTape songs per mix tape")
-                MIXTAPE_TRACK_COUNT_OPTIONS.forEach { option ->
-                    SongCountOption(
-                        label = mixtapeTrackCountLabel(option),
-                        selected = songsPerMixTape == option,
-                        onClick = { onSongsPerMixTapeChange(option) },
+        key(selectedCategory) {
+            Column(
+                Modifier.fillMaxSize().verticalScroll(scrollState).padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                when (selectedCategory) {
+                    0 -> SettingsTwoColumns(
+                        first = {
+                            SettingsSection("Tape length", "Changing tape length or artist grouping rebuilds your mixtapes.") {
+                                Text("Songs per mix tape", style = MaterialTheme.typography.labelLarge)
+                                MIXTAPE_TRACK_COUNT_OPTIONS.chunked(2).forEach { options ->
+                                    Row(Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        options.forEach { option ->
+                                            SettingsChoice(mixtapeTrackCountLabel(option), songsPerMixTape == option,
+                                                { onSongsPerMixTapeChange(option) }, Modifier.weight(1f).fillMaxHeight())
+                                        }
+                                    }
+                                }
+                            }
+                            SettingsSection("Names") {
+                                SettingsLink("Mixtape names", "Find, rename or randomize a tape name", onShowMixtapeNames)
+                            }
+                        },
+                        second = {
+                            SettingsSection("Artist grouping", "Choose how an artist's songs are spread across your tapes.") {
+                                ArtistGroupingOption("No artist grouping", artistGrouping == ArtistGrouping.NoGrouping,
+                                    { onArtistGroupingChange(ArtistGrouping.NoGrouping) })
+                                ArtistGroupingOption("Keep artist together", artistGrouping == ArtistGrouping.KeepArtistTogether,
+                                    { onArtistGroupingChange(ArtistGrouping.KeepArtistTogether) })
+                                ArtistGroupingOption("Artist triplets on different tapes", artistGrouping == ArtistGrouping.ArtistTripletsAcrossTapes,
+                                    { onArtistGroupingChange(ArtistGrouping.ArtistTripletsAcrossTapes) })
+                            }
+                        },
+                    )
+                    1 -> SettingsTwoColumns(
+                        first = {
+                            SettingsSection("Player & materials") {
+                                SettingsLink("Deck theme", themeSettings.deckTheme.readableName(), onShowDeckThemeSettings)
+                                SettingsLink("Cassette themes", "${themeSettings.enabledCassetteThemes.size} enabled", onShowCassetteThemeSettings)
+                                SettingsLink("Screw themes", "${themeSettings.enabledScrewThemes.size} enabled", onShowScrewThemeSettings)
+                                SettingsLink("Sticker themes", "${themeSettings.enabledStickerThemes.size} enabled", onShowStickerThemeSettings)
+                                SettingsLink("Case themes", "${themeSettings.enabledCaseThemes.size} enabled", onShowCaseThemeSettings)
+                                SettingsLink("Sleeve themes", "${themeSettings.enabledSleeveThemes.size} linked back + spine designs", onShowSleeveThemeSettings)
+                            }
+                        },
+                        second = {
+                            SettingsSection("Labels & handwriting") {
+                                SettingsLink("Handwriting fonts", "Preview lettering on a spine and track list", onShowHandwritingFontSettings)
+                                SettingsLink("Mixtape symbols", "Choose the hand-drawn marks on your tapes", onShowMixtapeSymbolSettings)
+                            }
+                            SettingsSection("Handwriting feel", "Adjust the size, shift and rotation of handwritten labels.") {
+                                HandwritingFontSizeChoices(handwritingFontSize, onHandwritingFontSizeChange)
+                                Text("Messiness", style = MaterialTheme.typography.labelLarge)
+                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    SettingsChoice(label = "High", selected = handwritingMessiness == HandwritingMessiness.High,
+                                        onClick = { onHandwritingMessinessChange(HandwritingMessiness.High) }, modifier = Modifier.weight(1f))
+                                    SettingsChoice(label = "Low", selected = handwritingMessiness == HandwritingMessiness.Low,
+                                        onClick = { onHandwritingMessinessChange(HandwritingMessiness.Low) }, modifier = Modifier.weight(1f))
+                                    SettingsChoice(label = "Off", selected = handwritingMessiness == HandwritingMessiness.Off,
+                                        onClick = { onHandwritingMessinessChange(HandwritingMessiness.Off) }, modifier = Modifier.weight(1f))
+                                }
+                                JitteredHandwritingText("Night drive", 135, modifier = Modifier.fillMaxWidth(),
+                                    fontFamily = MixtapeHandwritingFont.Kalam.cassetteHandwritingFontFamily(),
+                                    fontSize = 28.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                            }
+                        },
+                    )
+                    else -> SettingsTwoColumns(
+                        first = {
+                            SettingsSection("Your library") {
+                                SettingsLink("Filename exclusions", "Hide matching files without deleting your audio", onShowExclusionSettings)
+                            }
+                            SettingsSection("Help") {
+                                SettingsLink("Android Auto help", "Setup steps and troubleshooting", onShowHelp)
+                            }
+                        },
+                        second = {
+                            SettingsSection("Start over", "Recreate all mixtapes with a new random song order and names. Saved tape edits will be replaced; your audio files stay on the device.") {
+                                OutlinedButton(onClick = { confirmReset = true }, enabled = mixTapeCount > 0) { Text("Reset all mixtapes") }
+                            }
+                        },
                     )
                 }
             }
         }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("Artist grouping", style = MaterialTheme.typography.titleMedium)
-                ArtistGroupingOption(
-                    label = "No artist grouping",
-                    selected = artistGrouping == ArtistGrouping.NoGrouping,
-                    onClick = { onArtistGroupingChange(ArtistGrouping.NoGrouping) },
-                )
-                ArtistGroupingOption(
-                    label = "Keep artist together",
-                    selected = artistGrouping == ArtistGrouping.KeepArtistTogether,
-                    onClick = { onArtistGroupingChange(ArtistGrouping.KeepArtistTogether) },
-                )
-                ArtistGroupingOption(
-                    label = "Artist triplets on different tapes",
-                    selected = artistGrouping == ArtistGrouping.ArtistTripletsAcrossTapes,
-                    onClick = { onArtistGroupingChange(ArtistGrouping.ArtistTripletsAcrossTapes) },
-                )
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Reset", style = MaterialTheme.typography.titleMedium)
-                Text("Recreate every mix tape from your current library with a new random song order.")
-                Button(onClick = onResetAllMixTapes, enabled = mixTapeCount > 0) {
-                    Text("Reset all mixtapes")
-                }
-            }
+        if (confirmReset) {
+            AlertDialog(
+                onDismissRequest = { confirmReset = false },
+                title = { Text("Reset all mixtapes?") },
+                text = { Text("This replaces your tape memberships and names. It does not delete your music files.") },
+                confirmButton = { TextButton(onClick = { confirmReset = false; onResetAllMixTapes() }) { Text("Reset mixtapes") } },
+                dismissButton = { TextButton(onClick = { confirmReset = false }) { Text("Cancel") } },
+            )
         }
     }
 }
@@ -706,32 +769,11 @@ private fun DeckThemeSettingsScreen(
     onSelect: (DeckTheme) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        TextButton(onClick = onBack) { Text("Settings") }
-        Text("Deck theme", style = MaterialTheme.typography.titleLarge)
-        DeckTheme.entries.forEach { theme ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onSelect(theme) },
-            ) {
-                Row(
-                    modifier = Modifier.padding(10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    DeckComponentPreview(
-                        deckTheme = theme,
-                        modifier = Modifier
-                            .width(112.dp)
-                            .height(64.dp),
-                    )
-                    RadioButton(selected = selected == theme, onClick = { onSelect(theme) })
-                    Text(theme.readableName(), modifier = Modifier.weight(1f))
-                }
+    SettingsPage("Deck theme", "Choose one player. Your selection applies immediately.", onBack, modifier) {
+        SettingsOptionGrid(DeckTheme.entries) { theme ->
+            SettingsPreviewCard(theme.readableName(), selected == theme, enabled = true,
+                onSelect = { onSelect(theme) }, singleChoice = true) {
+                DeckComponentPreview(deckTheme = theme, modifier = Modifier.width(224.dp).height(128.dp))
             }
         }
     }
@@ -748,39 +790,13 @@ private fun <T> ThemeToggleSettingsScreen(
     onToggle: (T, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        TextButton(onClick = onBack) { Text("Settings") }
-        Text(title, style = MaterialTheme.typography.titleLarge)
-        Text("Enabled options are used for newly created mixtapes. Existing tapes stay unchanged.")
-        options.forEach { option ->
+    SettingsPage(title, "${enabled.size} of ${options.size} enabled · New mixtapes use these options", onBack, modifier) {
+        SettingsOptionGrid(options) { option ->
             val checked = option in enabled
             val canToggle = !checked || enabled.size > 1
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(enabled = canToggle) { onToggle(option, !checked) },
-            ) {
-                Row(
-                    modifier = Modifier.padding(10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    preview(
-                        option,
-                        Modifier
-                            .width(112.dp)
-                            .height(64.dp),
-                    )
-                    Checkbox(
-                        checked = checked,
-                        onCheckedChange = { onToggle(option, it) },
-                        enabled = canToggle,
-                    )
-                    Text(label(option), modifier = Modifier.weight(1f))
-                }
+            SettingsPreviewCard(label(option), checked, enabled = canToggle,
+                onSelect = { onToggle(option, !checked) }) {
+                preview(option, Modifier.width(168.dp).height(96.dp))
             }
         }
     }
@@ -791,57 +807,11 @@ private fun DeckComponentPreview(
     deckTheme: DeckTheme,
     modifier: Modifier = Modifier,
 ) {
-    val palette = deckTheme.deckPalette()
-    BoxWithConstraints(modifier = modifier.semantics { contentDescription = "${deckTheme.readableName()} deck preview" }) {
-    Canvas(modifier = Modifier.matchParentSize()) {
-        val radius = CornerRadius(8.dp.toPx(), 8.dp.toPx())
-        drawRoundRect(palette.body, size = size, cornerRadius = radius)
-        drawRoundRect(
-            palette.panel,
-            topLeft = Offset(size.width * 0.06f, size.height * 0.10f),
-            size = Size(size.width * 0.88f, size.height * 0.78f),
-            cornerRadius = CornerRadius(6.dp.toPx(), 6.dp.toPx()),
-        )
-        drawRoundRect(
-            palette.well,
-            topLeft = Offset(size.width * 0.12f, size.height * 0.18f),
-            size = Size(size.width * 0.56f, size.height * 0.43f),
-            cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()),
-        )
-        drawRoundRect(
-            palette.wellFrame,
-            topLeft = Offset(size.width * 0.12f, size.height * 0.18f),
-            size = Size(size.width * 0.56f, size.height * 0.43f),
-            cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()),
-            style = Stroke(width = 1.5.dp.toPx()),
-        )
-        repeat(4) { index ->
-            drawRoundRect(
-                if (index == 1) palette.accent else palette.button,
-                topLeft = Offset(size.width * (0.13f + index * 0.14f), size.height * 0.69f),
-                size = Size(size.width * 0.11f, size.height * 0.12f),
-                cornerRadius = CornerRadius(2.dp.toPx(), 2.dp.toPx()),
-            )
-        }
-        drawRoundRect(
-            palette.counterFace,
-            topLeft = Offset(size.width * 0.73f, size.height * 0.23f),
-            size = Size(size.width * 0.17f, size.height * 0.22f),
-            cornerRadius = CornerRadius(2.dp.toPx(), 2.dp.toPx()),
-        )
-        repeat(2) { index ->
-            drawRect(
-                palette.accent,
-                topLeft = Offset(size.width * (0.75f + index * 0.09f), size.height * 0.55f),
-                size = Size(size.width * 0.035f, size.height * (0.16f + index * 0.08f)),
-            )
-        }
-    }
-    Box(Modifier.offset(x = maxWidth * .73f, y = maxHeight * .23f)
-        .size(maxWidth * .17f, maxHeight * .22f), contentAlignment = Alignment.Center) {
-        CounterWheels(10, false, 0L, palette.counterInk,
-            modifier = Modifier.graphicsLayer { scaleX = .4f; scaleY = .4f }, deckTheme = deckTheme)
-    }
+    BoxWithConstraints(modifier, contentAlignment = Alignment.Center) {
+        val width = minOf(maxWidth, maxHeight * demoDeckGeometry(deckTheme).aspectRatio)
+        DemoDeck(deckTheme, "Slow Sunday", MixtapeVisualProperties(cassetteTheme = CassetteTheme.SmokeC90,
+            stickerTheme = StickerTheme.MagneticStudio), progress = .36f, counter = 128,
+            preview = true, modifier = Modifier.width(width))
     }
 }
 
@@ -852,90 +822,38 @@ private fun CassetteComponentPreview(
     stickerTheme: StickerTheme = StickerTheme.None,
     modifier: Modifier = Modifier,
 ) {
-    val palette = cassetteTheme.palette()
-    val screw = if (screwTheme == ScrewTheme.Light) Color(0xFFD7DCE2) else Color(0xFF24282F)
-    val screwSlot = if (screwTheme == ScrewTheme.Light) Color(0xFF343A43) else Color(0xFFC8D0DB)
-    Canvas(modifier = modifier.semantics { contentDescription = "Cassette component preview" }) {
-        val shell = Size(size.width, size.height)
-        drawRoundRect(palette.shell, size = shell, cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()))
-        if (stickerTheme != StickerTheme.None) drawCassetteSticker(stickerTheme, palette, shell)
-        drawRoundRect(
-            palette.reelWell,
-            topLeft = Offset(size.width * 0.19f, size.height * 0.29f),
-            size = Size(size.width * 0.62f, size.height * 0.38f),
-            cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()),
-        )
-        listOf(0.31f, 0.69f).forEach { xFraction ->
-            val center = Offset(size.width * xFraction, size.height * 0.48f)
-            drawCircle(palette.reel, size.height * 0.18f, center)
-            drawCircle(palette.tapePath, size.height * 0.075f, center)
-            drawCircle(palette.accentSecondary, size.height * 0.18f, center, style = Stroke(width = 1.dp.toPx()))
-        }
-        listOf(Offset(0.08f, 0.14f), Offset(0.92f, 0.14f), Offset(0.08f, 0.86f), Offset(0.92f, 0.86f)).forEach { point ->
-            val center = Offset(size.width * point.x, size.height * point.y)
-            drawCircle(screw, 3.5.dp.toPx(), center)
-            drawLine(screwSlot, center - Offset(2.dp.toPx(), 0f), center + Offset(2.dp.toPx(), 0f), 1.dp.toPx())
-        }
-        drawRoundRect(
-            palette.accentSecondary.copy(alpha = 0.72f),
-            size = shell,
-            cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx()),
-            style = Stroke(width = 1.5.dp.toPx()),
-        )
+    BoxWithConstraints(modifier, contentAlignment = Alignment.Center) {
+        DemoCassette("Slow Sunday", MixtapeVisualProperties(cassetteTheme = cassetteTheme,
+            screwTheme = screwTheme, stickerTheme = stickerTheme), .38f, false,
+            Modifier.width(minOf(maxWidth, maxHeight * (560f / 356f))))
     }
 }
 
 @Composable
-private fun CaseComponentPreview(
-    caseTheme: CaseTheme,
-    modifier: Modifier = Modifier,
-) {
-    val plastic = caseTheme.plasticPalette()
-    Canvas(modifier = modifier.semantics { contentDescription = "${caseTheme.readableName()} case preview" }) {
-        drawRoundRect(
-            Color(0xFFF1E8C8),
-            topLeft = Offset(size.width * 0.08f, size.height * 0.14f),
-            size = Size(size.width * 0.84f, size.height * 0.72f),
-            cornerRadius = CornerRadius(3.dp.toPx(), 3.dp.toPx()),
-        )
-        drawLine(Color(0xFFB8422F), Offset(size.width * 0.19f, size.height * 0.18f), Offset(size.width * 0.19f, size.height * 0.82f), 1.dp.toPx())
-        drawCasePlastic(plastic)
+private fun CaseComponentPreview(caseTheme: CaseTheme, modifier: Modifier = Modifier) {
+    val style = rememberDemoThemes().case(caseTheme)
+    BoxWithConstraints(modifier, contentAlignment = Alignment.Center) {
+        DemoCaseSurface(style, Modifier.width(minOf(maxWidth, maxHeight * (560f / 346f))).aspectRatio(560f / 346f)) {
+            DemoCassette("Slow Sunday", MixtapeVisualProperties(cassetteTheme = CassetteTheme.SmokeC90,
+                stickerTheme = StickerTheme.MagneticStudio), .38f, false, Modifier.fillMaxWidth())
+        }
     }
 }
 
 @Composable
-private fun SleeveComponentPreview(
-    sleeveTheme: SleeveTheme,
-    modifier: Modifier = Modifier,
-) {
-    val paper = sleeveTheme.paperPalette()
-    Canvas(modifier = modifier.semantics { contentDescription = "${sleeveTheme.readableName()} sleeve preview" }) {
-        drawRoundRect(paper.base, size = size, cornerRadius = CornerRadius(5.dp.toPx(), 5.dp.toPx()))
-        when (paper.pattern) {
-            SleevePaperPattern.Lined -> {
-                var y = size.height * 0.28f
-                while (y < size.height) { drawLine(paper.line, Offset(0f, y), Offset(size.width, y), 1.dp.toPx()); y += size.height * 0.22f }
-                paper.margin?.let { drawLine(it, Offset(size.width * 0.20f, 0f), Offset(size.width * 0.20f, size.height), 1.dp.toPx()) }
-            }
-            SleevePaperPattern.Grid -> {
-                val step = size.height * 0.25f
-                var x = step
-                while (x < size.width) { drawLine(paper.line, Offset(x, 0f), Offset(x, size.height), 1.dp.toPx()); x += step }
-                var y = step
-                while (y < size.height) { drawLine(paper.line, Offset(0f, y), Offset(size.width, y), 1.dp.toPx()); y += step }
-            }
-            SleevePaperPattern.Album -> {
-                drawRect(paper.accent, Offset(0f, 0f), Size(size.width, size.height * 0.24f))
-                drawRect(paper.ink.copy(alpha = 0.18f), Offset(size.width * 0.10f, size.height * 0.40f), Size(size.width * 0.80f, size.height * 0.10f))
-            }
-            SleevePaperPattern.Blank -> Unit
-        }
-        paper.speckle?.let { fleck ->
-            repeat(16) { index ->
-                drawCircle(fleck.copy(alpha = 0.55f), 1.dp.toPx(), Offset(size.width * ((index * 37) % 97) / 97f, size.height * ((index * 23) % 89) / 89f))
+private fun SleeveComponentPreview(sleeveTheme: SleeveTheme, modifier: Modifier = Modifier) {
+    val style = rememberDemoThemes().sleeve(sleeveTheme)
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        DemoSpine("Slow Sunday", MixtapeVisualProperties(sleeveTheme = sleeveTheme), Modifier.fillMaxWidth())
+        DemoCaseSurface(rememberDemoThemes().case(CaseTheme.CrystalClear), Modifier.weight(1f).fillMaxWidth()) {
+            Canvas(Modifier.fillMaxSize()) { paperArt(style, false) }
+            Column(Modifier.padding(horizontal = 9.dp, vertical = 2.dp)) {
+                listOf("A little further", "The long way home").forEach { title ->
+                    Text(title, fontSize = 10.sp, color = demoReadableInk(style.color("ink"),style.color("innerPaper",style.color("paper"))),
+                        fontFamily = MixtapeHandwritingFont.Kalam.cassetteHandwritingFontFamily(), fontWeight = FontWeight.Bold)
+                }
             }
         }
-        drawRoundRect(paper.edge, size = size, cornerRadius = CornerRadius(5.dp.toPx(), 5.dp.toPx()), style = Stroke(width = 1.5.dp.toPx()))
     }
 }
 
@@ -944,32 +862,26 @@ private fun HelpScreen(
     onBackToSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        TextButton(onClick = onBackToSettings) { Text("Back to Settings") }
-        Text("Help", style = MaterialTheme.typography.titleLarge)
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("Show Mixtape in Android Auto", style = MaterialTheme.typography.titleMedium)
-                Text("Complete these steps on your phone while parked and disconnected from the vehicle:")
-                Text("1. Open Mixtape once and allow audio access.")
-                Text("2. Open phone Settings → Connected devices → Connection preferences → Android Auto. You can also search Settings for Android Auto.")
-                Text("3. Scroll to About and tap Version repeatedly until Android Auto developer mode is enabled.")
-                Text("4. Open the three-dot menu, choose Developer settings, and turn on Enable CAL beta features.")
-                Text("5. If Mixtape was sideloaded rather than installed from Google Play, also turn on Unknown sources.")
-                Text("6. Return to Android Auto settings, open Customise Launcher (or Customize launcher), and make sure Mixtape is checked.")
-                Text("7. Disconnect and reconnect Android Auto so the vehicle refreshes its app list.")
-            }
-        }
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Still not visible?", style = MaterialTheme.typography.titleMedium)
-                Text("Confirm Mixtape is installed on the phone connected to the vehicle, then restart Android Auto or the phone and reconnect. Some Android Auto versions hide sideloaded apps until Unknown sources is enabled.")
-            }
+    SettingsPage("Android Auto help", "Setup and troubleshooting", onBackToSettings, modifier) {
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(vertical = 16.dp)) {
+            SettingsTwoColumns(
+                first = {
+                    SettingsSection("Show Mixtape in Android Auto", "Complete these steps on your phone while parked and disconnected from the vehicle.") {
+                        Text("1. Open Mixtape once and allow audio access.")
+                        Text("2. Open phone Settings → Connected devices → Connection preferences → Android Auto. You can also search Settings for Android Auto.")
+                        Text("3. Scroll to About and tap Version repeatedly until Android Auto developer mode is enabled.")
+                        Text("4. Open the three-dot menu, choose Developer settings, and turn on Enable CAL beta features.")
+                        Text("5. If Mixtape was sideloaded rather than installed from Google Play, also turn on Unknown sources.")
+                        Text("6. Return to Android Auto settings, open Customise Launcher (or Customize launcher), and make sure Mixtape is checked.")
+                        Text("7. Disconnect and reconnect Android Auto so the vehicle refreshes its app list.")
+                    }
+                },
+                second = {
+                    SettingsSection("Still not visible?") {
+                        Text("Confirm Mixtape is installed on the phone connected to the vehicle, then restart Android Auto or the phone and reconnect. Some Android Auto versions hide sideloaded apps until Unknown sources is enabled.")
+                    }
+                },
+            )
         }
     }
 }
@@ -982,58 +894,57 @@ private fun MixtapeNamesScreen(
     onRegenerateMixtapeName: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var editingInfo by remember { mutableStateOf<MixtapeNameInfo?>(null) }
-    var editedName by remember { mutableStateOf("") }
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+    var editingKey by rememberSaveable { mutableStateOf<String?>(null) }
+    var editedName by rememberSaveable { mutableStateOf("") }
+    var query by rememberSaveable { mutableStateOf("") }
+    val matchingNames = mixtapeNameInfos.withIndex().filter { it.value.name.contains(query.trim(), ignoreCase = true) }
+    SettingsPage("Mixtape names", "${mixtapeNameInfos.size} tapes · Edit a name or pick another", onBackToSettings, modifier,
+        controls = {
+            OutlinedTextField(query, onValueChange = { query = it }, label = { Text("Find a mixtape") }, singleLine = true,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp))
+        },
     ) {
-        TextButton(onClick = onBackToSettings) { Text("Back to Settings") }
-        Text("Mixtape names", style = MaterialTheme.typography.titleLarge)
-        if (mixtapeNameInfos.isEmpty()) {
-            Text("No mixtapes yet.")
-        }
-        mixtapeNameInfos.forEach { info ->
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(info.name, style = MaterialTheme.typography.titleMedium)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            if (matchingNames.isEmpty()) item {
+                Text(if (mixtapeNameInfos.isEmpty()) "No mixtapes yet." else "No names match your search.",
+                    modifier = Modifier.padding(16.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            itemsIndexed(matchingNames, key = { _, indexed -> indexed.value.stableKey }) { _, indexed ->
+                val info = indexed.value
+                SettingsSection(info.name, "Mixtape ${indexed.index + 1}") {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Button(onClick = {
-                            editingInfo = info
-                            editedName = info.name
-                        }) { Text("Edit") }
-                        OutlinedButton(onClick = { onRegenerateMixtapeName(info.stableKey) }) { Text("Randomize") }
+                        OutlinedButton(
+                            onClick = { editingKey = info.stableKey; editedName = info.name },
+                            modifier = Modifier.semantics { contentDescription = "Edit name for ${info.name}" },
+                        ) { Text("Edit") }
+                        TextButton(
+                            onClick = { onRegenerateMixtapeName(info.stableKey) },
+                            modifier = Modifier.semantics { contentDescription = "Randomize name for ${info.name}" },
+                        ) { Text("Randomize") }
                     }
                 }
             }
         }
-    }
-
-    editingInfo?.let { info ->
-        AlertDialog(
-            onDismissRequest = { editingInfo = null },
-            title = { Text("Edit mixtape name") },
-            text = {
-                OutlinedTextField(
-                    value = editedName,
-                    onValueChange = { editedName = it },
-                    label = { Text("Mixtape name") },
-                    singleLine = true,
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    onEditMixtapeName(info.stableKey, editedName)
-                    editingInfo = null
-                }) { Text("Save") }
-            },
-            dismissButton = {
-                TextButton(onClick = { editingInfo = null }) { Text("Cancel") }
-            },
-        )
+        editingKey?.let { stableKey ->
+            AlertDialog(
+                onDismissRequest = { editingKey = null },
+                title = { Text("Edit mixtape name") },
+                text = {
+                    OutlinedTextField(editedName, onValueChange = { editedName = it }, label = { Text("Mixtape name") }, singleLine = true)
+                },
+                confirmButton = {
+                    TextButton(enabled = editedName.isNotBlank(), onClick = {
+                        onEditMixtapeName(stableKey, editedName.trim())
+                        editingKey = null
+                    }) { Text("Save") }
+                },
+                dismissButton = { TextButton(onClick = { editingKey = null }) { Text("Cancel") } },
+            )
+        }
     }
 }
 
@@ -1045,55 +956,31 @@ private fun ExclusionSettingsScreen(
     onRemoveFilenameExclusionPattern: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var patternText by remember { mutableStateOf("") }
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onBackToSettings) { Text("Settings") }
-        }
-        Text("Exclusion settings", style = MaterialTheme.typography.titleLarge)
-        Text("Add filename patterns for audio files that should not be included in mixtapes.")
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedTextField(
-                    value = patternText,
-                    onValueChange = { patternText = it },
-                    label = { Text("Filename pattern") },
-                    placeholder = { Text("*.tmp.mp3") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                Text("Examples: *.tmp.mp3, *voice memo*, WhatsApp*.opus")
-                Button(
-                    onClick = {
-                        onAddFilenameExclusionPattern(patternText)
-                        patternText = ""
-                    },
-                    enabled = patternText.isNotBlank(),
-                ) { Text("Add") }
+    var patternText by rememberSaveable { mutableStateOf("") }
+    val patterns = state.mixtapeExclusionSettings.filenamePatterns
+    SettingsPage("Filename exclusions", "Hide matching files. Your audio is never deleted.", onBackToSettings, modifier) {
+        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            item {
+                SettingsSection("Add a pattern", "Match part of a filename, or use * as a wildcard.") {
+                    OutlinedTextField(
+                        value = patternText, onValueChange = { patternText = it }, label = { Text("Filename pattern") },
+                        placeholder = { Text("*.tmp.mp3") }, singleLine = true, modifier = Modifier.fillMaxWidth(),
+                    )
+                    Text("Examples: *.tmp.mp3, *voice memo*, WhatsApp*.opus", style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Button(enabled = patternText.isNotBlank(), onClick = {
+                        onAddFilenameExclusionPattern(patternText.trim()); patternText = ""
+                    }) { Text("Add") }
+                }
             }
-        }
-        Text("Current patterns", style = MaterialTheme.typography.titleMedium)
-        if (state.mixtapeExclusionSettings.filenamePatterns.isEmpty()) {
-            Text("No filename exclusion patterns yet.")
-        } else {
-            state.mixtapeExclusionSettings.filenamePatterns.forEach { pattern ->
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(pattern, modifier = Modifier.weight(1f))
-                        OutlinedButton(onClick = { onRemoveFilenameExclusionPattern(pattern) }) {
-                            Text("Remove")
-                        }
+            item { Text("Current patterns · ${patterns.size}", style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(top = 8.dp)) }
+            if (patterns.isEmpty()) item { Text("No filename exclusion patterns yet.", color = MaterialTheme.colorScheme.onSurfaceVariant) }
+            itemsIndexed(patterns, key = { _, pattern -> pattern }) { _, pattern ->
+                Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+                    Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text(pattern, modifier = Modifier.weight(1f), fontFamily = FontFamily.Monospace)
+                        TextButton(onClick = { onRemoveFilenameExclusionPattern(pattern) },
+                            modifier = Modifier.semantics { contentDescription = "Remove pattern $pattern" }) { Text("Remove") }
                     }
                 }
             }
@@ -1108,46 +995,13 @@ private fun MixtapeSymbolSettingsScreen(
     onMixtapeEmbellishmentEnabledChange: (MixtapeEmbellishment, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onBackToSettings) { Text("Settings") }
-        }
-        Text("Mixtape symbol settings", style = MaterialTheme.typography.titleLarge)
-        Text("Unselect a symbol to keep that mixtape image off cassette spines and now-playing labels.")
-        MixtapeEmbellishment.entries.forEach { embellishment ->
+    SettingsPage("Mixtape symbols", "${enabledEmbellishments.size} enabled · Keep at least one symbol", onBackToSettings, modifier) {
+        SettingsOptionGrid(MixtapeEmbellishment.entries, minSize = 160.dp) { embellishment ->
             val selected = embellishment in enabledEmbellishments
             val toggleEnabled = !selected || enabledEmbellishments.size > 1
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(enabled = toggleEnabled) {
-                            onMixtapeEmbellishmentEnabledChange(embellishment, !selected)
-                        }
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    HandDrawnEmbellishment(
-                        embellishment = embellishment,
-                        modifier = Modifier.size(36.dp),
-                        color = Color(0xFF233C6E),
-                    )
-                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(embellishment.readableName(), fontWeight = FontWeight.SemiBold)
-                        Text(if (selected) "Used for mixtapes" else "Hidden from mixtapes", style = MaterialTheme.typography.bodySmall)
-                    }
-                    Checkbox(
-                        checked = selected,
-                        onCheckedChange = { checked -> onMixtapeEmbellishmentEnabledChange(embellishment, checked) },
-                        enabled = !selected || enabledEmbellishments.size > 1,
-                    )
-                }
+            SettingsPreviewCard(embellishment.readableName(), selected, enabled = toggleEnabled,
+                onSelect = { onMixtapeEmbellishmentEnabledChange(embellishment, !selected) }) {
+                HandDrawnEmbellishment(embellishment, modifier = Modifier.size(56.dp), color = MaterialTheme.colorScheme.primary)
             }
         }
     }
@@ -1160,45 +1014,13 @@ private fun TapeSkinSettingsScreen(
     onMixtapeTapeSkinEnabledChange: (MixtapeTapeSkin, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onBackToSettings) { Text("Settings") }
-        }
-        Text("Tape skin settings", style = MaterialTheme.typography.titleLarge)
-        Text("Unselect a skin to keep that cassette look out of newly assigned mixtapes.")
-        MixtapeTapeSkin.entries.forEach { tapeSkin ->
+    SettingsPage("Tape skin settings", "${enabledTapeSkins.size} enabled · Keep at least one skin", onBackToSettings, modifier) {
+        SettingsOptionGrid(MixtapeTapeSkin.entries) { tapeSkin ->
             val selected = tapeSkin in enabledTapeSkins
             val toggleEnabled = !selected || enabledTapeSkins.size > 1
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(enabled = toggleEnabled) {
-                            onMixtapeTapeSkinEnabledChange(tapeSkin, !selected)
-                        }
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    TapeSkinPreview(
-                        tapeSkin = tapeSkin,
-                        modifier = Modifier.width(160.dp),
-                    )
-                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(tapeSkin.readableName(), fontWeight = FontWeight.SemiBold)
-                        Text(if (selected) "Used for mixtapes" else "Hidden from mixtapes", style = MaterialTheme.typography.bodySmall)
-                    }
-                    Checkbox(
-                        checked = selected,
-                        onCheckedChange = { checked -> onMixtapeTapeSkinEnabledChange(tapeSkin, checked) },
-                        enabled = !selected || enabledTapeSkins.size > 1,
-                    )
-                }
+            SettingsPreviewCard(tapeSkin.readableName(), selected, enabled = toggleEnabled,
+                onSelect = { onMixtapeTapeSkinEnabledChange(tapeSkin, !selected) }) {
+                TapeSkinPreview(tapeSkin, modifier = Modifier.width(200.dp))
             }
         }
     }
@@ -1236,45 +1058,13 @@ private fun SpineSkinSettingsScreen(
     onMixtapeSpineSkinEnabledChange: (MixtapeSpineSkin, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onBackToSettings) { Text("Settings") }
-        }
-        Text("Spine skin settings", style = MaterialTheme.typography.titleLarge)
-        Text("Unselect a spine skin to keep that cassette-spine look out of newly assigned mixtapes.")
-        MixtapeSpineSkin.entries.forEach { spineSkin ->
+    SettingsPage("Spine skin settings", "${enabledSpineSkins.size} enabled · Keep at least one skin", onBackToSettings, modifier) {
+        SettingsOptionGrid(MixtapeSpineSkin.entries) { spineSkin ->
             val selected = spineSkin in enabledSpineSkins
             val toggleEnabled = !selected || enabledSpineSkins.size > 1
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(enabled = toggleEnabled) {
-                            onMixtapeSpineSkinEnabledChange(spineSkin, !selected)
-                        }
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    SpineSkinPreview(
-                        spineSkin = spineSkin,
-                        modifier = Modifier.weight(1f),
-                    )
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(spineSkin.readableName(), fontWeight = FontWeight.SemiBold)
-                        Text(if (selected) "Used for mixtapes" else "Hidden from mixtapes", style = MaterialTheme.typography.bodySmall)
-                    }
-                    Checkbox(
-                        checked = selected,
-                        onCheckedChange = { checked -> onMixtapeSpineSkinEnabledChange(spineSkin, checked) },
-                        enabled = !selected || enabledSpineSkins.size > 1,
-                    )
-                }
+            SettingsPreviewCard(spineSkin.readableName(), selected, enabled = toggleEnabled,
+                onSelect = { onMixtapeSpineSkinEnabledChange(spineSkin, !selected) }) {
+                SpineSkinPreview(spineSkin, modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -1297,63 +1087,40 @@ private fun SpineSkinPreview(
         ),
         sideNumber = 1,
         onClick = {},
+        modifier = modifier,
     )
 }
 
 @Composable
 private fun HandwritingFontSettingsScreen(
     enabledHandwritingFonts: Set<MixtapeHandwritingFont>,
+    handwritingFontSize: HandwritingFontSize,
+    onHandwritingFontSizeChange: (HandwritingFontSize) -> Unit,
     onBackToSettings: () -> Unit,
     onMixtapeHandwritingFontEnabledChange: (MixtapeHandwritingFont, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+    SettingsPage("Handwriting fonts", "${enabledHandwritingFonts.size} enabled · Preview labels and track lists", onBackToSettings, modifier,
+        controls = { HandwritingFontSizeChoices(handwritingFontSize, onHandwritingFontSizeChange) },
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onBackToSettings) { Text("Settings") }
-        }
-        Text("Handwriting font settings", style = MaterialTheme.typography.titleLarge)
-        Text("Unselect a font to keep that handwriting style out of newly assigned mixtapes.")
-        MixtapeHandwritingFont.entries.forEach { handwritingFont ->
+        SettingsOptionGrid(MixtapeHandwritingFont.entries) { handwritingFont ->
             val selected = handwritingFont in enabledHandwritingFonts
             val toggleEnabled = !selected || enabledHandwritingFonts.size > 1
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(enabled = toggleEnabled) {
-                            onMixtapeHandwritingFontEnabledChange(handwritingFont, !selected)
-                        }
-                        .padding(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                            Text(handwritingFont.readableName(), fontWeight = FontWeight.SemiBold)
-                            Text(if (selected) "Used for mixtapes" else "Hidden from mixtapes", style = MaterialTheme.typography.bodySmall)
-                        }
-                        Checkbox(
-                            checked = selected,
-                            onCheckedChange = { checked -> onMixtapeHandwritingFontEnabledChange(handwritingFont, checked) },
-                            enabled = !selected || enabledHandwritingFonts.size > 1,
-                        )
-                    }
-                    HandwritingFontContextPreview(
-                        handwritingFont = handwritingFont,
-                        onClick = {
-                            if (toggleEnabled) onMixtapeHandwritingFontEnabledChange(handwritingFont, !selected)
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
+            val toggle = { if (toggleEnabled) onMixtapeHandwritingFontEnabledChange(handwritingFont, !selected) }
+            SettingsPreviewCard(handwritingFont.readableName(), selected, enabled = toggleEnabled, onSelect = toggle) {
+                HandwritingFontContextPreview(handwritingFont, onClick = toggle, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+}
+
+@Composable
+private fun HandwritingFontSizeChoices(selected: HandwritingFontSize, onSelect: (HandwritingFontSize) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("Font size", style = MaterialTheme.typography.labelLarge)
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            HandwritingFontSize.entries.forEach { size ->
+                SettingsChoice(size.name, selected == size, { onSelect(size) }, Modifier.weight(1f))
             }
         }
     }
@@ -1365,79 +1132,16 @@ private fun HandwritingFontContextPreview(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val fontFamily = handwritingFont.cassetteHandwritingFontFamily()
-    val sleevePaper = SleeveTheme.RuledNotebook.paperPalette()
-    val casePlastic = CaseTheme.CrystalClear.plasticPalette()
-    val previewTracks = listOf(
-        Track(-101, "Neon Moon", "Night Drive", 201_000, "preview://handwriting/neon-moon"),
-        Track(-102, "Tape Hiss", "Bedroom Pop", 178_000, "preview://handwriting/tape-hiss"),
-    )
-    val previewGroup = MixTapeGroup(
-        name = "Night Drive",
-        tracks = previewTracks,
-        startIndex = 0,
-        visualProperties = MixtapeVisualProperties(
-            handwritingFont = handwritingFont,
-            jitterStartIndex = handwritingPerturbationIndex(handwritingFont.name.hashCode()),
-            decorativeId = "A7",
-            sleeveTheme = SleeveTheme.RuledNotebook,
-            caseTheme = CaseTheme.CrystalClear,
-        ),
-    )
-
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        CassetteSpineRow(
-            group = previewGroup,
-            sideNumber = 1,
-            onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Card(
-            colors = CardDefaults.cardColors(containerColor = sleevePaper.base),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .drawBehind {
-                        val lineSpacing = 49.dp.toPx()
-                        var y = 50.dp.toPx()
-                        while (y < size.height) {
-                            drawLine(sleevePaper.line, Offset(0f, y), Offset(size.width, y), 1.5f)
-                            y += lineSpacing
-                        }
-                    }
-                    .drawWithContent {
-                        drawContent()
-                        drawCasePlastic(casePlastic)
-                    }
-                    .padding(horizontal = 18.dp, vertical = 14.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                previewTracks.forEachIndexed { index, track ->
-                    val rowText = "${track.title} — ${track.artist}  ${formatDuration(track.durationMs)}"
-                    JitteredHandwritingText(
-                        text = rowText,
-                        startIndex = handwritingTrackStartIndex(previewGroup.visualProperties.jitterStartIndex, index),
-                        color = sleevePaper.ink,
-                        fontFamily = fontFamily, fontOpticalScale = handwritingFont.opticalScale(),
-                        fontSize = 35.sp,
-                        fontWeight = handwritingFont.effectiveCassetteWeight(FontWeight.Bold),
-                        lineHeightScale = 0.8f,
-                        fixedRowHeight = with(LocalDensity.current) { (42.sp.toPx() * LocalHandwritingFontSize.current.scale).toDp() },
-                        maxLines = 1,
-                        overflow = TextOverflow.Clip,
-                        tokenization = HandwritingJitterTokenization.Character,
-                        strength = HandwritingJitterStrength(maxDxEm = 0.036f, maxDyEm = 0.065f, maxRotationDegrees = 1.8f, maxTrackingEm = 0.008f),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-            }
-        }
+    val properties=MixtapeVisualProperties(handwritingFont=handwritingFont,
+        jitterStartIndex=handwritingPerturbationIndex(handwritingFont.name.hashCode()),
+        sleeveTheme=SleeveTheme.RuledNotebook,caseTheme=CaseTheme.CrystalClear)
+    val tracks=listOf(
+        Track(-101,"Neon Moon","Night Drive",201_000,"preview://handwriting/neon-moon"),
+        Track(-102,"Tape Hiss","Bedroom Pop",178_000,"preview://handwriting/tape-hiss"))
+    Column(modifier,verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        DemoSpine("Night Drive",properties,Modifier.fillMaxWidth(),onClick=onClick)
+        DemoTrackList(tracks,-1,properties,onSelect={_,_->onClick()},onDelete={},onRemove={},onInfo={},
+            modifier=Modifier.fillMaxWidth(),previewRows=tracks.size)
     }
 }
 
@@ -1480,6 +1184,7 @@ private fun SleeveTheme.legacySpineSkin(): MixtapeSpineSkin = when (this) {
     SleeveTheme.MidnightGrid -> MixtapeSpineSkin.MidnightRainbowFrame
     SleeveTheme.RuledNotebook -> MixtapeSpineSkin.TealNotebookRail
     SleeveTheme.AlbumPrint -> MixtapeSpineSkin.RainbowCutout
+    else -> MixtapeSpineSkin.CreamRed
 }
 
 private fun MixtapeSpineSkin.palette(): CassetteSpineSkinPalette = when (this) {
@@ -1740,7 +1445,7 @@ private fun MixtapeHandwritingFont.readableName(): String = name
 private fun MixtapeSymbolColor.readableName(): String = name
     .replace(Regex("(?<=.)(?=\\p{Upper})"), " ")
 
-private fun MixtapeSymbolColor.toComposeColor(): Color = when (this) {
+internal fun MixtapeSymbolColor.toComposeColor(): Color = when (this) {
     MixtapeSymbolColor.Navy -> Color(0xFF263864)
     MixtapeSymbolColor.Red -> Color(0xFFD32F2F)
     MixtapeSymbolColor.Green -> Color(0xFF2E7D32)
@@ -1766,20 +1471,6 @@ private fun Color.onPaper(paper: Color): Color {
     return target
 }
 
-@Composable
-private fun SongCountOption(label: String, selected: Boolean, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        RadioButton(selected = selected, onClick = onClick)
-        Text(label)
-    }
-}
-
 private fun mixtapeTrackCountLabel(songsPerMixTape: Int): String = when (songsPerMixTape) {
     NORMAL_SONGS_PER_MIXTAPE -> "Normal ($songsPerMixTape tracks)"
     LP_SONGS_PER_MIXTAPE -> "LP ($songsPerMixTape tracks)"
@@ -1790,26 +1481,17 @@ private fun mixtapeTrackCountLabel(songsPerMixTape: Int): String = when (songsPe
 
 @Composable
 private fun ArtistGroupingOption(label: String, selected: Boolean, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        RadioButton(selected = selected, onClick = onClick)
-        Text(label)
-    }
+    SettingsChoice(label, selected, onClick, Modifier.fillMaxWidth())
 }
 
 @Composable
-private fun HandDrawnEmbellishment(
+internal fun HandDrawnEmbellishment(
     embellishment: MixtapeEmbellishment,
     modifier: Modifier = Modifier,
     color: Color = Color(0xFF263864),
 ) {
     Canvas(modifier = modifier) {
-        val strokeWidth = 2.8.dp.toPx()
+        val strokeWidth = (size.minDimension * 0.065f).coerceAtLeast(1.2.dp.toPx())
         val style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
         val w = size.width
         val h = size.height
@@ -2021,7 +1703,7 @@ private data class SleevePaperPalette(
     val speckle: Color?,
 )
 
-private fun SleeveTheme.paperPalette(): SleevePaperPalette = when (this) {
+private fun SleeveTheme.paperPalette(sleeveInk: SleeveInk = SleeveInk.Original): SleevePaperPalette = (when (this) {
     SleeveTheme.BlankWhite -> SleevePaperPalette(SleevePaperPattern.Blank, Color(0xFFFBFAF5), Color(0xFFDCD8C8), Color.Transparent, null, Color(0xFF23272E), Color(0xFFB8422F), null)
     SleeveTheme.RuledNotebook -> SleevePaperPalette(SleevePaperPattern.Lined, Color(0xFFF8F6EC), Color(0xFFDDD8C4), Color(0xFFB9C8DD), Color(0xFFE59A9A), Color(0xFF202634), Color(0xFF3567C9), null)
     SleeveTheme.AlbumPrint -> SleevePaperPalette(SleevePaperPattern.Album, Color(0xFF101319), Color.Black, Color.Transparent, null, Color(0xFFF1EFE8), Color(0xFFD8A53F), null)
@@ -2031,7 +1713,8 @@ private fun SleeveTheme.paperPalette(): SleevePaperPalette = when (this) {
     SleeveTheme.ForestFleck -> SleevePaperPalette(SleevePaperPattern.Blank, Color(0xFFD3D9BD), Color(0xFF9BA77D), Color.Transparent, null, Color(0xFF263426), Color(0xFFA95138), Color(0xFF71805B))
     SleeveTheme.BlueprintGrid -> SleevePaperPalette(SleevePaperPattern.Grid, Color(0xFF155281), Color(0xFF0A3454), Color(0x55DEF2FF), null, Color(0xFFF2F8FC), Color(0xFFFFD05A), null)
     SleeveTheme.GraphPaper -> SleevePaperPalette(SleevePaperPattern.Grid, Color(0xFFF7F6EE), Color(0xFFD7D6CA), Color(0xFFB7C9D8), null, Color(0xFF27313B), Color(0xFF3D72A4), null)
-}
+    else -> SleevePaperPalette(SleevePaperPattern.Blank, Color(0xFFE8E1C8), Color(0xFFDCD8C8), Color.Transparent, null, Color(0xFF293A37), Color(0xFFDE6335), null)
+}).copy(ink = Color(inkColor(sleeveInk).argb))
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -2043,7 +1726,7 @@ private fun CassetteSpineRow(
     onLongClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    val paper = group.visualProperties.sleeveTheme.paperPalette()
+    val paper = group.visualProperties.sleeveTheme.paperPalette(group.visualProperties.sleeveInk)
     val nameInk = group.visualProperties.nameColor.toComposeColor().onPaper(paper.base)
     val plastic = group.visualProperties.caseTheme.plasticPalette()
     val handwritingFont = group.handwritingFont
@@ -2441,7 +2124,8 @@ private fun NowPlayingModeToggleAndSpine(
                             modifier = Modifier
                                 .weight(1f)
                                 .aspectRatio(CASSETTE_CASE_SPINE_ASPECT_RATIO)
-                                .clipToBounds(),
+                                .clipToBounds()
+                                .semantics { contentDescription = "Current mixtape preview" },
                             contentAlignment = Alignment.TopStart,
                         ) {
                             CassetteSpineRow(
@@ -2469,6 +2153,7 @@ private fun NowPlayingModeToggleAndSpine(
                     handwritingFont = state.currentMixtapeHandwritingFont,
                     mixtapeJitterStartIndex = nowPlayingJitterStartIndex(state),
                     sleeveTheme = state.currentMixtapeVisualProperties.sleeveTheme,
+                    sleeveInk = state.currentMixtapeVisualProperties.sleeveInk,
                     caseTheme = state.currentMixtapeVisualProperties.caseTheme,
                     sourceWidth = fullSpineWidth,
                     previewScale = currentTrackPreviewScale,
@@ -2575,13 +2260,14 @@ private fun CurrentTrackPreview(
     handwritingFont: MixtapeHandwritingFont,
     mixtapeJitterStartIndex: Int,
     sleeveTheme: SleeveTheme,
+    sleeveInk: SleeveInk,
     caseTheme: CaseTheme,
     sourceWidth: Dp,
     previewScale: Float,
     modifier: Modifier = Modifier,
 ) {
     val cassetteHandwritingFontFamily = handwritingFont.cassetteHandwritingFontFamily()
-    val sleevePaper = sleeveTheme.paperPalette()
+    val sleevePaper = sleeveTheme.paperPalette(sleeveInk)
     val casePlastic = caseTheme.plasticPalette()
     val indexedTrack = tracks.getOrNull(currentIndex)
     val previewTrack = currentTrack ?: indexedTrack
@@ -2765,228 +2451,41 @@ private fun NowPlaying(
     onRemoveTrackFromMixtape: (Track) -> Unit,
     onShowTrackInfo: (Track) -> Unit,
     onTrackDoubleClick: (Int, Track) -> Unit,
-    onUpdateCurrentMixtapeCustomization: (MixtapeCustomization) -> Unit,
+    onCustomizeTape: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isCustomizerOpen by remember { mutableStateOf(false) }
-    var lastCenteredMixtapeIndex by remember { mutableStateOf<Int?>(null) }
-    val audioLevels by AudioLevelMonitor.levels.collectAsState()
-    val tracksToggleLabel = "Tracks"
-    val mixTapesToggleLabel = "Mix tapes"
-    val showTracksContentDescription = "Show current track list"
-    val showMixTapesContentDescription = "Show mix tape list"
-
-    LaunchedEffect(bodyMode, state.currentMixtapeIndex) {
-        val centeredMixtapeIndex = state.currentMixtapeIndex
-        if (bodyMode == NowPlayingBodyMode.MixTapes && centeredMixtapeIndex >= 0 && lastCenteredMixtapeIndex != centeredMixtapeIndex) {
-            mixTapeListState.scrollToItem((centeredMixtapeIndex - 2).coerceAtLeast(0))
-            mixTapeGridState.scrollToItem((centeredMixtapeIndex - 4).coerceAtLeast(0))
-            lastCenteredMixtapeIndex = centeredMixtapeIndex
-        }
+    val ejected = state.screen == MixtapeScreen.MixTapes
+    val showTapes = ejected || bodyMode == NowPlayingBodyMode.MixTapes
+    fun selectTape(index: Int) {
+        onBodyModeChange(NowPlayingBodyMode.Tracks)
+        onMixTapeGroupClick(index)
     }
-
-    BoxWithConstraints(
-        modifier = modifier.fillMaxSize(),
-    ) {
-        val isLandscape = maxWidth > maxHeight
-        val nowPlayingJitterStartIndex = nowPlayingJitterStartIndex(state)
-        val mixtapeProgress = mixtapePlaybackProgress(
-            tracks = state.queueTracks,
-            currentIndex = state.currentIndex,
-            currentTrackPositionMs = state.positionMs,
-        )
-
-        if (isLandscape) {
-            val leftPaneWidth = (maxWidth * 0.44f).coerceAtMost(420.dp)
-            Row(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .width(leftPaneWidth)
-                        .widthIn(max = 420.dp)
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    DeckCassetteBay(
-                        deckTheme = state.mixtapeThemeSettings.deckTheme,
-                        decorativeId = state.currentMixtapeVisualProperties.decorativeId,
-                        counterValue = mixtapeCounterValue(mixtapeProgress),
-                        counterRevision = state.counterRevision,
-                        leftAudioLevel = audioLevels.left,
-                        rightAudioLevel = audioLevels.right,
-                        isPlaying = state.isPlaying,
-                        hasTrack = state.currentTrack != null,
-                        canGoPrevious = state.canGoPrevious,
-                        canGoNext = state.canGoNext,
-                        onRewind = onPrevious,
-                        onPlayPause = onTogglePlayPause,
-                        onFastForward = onNext,
-                        onStop = onStop,
-                        onEject = onEject,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        CassetteTape(
-                        tapeName = tapeNameFor(state),
-                        currentTrack = state.currentTrack,
-                        isPlaying = state.isPlaying,
-                        handwritingFont = state.currentMixtapeHandwritingFont,
-                        mixtapeJitterStartIndex = nowPlayingJitterStartIndex,
-                        embellishment = state.currentMixtapeVisualProperties.embellishment,
-                        symbolColor = state.currentMixtapeVisualProperties.symbolColor,
-                        nameColor = state.currentMixtapeVisualProperties.nameColor,
-                        tapeSkin = state.currentMixtapeVisualProperties.tapeSkin,
-                        decorativeId = state.currentMixtapeVisualProperties.decorativeId,
-                        cassetteTheme = state.currentMixtapeVisualProperties.cassetteTheme,
-                        screwTheme = state.currentMixtapeVisualProperties.screwTheme,
-                        stickerTheme = state.currentMixtapeVisualProperties.stickerTheme,
-                        tapeProgress = mixtapeProgress,
-                        onCustomize = { isCustomizerOpen = true },
-                        modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
-                    NowPlayingModeToggleAndSpine(
-                        state = state,
-                        bodyMode = bodyMode,
-                        onBodyModeChange = onBodyModeChange,
-                        onShowSettings = onShowSettings,
-                        onCustomize = { isCustomizerOpen = true },
-                    )
-                }
-                if (bodyMode == NowPlayingBodyMode.Tracks) {
-                    CassetteCoverTrackList(
-                        tracks = state.queueTracks,
-                        currentIndex = state.currentIndex,
-                        mixtapeName = tapeNameFor(state),
-                        handwritingFont = state.currentMixtapeHandwritingFont,
-                        mixtapeJitterStartIndex = nowPlayingJitterStartIndex,
-                        sleeveTheme = state.currentMixtapeVisualProperties.sleeveTheme,
-                        caseTheme = state.currentMixtapeVisualProperties.caseTheme,
-                        onDeleteTrackFromDevice = onDeleteTrackFromDevice,
-                        onRemoveTrackFromMixtape = onRemoveTrackFromMixtape,
-                        onShowTrackInfo = onShowTrackInfo,
-                        onTrackDoubleClick = onTrackDoubleClick,
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight(),
-                        scrollContent = true,
-                        showHeader = false,
-                    )
-                } else {
-                    MixTapeBriefcaseList(
-                        groups = state.mixTapeGroups,
-                        mixTapeListState = mixTapeListState,
-                        mixTapeGridState = mixTapeGridState,
-                        onMixTapeGroupClick = onMixTapeGroupClick,
-                        currentMixtapeIndex = state.currentMixtapeIndex,
-                        forceSingleColumn = true,
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight(),
-                    )
-                }
+    BackHandler(enabled = !ejected && bodyMode == NowPlayingBodyMode.MixTapes) {
+        onBodyModeChange(NowPlayingBodyMode.Tracks)
+    }
+    DemoPlayerScreen(
+        state = state, name = tapeNameFor(state), showTapes = showTapes, ejected = ejected,
+        listState = mixTapeListState, onSelectTape = ::selectTape,
+        onToggleList = {
+            if (ejected) {
+                if (state.mixTapeGroups.isNotEmpty()) selectTape(state.currentMixtapeIndex.coerceIn(state.mixTapeGroups.indices))
+            } else onBodyModeChange(if (showTapes) NowPlayingBodyMode.Tracks else NowPlayingBodyMode.MixTapes)
+        },
+        onSettings = onShowSettings, onCustomize = { onCustomizeTape(state.currentMixtapeIndex) },
+        onCustomizeTape = onCustomizeTape,
+        onEject = {
+            if (ejected) {
+                if (state.mixTapeGroups.isNotEmpty()) selectTape(state.currentMixtapeIndex.coerceIn(state.mixTapeGroups.indices))
+            } else {
+                onBodyModeChange(NowPlayingBodyMode.MixTapes)
+                onEject()
             }
-        } else {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                DeckCassetteBay(
-                    deckTheme = state.mixtapeThemeSettings.deckTheme,
-                    decorativeId = state.currentMixtapeVisualProperties.decorativeId,
-                    counterValue = mixtapeCounterValue(mixtapeProgress),
-                    counterRevision = state.counterRevision,
-                    leftAudioLevel = audioLevels.left,
-                    rightAudioLevel = audioLevels.right,
-                    isPlaying = state.isPlaying,
-                    hasTrack = state.currentTrack != null,
-                    canGoPrevious = state.canGoPrevious,
-                    canGoNext = state.canGoNext,
-                    onRewind = onPrevious,
-                    onPlayPause = onTogglePlayPause,
-                    onFastForward = onNext,
-                    onStop = onStop,
-                    onEject = onEject,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    CassetteTape(
-                    tapeName = tapeNameFor(state),
-                    currentTrack = state.currentTrack,
-                    isPlaying = state.isPlaying,
-                    handwritingFont = state.currentMixtapeHandwritingFont,
-                    mixtapeJitterStartIndex = nowPlayingJitterStartIndex,
-                    embellishment = state.currentMixtapeVisualProperties.embellishment,
-                    symbolColor = state.currentMixtapeVisualProperties.symbolColor,
-                    nameColor = state.currentMixtapeVisualProperties.nameColor,
-                    tapeSkin = state.currentMixtapeVisualProperties.tapeSkin,
-                    decorativeId = state.currentMixtapeVisualProperties.decorativeId,
-                    cassetteTheme = state.currentMixtapeVisualProperties.cassetteTheme,
-                    screwTheme = state.currentMixtapeVisualProperties.screwTheme,
-                    stickerTheme = state.currentMixtapeVisualProperties.stickerTheme,
-                    tapeProgress = mixtapeProgress,
-                    onCustomize = { isCustomizerOpen = true },
-                    modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-                NowPlayingModeToggleAndSpine(
-                    state = state,
-                    bodyMode = bodyMode,
-                    onBodyModeChange = onBodyModeChange,
-                    onShowSettings = onShowSettings,
-                    onCustomize = { isCustomizerOpen = true },
-                )
-                if (bodyMode == NowPlayingBodyMode.Tracks) {
-                    CassetteCoverTrackList(
-                        tracks = state.queueTracks,
-                        currentIndex = state.currentIndex,
-                        mixtapeName = tapeNameFor(state),
-                        handwritingFont = state.currentMixtapeHandwritingFont,
-                        mixtapeJitterStartIndex = nowPlayingJitterStartIndex,
-                        sleeveTheme = state.currentMixtapeVisualProperties.sleeveTheme,
-                        caseTheme = state.currentMixtapeVisualProperties.caseTheme,
-                        onDeleteTrackFromDevice = onDeleteTrackFromDevice,
-                        onRemoveTrackFromMixtape = onRemoveTrackFromMixtape,
-                        onShowTrackInfo = onShowTrackInfo,
-                        onTrackDoubleClick = onTrackDoubleClick,
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        scrollContent = true,
-                        showHeader = false,
-                    )
-                } else {
-                    MixTapeBriefcaseList(
-                        groups = state.mixTapeGroups,
-                        mixTapeListState = mixTapeListState,
-                        mixTapeGridState = mixTapeGridState,
-                        onMixTapeGroupClick = onMixTapeGroupClick,
-                        currentMixtapeIndex = state.currentMixtapeIndex,
-                        forceSingleColumn = true,
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                    )
-                }
-            }
-        }
-    }
+        },
+        onPlayPause = onTogglePlayPause, onPrevious = onPrevious, onNext = onNext, onStop = onStop,
+        onSelectTrack = onTrackDoubleClick, onDelete = onDeleteTrackFromDevice,
+        onRemove = onRemoveTrackFromMixtape, onInfo = onShowTrackInfo, modifier = modifier,
+    )
 
-    if (isCustomizerOpen) {
-        MixtapeCustomizationDialog(
-            name = tapeNameFor(state),
-            properties = state.currentMixtapeVisualProperties,
-            settings = state.mixtapeThemeSettings,
-            enabledEmbellishments = state.enabledMixtapeEmbellishments,
-            enabledFonts = state.enabledMixtapeHandwritingFonts,
-            onDismiss = { isCustomizerOpen = false },
-            onSave = {
-                onUpdateCurrentMixtapeCustomization(it)
-                isCustomizerOpen = false
-            },
-        )
-    }
 }
 
 @Composable
@@ -2997,69 +2496,110 @@ private fun MixtapeCustomizationDialog(
     enabledEmbellishments: Set<MixtapeEmbellishment>,
     enabledFonts: Set<MixtapeHandwritingFont>,
     onDismiss: () -> Unit,
+    onSettings: () -> Unit,
+    onRandomize: (MixtapeCustomization) -> MixtapeCustomization,
     onSave: (MixtapeCustomization) -> Unit,
 ) {
-    var editedName by remember(name) { mutableStateOf(name) }
-    var decorativeId by remember(properties) { mutableStateOf(properties.decorativeId) }
-    var font by remember(properties) { mutableStateOf(properties.handwritingFont) }
-    var symbol by remember(properties) { mutableStateOf(properties.embellishment) }
-    var symbolColor by remember(properties) { mutableStateOf(properties.symbolColor) }
-    var nameColor by remember(properties) { mutableStateOf(properties.nameColor) }
-    var cassette by remember(properties) { mutableStateOf(properties.cassetteTheme) }
-    var screws by remember(properties) { mutableStateOf(properties.screwTheme) }
-    var sticker by remember(properties) { mutableStateOf(properties.stickerTheme) }
-    var caseTheme by remember(properties) { mutableStateOf(properties.caseTheme) }
-    var sleeve by remember(properties) { mutableStateOf(properties.sleeveTheme) }
+    var editedName by rememberSaveable(name) { mutableStateOf(name) }
+    var jitterStartIndex by rememberSaveable(properties) { mutableStateOf(properties.jitterStartIndex) }
+    var decorativeId by rememberSaveable(properties) { mutableStateOf(properties.decorativeId) }
+    var font by rememberSaveable(properties) { mutableStateOf(properties.handwritingFont) }
+    var symbol by rememberSaveable(properties) { mutableStateOf(properties.embellishment) }
+    var symbolColor by rememberSaveable(properties) { mutableStateOf(properties.symbolColor) }
+    var nameColor by rememberSaveable(properties) { mutableStateOf(properties.nameColor) }
+    var spineAlignment by rememberSaveable(properties) { mutableStateOf(properties.spineTextAlignment) }
+    var symbolPlacement by rememberSaveable(properties) { mutableStateOf(properties.spineSymbolPlacement) }
+    var cassette by rememberSaveable(properties) { mutableStateOf(properties.cassetteTheme) }
+    var screws by rememberSaveable(properties) { mutableStateOf(properties.screwTheme) }
+    var sticker by rememberSaveable(properties) { mutableStateOf(properties.stickerTheme) }
+    var caseTheme by rememberSaveable(properties) { mutableStateOf(properties.caseTheme) }
+    var sleeve by rememberSaveable(properties) { mutableStateOf(properties.sleeveTheme) }
+    var sleeveInk by rememberSaveable(properties) { mutableStateOf(properties.sleeveInk) }
 
     val fonts = enabledFonts.ifEmpty { MixtapeHandwritingFont.entries.toSet() }.toList()
     val symbols = enabledEmbellishments.ifEmpty { MixtapeEmbellishment.entries.toSet() }.toList()
     fun <T> next(options: List<T>, current: T): T = options[(options.indexOf(current).takeIf { it >= 0 } ?: -1).plus(1) % options.size]
 
+    fun draft() = MixtapeCustomization(
+        name=editedName,decorativeId=decorativeId,handwritingFont=font,embellishment=symbol,
+        symbolColor=symbolColor,nameColor=nameColor,spineTextAlignment=spineAlignment,
+        spineSymbolPlacement=symbolPlacement,jitterStartIndex=jitterStartIndex,
+        cassetteTheme=cassette,screwTheme=screws,stickerTheme=sticker,
+        caseTheme=caseTheme,sleeveTheme=sleeve,sleeveInk=sleeveInk,
+    )
+    fun rollDice() {
+        val rolled=onRandomize(draft())
+        editedName=rolled.name;decorativeId=rolled.decorativeId;font=rolled.handwritingFont
+        jitterStartIndex=rolled.jitterStartIndex ?: jitterStartIndex
+        symbol=rolled.embellishment;symbolColor=rolled.symbolColor;nameColor=rolled.nameColor
+        spineAlignment=rolled.spineTextAlignment ?: spineAlignment
+        symbolPlacement=rolled.spineSymbolPlacement ?: symbolPlacement
+        caseTheme=rolled.caseTheme;sleeve=rolled.sleeveTheme;sleeveInk=rolled.sleeveInk
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Customize mixtape") },
+        title = {
+            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                Text("Customize mixtape",Modifier.weight(1f),style=MaterialTheme.typography.titleLarge)
+                IconButton(onClick=::rollDice,modifier=Modifier.semantics { contentDescription="Randomize name, spine and case" }) {
+                    val ink=MaterialTheme.colorScheme.primary
+                    val pip=MaterialTheme.colorScheme.onPrimary
+                    Canvas(Modifier.size(26.dp)) {
+                        drawRoundRect(ink,cornerRadius=CornerRadius(size.width*.18f))
+                        for(point in listOf(Offset(.27f,.27f),Offset(.73f,.27f),Offset(.5f,.5f),Offset(.27f,.73f),Offset(.73f,.73f)))
+                            drawCircle(pip,size.width*.073f,Offset(point.x*size.width,point.y*size.height))
+                    }
+                }
+                IconButton(onClick=onSettings,modifier=Modifier.semantics { contentDescription="App settings" }) { Text("⚙",fontSize=24.sp) }
+            }
+        },
         text = {
             Column(
                 modifier = Modifier.heightIn(max = 520.dp).verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                OutlinedTextField(value = editedName, onValueChange = { editedName = it }, label = { Text("Name") })
-                OutlinedTextField(
-                    value = decorativeId,
-                    onValueChange = { decorativeId = it.take(2) },
-                    label = { Text("Decorative ID") },
-                    singleLine = true,
-                )
-                CustomizationChoice("Font", font.name) { font = next(fonts, font) }
-                CustomizationChoice("Symbol", symbol.readableName()) { symbol = next(symbols, symbol) }
+                DemoSpine(editedName,properties.copy(handwritingFont=font,embellishment=symbol,nameColor=nameColor,symbolColor=symbolColor,
+                    decorativeId=decorativeId,jitterStartIndex=jitterStartIndex,spineTextAlignment=spineAlignment,
+                    spineSymbolPlacement=symbolPlacement,caseTheme=caseTheme,sleeveTheme=sleeve,sleeveInk=sleeveInk),Modifier.fillMaxWidth())
+                OutlinedTextField(value = editedName, onValueChange = { editedName = it }, singleLine=true, label = { Text("Name") })
+                OutlinedTextField(value=decorativeId,onValueChange={ decorativeId=it.filter { c -> c.isLetterOrDigit() }.take(2) },
+                    singleLine=true,label={ Text("Printed code (on selected papers)") })
+                DemoThemeChoice("Font", font, fonts, { it.name }) { font = it }
+                DemoThemeChoice("Symbol", symbol, symbols, { it.readableName() }) { symbol = it }
                 CustomizationChoice("Symbol color", symbolColor.name) { symbolColor = next(MixtapeSymbolColor.entries, symbolColor) }
                 CustomizationChoice("Name color", nameColor.name) { nameColor = next(MixtapeSymbolColor.entries, nameColor) }
-                CustomizationChoice("Cassette", cassette.readableName()) { cassette = next(settings.enabledCassetteThemes.toList(), cassette) }
-                CustomizationChoice("Screws", screws.readableName()) { screws = next(settings.enabledScrewThemes.toList(), screws) }
-                CustomizationChoice("Sticker", sticker.readableName()) { sticker = next(settings.enabledStickerThemes.toList(), sticker) }
-                CustomizationChoice("Case", caseTheme.readableName()) { caseTheme = next(settings.enabledCaseThemes.toList(), caseTheme) }
-                CustomizationChoice("Sleeve", sleeve.readableName()) { sleeve = next(settings.enabledSleeveThemes.toList(), sleeve) }
+                DemoThemeChoice("Spine alignment", spineAlignment, SpineTextAlignment.entries, { it.name }) { spineAlignment = it }
+                DemoThemeChoice("Symbol position", symbolPlacement, SpineSymbolPlacement.entries, { it.label }) { symbolPlacement = it }
+
+                DemoThemeChoice("Cassette", cassette, settings.enabledCassetteThemes.toList(), { it.readableName() }) { cassette = it }
+                DemoThemeChoice("Screws", screws, settings.enabledScrewThemes.toList(), { it.readableName() }) { screws = it }
+                DemoThemeChoice("Sticker", sticker, settings.enabledStickerThemes.toList(), { it.readableName() }) { sticker = it }
+                DemoThemeChoice("Case", caseTheme, settings.enabledCaseThemes.toList(), { it.readableName() }) { caseTheme = it }
+                DemoThemeChoice("Sleeve + spine", sleeve, settings.enabledSleeveThemes.toList(), { it.readableName() }) { sleeve = it }
+                val ink = sleeve.inkColor(sleeveInk)
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Text("Ink color", modifier = Modifier.weight(1f))
+                    OutlinedButton(
+                        onClick = { sleeveInk = next(SleeveInk.entries, sleeveInk) },
+                        modifier = Modifier.semantics { contentDescription = "Ink color: ${ink.label}, ${sleeveInk.ordinal + 1} of 3" },
+                    ) {
+                        Box(Modifier.size(20.dp).background(Color(ink.argb), CircleShape).border(1.dp, MaterialTheme.colorScheme.outline, CircleShape))
+                        Spacer(Modifier.width(8.dp))
+                        Text(ink.label)
+                    }
+                }
+                JitteredHandwritingText(
+                    text = "Night drive", startIndex = jitterStartIndex,
+                    fontFamily = font.cassetteHandwritingFontFamily(), fontOpticalScale = font.opticalScale(), fontSize = 28.sp,
+                    fontWeight = font.effectiveCassetteWeight(FontWeight.Bold),
+                    color = Color(ink.argb),
+                    modifier = Modifier.fillMaxWidth().background(rememberDemoThemes().sleeve(sleeve).color("paper")).padding(8.dp)
+                        .semantics { contentDescription = "Ink color preview" },
+                )
             }
         },
-        confirmButton = {
-            TextButton(onClick = {
-                onSave(
-                    MixtapeCustomization(
-                        name = editedName,
-                        decorativeId = decorativeId,
-                        handwritingFont = font,
-                        embellishment = symbol,
-                        symbolColor = symbolColor,
-                        nameColor = nameColor,
-                        cassetteTheme = cassette,
-                        screwTheme = screws,
-                        stickerTheme = sticker,
-                        caseTheme = caseTheme,
-                        sleeveTheme = sleeve,
-                    ),
-                )
-            }) { Text("Save") }
-        },
+        confirmButton = { TextButton(onClick={ onSave(draft()) }) { Text("Save") } },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
     )
 }
@@ -3103,7 +2643,8 @@ private fun DeckCassetteBay(
         shape = RoundedCornerShape(18.dp),
         modifier = modifier
             .widthIn(max = 560.dp)
-            .aspectRatio(DEMO_DECK_PLAYER_ASPECT_RATIO),
+            .aspectRatio(DEMO_DECK_PLAYER_ASPECT_RATIO)
+            .semantics { contentDescription = "Cassette deck" },
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val deckWidth = maxWidth
@@ -3538,6 +3079,7 @@ private fun StickerTheme.accentColor(): Color = when (this) {
     StickerTheme.LowerDeck -> Color(0xFF233B64)
     StickerTheme.HissTachiLoNoise -> Color(0xFF54718E)
     StickerTheme.PrismC60 -> Color(0xFF8B54C7)
+    else -> Color(0xFFDE6335)
 }
 
 private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawCassetteSticker(
@@ -3634,6 +3176,7 @@ private fun CassetteTheme.legacyTapeSkin(): MixtapeTapeSkin = when (this) {
     CassetteTheme.TranslucentSmoke -> MixtapeTapeSkin.SmokedGreenLowNoise
     CassetteTheme.TranslucentViolet -> MixtapeTapeSkin.TranslucentViolet
     CassetteTheme.BubblegumPop -> MixtapeTapeSkin.IvoryRedStripe
+    else -> MixtapeTapeSkin.ClassicCreamDots
 }
 
 private fun CassetteTheme.isTransparentShell(): Boolean = when (this) {
@@ -3680,7 +3223,8 @@ private fun CassetteTheme.palette(): CassetteTapeSkinPalette {
             shell = Color(0xB87555B2), reelWell = Color(0x77462F70), lowerSlot = Color(0xAA30204F),
             reelWindow = Color(0x886F55A0), accent = Color(0xFFD99AE9), accentSecondary = Color(0xFF79C9EF),
         )
-    }
+        else -> base
+}
 }
 
 private fun StickerTheme.legacyAccentSkin(): MixtapeTapeSkin = when (this) {
@@ -3691,6 +3235,7 @@ private fun StickerTheme.legacyAccentSkin(): MixtapeTapeSkin = when (this) {
     StickerTheme.LowerDeck -> MixtapeTapeSkin.CharcoalGold
     StickerTheme.HissTachiLoNoise -> MixtapeTapeSkin.SmokedGreenLowNoise
     StickerTheme.PrismC60 -> MixtapeTapeSkin.TranslucentViolet
+    else -> MixtapeTapeSkin.ClassicCreamDots
 }
 
 private fun StickerTheme.labelColor(fallback: Color): Color = when (this) {
@@ -3702,6 +3247,7 @@ private fun StickerTheme.labelColor(fallback: Color): Color = when (this) {
     StickerTheme.LowerDeck -> Color(0xFFE7DCC3)
     StickerTheme.HissTachiLoNoise -> Color(0xFFCFD9E8)
     StickerTheme.PrismC60 -> Color(0xFFE4D8FF)
+    else -> fallback
 }
 
 private fun StickerTheme.innerLabelColor(fallback: Color): Color = when (this) {
@@ -3713,6 +3259,7 @@ private fun StickerTheme.innerLabelColor(fallback: Color): Color = when (this) {
     StickerTheme.LowerDeck -> Color(0xFFFAF2D9)
     StickerTheme.HissTachiLoNoise -> Color(0xFFE8EEF7)
     StickerTheme.PrismC60 -> Color(0xFFF4EFFF)
+    else -> fallback
 }
 
 private fun SleeveTheme.trackListColor(): Color = when (this) {
@@ -3725,6 +3272,7 @@ private fun SleeveTheme.trackListColor(): Color = when (this) {
     SleeveTheme.MidnightGrid -> Color(0xFF29344B)
     SleeveTheme.RuledNotebook -> Color(0xFFFFFBE9)
     SleeveTheme.AlbumPrint -> Color(0xFFFFE4A3)
+    else -> Color(0xFFE8E1C8)
 }
 
 private fun CaseTheme.borderColor(): Color = when (this) {
@@ -3742,6 +3290,7 @@ private fun CaseTheme.tintColor(): Color = when (this) {
     CaseTheme.HotPinkClear -> Color(0x22FF3999)
     CaseTheme.RubyClear -> Color(0x22D01435)
     CaseTheme.VioletClear -> Color(0x226C3FE8)
+    else -> Color(0x22ECF5F3)
 }
 
 private fun MixtapeTapeSkin.palette(): CassetteTapeSkinPalette = when (this) {
@@ -4373,6 +3922,7 @@ private fun CassetteCoverTrackList(
     handwritingFont: MixtapeHandwritingFont,
     mixtapeJitterStartIndex: Int,
     sleeveTheme: SleeveTheme = SleeveTheme.BlankWhite,
+    sleeveInk: SleeveInk = SleeveInk.Original,
     caseTheme: CaseTheme = CaseTheme.CrystalClear,
     onDeleteTrackFromDevice: (Track) -> Unit,
     onRemoveTrackFromMixtape: (Track) -> Unit,
@@ -4383,7 +3933,7 @@ private fun CassetteCoverTrackList(
     showHeader: Boolean = true,
 ) {
     val cassetteHandwritingFontFamily = handwritingFont.cassetteHandwritingFontFamily()
-    val sleevePaper = sleeveTheme.paperPalette()
+    val sleevePaper = sleeveTheme.paperPalette(sleeveInk)
     val casePlastic = caseTheme.plasticPalette()
     val headerText = mixtapeName
     val contentScrollState = rememberScrollState()
@@ -4884,6 +4434,7 @@ private fun DeckTheme.deckPalette(): DeckPalette = when (this) {
         Color(0xFF0C0D10), Color(0xFF34383F), Color(0xFFD7DAE0), Color(0xFF1D1F24),
         Color(0xFFFF5533), Color(0xFF17191C), Color(0xFFFFA287),
     )
+    else -> DeckTheme.SilverfaceHiFi.deckPalette()
 }
 
 private fun DeckTheme.backgroundColor(): Color = when (this) {
@@ -4894,6 +4445,7 @@ private fun DeckTheme.backgroundColor(): Color = when (this) {
     DeckTheme.SilverfaceHiFi -> Color(0xFFF0F1F2)
     DeckTheme.SunsetBoombox -> Color(0xFFFFE9DA)
     DeckTheme.BlackoutPortable -> Color(0xFFD7D9DD)
+    else -> Color(0xFFEEF0E7)
 }
 
 private fun DeckTheme.readableName(): String = componentThemeName()

@@ -71,6 +71,10 @@ class TrackJumpCueSourceContractTest {
         val stopBody = functionBody(viewModelSource, "fun stop()")
         val ejectBody = functionBody(viewModelSource, "fun eject()")
         val clearedBody = functionBody(viewModelSource, "override fun onCleared()")
+        val cancelBody = functionBody(viewModelSource, "private fun cancelTrackJumpCue()")
+        assertTrue(cancelBody.contains("trackJumpCueJob?.cancel()"))
+        assertTrue(cancelBody.contains("transportCuePlayer.cancel()"))
+        assertTrue(cancelBody.contains("activeTransportCue = TransportCueDirection.NONE"))
 
         assertTrue(
             "MixtapeViewModel should keep the pending track jump in a Job so repeated double-clicks cancel stale cues.",
@@ -78,11 +82,11 @@ class TrackJumpCueSourceContractTest {
         )
         assertTrue(
             "Starting a new double-click jump should cancel any pending jump before launching the replacement cue.",
-            jumpBody.contains(".cancel()") && jumpBody.contains("viewModelScope.launch"),
+            ordered(jumpBody, listOf("cancelTrackJumpCue()", "viewModelScope.launch")),
         )
-        assertTrue("Stop should cancel any pending cue jump before/while stopping playback.", stopBody.contains(".cancel()"))
-        assertTrue("Eject should cancel any pending cue jump so it cannot start a stale target.", ejectBody.contains(".cancel()"))
-        assertTrue("onCleared should cancel cue playback/jobs as part of ViewModel cleanup.", clearedBody.contains(".cancel()"))
+        assertTrue("Stop should cancel any pending cue jump before/while stopping playback.", stopBody.contains("cancelTrackJumpCue()"))
+        assertTrue("Eject should cancel any pending cue jump so it cannot start a stale target.", ejectBody.contains("cancelTrackJumpCue()"))
+        assertTrue("onCleared should cancel cue playback/jobs as part of ViewModel cleanup.", clearedBody.contains("cancelTrackJumpCue()"))
     }
 
     private fun ordered(body: String, tokens: List<String>): Boolean {

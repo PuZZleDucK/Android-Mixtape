@@ -34,33 +34,6 @@ class TrackActionsViewModelContractTest {
     }
 
     @Test
-    fun removeFromMixtapeHasDeterministicSwapContractAndSingleTapeNoop() {
-        val source = viewModelSource()
-        val body = functionBody(source, "fun removeTrackFromCurrentMixtape(trackId: Long)")
-
-        assertTrue(
-            "Remove-from-mixtape should use the injected mixtapeRandom so behavior is testable.",
-            body.contains("mixtapeRandom"),
-        )
-        assertTrue(
-            "Remove-from-mixtape should explicitly exclude the current tape from destination candidates.",
-            Regex("filter\\s*\\{[\\s\\S]*?(it|index)\\s*!=\\s*current").containsMatchIn(body) || body.contains("otherTape"),
-        )
-        assertTrue(
-            "With only one mixtape, removal should be a no-op with a clear user message.",
-            body.contains("No other mix tape available"),
-        )
-        assertTrue(
-            "The selected track should be swapped with a destination-track index so tape sizes and total track set are preserved.",
-            body.contains("swap") || Regex("mixtapeTracks\\s*=\\s*mixtapeTracks\\.toMutableList\\(\\)[\\s\\S]*?=", RegexOption.IGNORE_CASE).containsMatchIn(body),
-        )
-        assertTrue(
-            "After a successful move, the current queue/controller state should be reloaded for the still-open mixtape.",
-            body.contains("controller.load") && body.contains("queueTracks"),
-        )
-    }
-
-    @Test
     fun deleteFromDeviceUsesRepositoryResultAndLeavesStateOnFailure() {
         val source = viewModelSource()
         val body = functionBody(source, "fun deleteTrackFromDevice(trackId: Long)")
@@ -80,7 +53,10 @@ class TrackActionsViewModelContractTest {
         )
         assertTrue(
             "A successful delete should remove the track from libraryTracks and mixtapeTracks.",
-            body.contains("libraryTracks") && body.contains("mixtapeTracks") && body.contains("filterNot"),
+            body.contains("removeDeletedTrackFromAppState") &&
+                functionBody(source, "private fun removeDeletedTrackFromAppState(").let {
+                    it.contains("libraryTracks") && it.contains("mixtapeTracks") && it.contains("filterNot")
+                },
         )
         assertTrue(
             "A failed delete should keep state unchanged and publish a failure message instead of silently hiding the track.",

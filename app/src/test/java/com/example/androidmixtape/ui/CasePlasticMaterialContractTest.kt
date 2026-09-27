@@ -1,6 +1,7 @@
 package com.example.androidmixtape.ui
 
 import java.io.File
+import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -13,11 +14,14 @@ class CasePlasticMaterialContractTest {
     ).first { it.exists() }.readText()
 
     @Test fun allFiveLivePathsUseTheSharedMaterialWithoutLocalTintMultipliers() {
-        assertEquals(5, Regex("drawCasePlastic\\(").findAll(source()).count())
-        assertFalse(source().contains("CASE_PLASTIC_TINT_STRENGTH"))
-        val spine = source().substringAfter("private fun CassetteSpineRow(")
-            .substringBefore("private fun LegacyCassetteSpineRow(")
-        assertFalse(spine.contains("drawRoundRect(Color(0xFF15191F)"))
+        val native = listOf(File("src/modern/java/com/example/androidmixtape/ui/DemoPackaging.kt"), File("app/src/modern/java/com/example/androidmixtape/ui/DemoPackaging.kt")).first { it.exists() }.readText()
+        assertTrue(native.contains("internal fun DemoCaseSurface("))
+        assertTrue(native.contains("demoCaseTransmission(tint,opacity)"))
+        assertTrue(native.contains("ColorFilter.colorMatrix(matrix)"))
+        assertTrue(native.contains("drawContext.canvas.saveLayer") && native.contains("drawContent();drawContext.canvas.restore()"))
+        assertEquals(2, Regex("DemoCaseSurface\\(themes.case\\(properties.caseTheme\\)").findAll(native).count())
+        val previews = source().substringAfter("private fun CaseComponentPreview(").substringBefore("private fun HelpScreen(")
+        assertTrue(previews.contains("DemoCaseSurface(style") && previews.contains("DemoCaseSurface(rememberDemoThemes().case"))
     }
 
     @Test fun clearCasePreviewMustNotHaveAnOpaqueDarkPlasticBacking() {

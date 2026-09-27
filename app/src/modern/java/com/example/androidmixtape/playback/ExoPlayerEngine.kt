@@ -2,6 +2,7 @@ package com.example.androidmixtape.playback
 
 import android.content.Context
 import androidx.media3.common.C
+import androidx.media3.common.AudioAttributes
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
@@ -11,6 +12,13 @@ class ExoPlayerEngine(context: Context) : PlayerEngine {
     private var currentIndexChangedListener: ((Int) -> Unit)? = null
 
     private val player: ExoPlayer = ExoPlayer.Builder(context).build().apply {
+        setAudioAttributes(
+            AudioAttributes.Builder()
+                .setUsage(C.USAGE_MEDIA)
+                .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+                .build(),
+            /* handleAudioFocus = */ true,
+        )
         setWakeMode(C.WAKE_MODE_LOCAL)
         addListener(object : Player.Listener {
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
